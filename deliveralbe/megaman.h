@@ -3,6 +3,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "LTexture.h"
+#include "laser.h"
+
 class megaman{
 
 	public:
@@ -28,12 +30,11 @@ class megaman{
 
 		LTexture gMegamanTexture;
 
-		int megamanX, megamanY;
+		int megamanX, megamanY, DIRECTION;
 
 		int megamanX_vel, megamanY_vel;
 };
 
-#endif
 
 LTexture gMegamanTexture;
 
@@ -42,6 +43,8 @@ megaman::megaman(){
 megamanX = 0;
 
 megamanY = 0;
+
+DIRECTION=0;
 
 megamanX_vel = 0;
 
@@ -61,11 +64,6 @@ if( !gMegamanTexture.loadFromFile("./dot.bmp"))
 return success;
 }
 
-
-
-
-
-
 void megaman::handleEvent( SDL_Event& e )
 {
         if( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
@@ -74,8 +72,9 @@ void megaman::handleEvent( SDL_Event& e )
                 {
                         case  SDLK_UP: megamanY_vel -= MEGAMAN_SPEED; break;
                         case  SDLK_DOWN: megamanY_vel += MEGAMAN_SPEED; break;
-                        case  SDLK_LEFT: megamanX_vel -= MEGAMAN_SPEED; break;
-                        case  SDLK_RIGHT: megamanX_vel += MEGAMAN_SPEED; break;
+                        case  SDLK_LEFT: megamanX_vel -= MEGAMAN_SPEED; DIRECTION = 1; break;
+                        case  SDLK_RIGHT: megamanX_vel += MEGAMAN_SPEED; DIRECTION = 0; break;
+			case  SDLK_SPACE: megamanX = 0; megamanY=0; break;
                 }
         }
         if( e.type == SDL_KEYUP && e.key.repeat == 0 )
@@ -88,6 +87,11 @@ void megaman::handleEvent( SDL_Event& e )
                         case  SDLK_RIGHT: megamanX_vel -= MEGAMAN_SPEED; break;
                 }
         }
+}
+
+void megaman::fire()
+{
+laser (megamanX, megamanY, DIRECTION);
 }
 
 void megaman::move()
@@ -104,3 +108,4 @@ void megaman::render()
         gMegamanTexture.render( megamanX, megamanY );
 }
 
+#endif
