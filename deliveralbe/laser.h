@@ -31,9 +31,10 @@ class laser {
 		int laserX_vel;		
 };
 
-
 laser::laser( int X_COORD, int Y_COORD, int DIRECTION )
 {
+
+LTexture gLaserTexture;
 
 laserX = X_COORD;
 

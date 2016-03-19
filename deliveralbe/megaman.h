@@ -23,10 +23,20 @@ class megaman{
 		void render();
 
 		bool loadSprite();		
+
+		bool getfire();
+	
+		int getX();
+
+		int getY();
+
+		int getdir();
 		
-		void fire();
+//		void fire();
 
 	private:
+
+		bool fire;
 
 		LTexture gMegamanTexture;
 
@@ -45,6 +55,8 @@ megamanX = 0;
 megamanY = 0;
 
 DIRECTION=0;
+
+fire = false;
 
 megamanX_vel = 0;
 
@@ -74,7 +86,7 @@ void megaman::handleEvent( SDL_Event& e )
                         case  SDLK_DOWN: megamanY_vel += MEGAMAN_SPEED; break;
                         case  SDLK_LEFT: megamanX_vel -= MEGAMAN_SPEED; DIRECTION = 1; break;
                         case  SDLK_RIGHT: megamanX_vel += MEGAMAN_SPEED; DIRECTION = 0; break;
-			case  SDLK_SPACE: megamanX = 0; megamanY=0; break;
+			case  SDLK_SPACE: fire = true; break;
                 }
         }
         if( e.type == SDL_KEYUP && e.key.repeat == 0 )
@@ -85,15 +97,37 @@ void megaman::handleEvent( SDL_Event& e )
                         case  SDLK_DOWN: megamanY_vel -= MEGAMAN_SPEED; break;
                         case  SDLK_LEFT: megamanX_vel += MEGAMAN_SPEED; break;
                         case  SDLK_RIGHT: megamanX_vel -= MEGAMAN_SPEED; break;
-                }
+                	case  SDLK_SPACE: fire = false; break;
+		}
         }
 }
 
-void megaman::fire()
+int megaman::getX()
 {
-laser (megamanX, megamanY, DIRECTION);
+	return(megamanX);
 }
 
+int megaman::getY()
+{
+        return(megamanY);
+}
+
+int megaman::getdir()
+{
+        return(DIRECTION);
+}
+
+bool megaman::getfire()
+{
+        return fire;
+}
+/*
+void megaman::fire()
+{
+laser laser1(megamanX, megamanY, DIRECTION);
+laser1.loadLaserSprite();
+}
+*/
 void megaman::move()
 {
 	if(megamanX+megamanX_vel >= 0 && megamanX+megamanX_vel < 640)
