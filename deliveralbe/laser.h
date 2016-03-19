@@ -22,13 +22,23 @@ class laser {
 		void render();
 
 		bool loadLaserSprite();
-		
-	private:	
+	  
+    bool allowChange();
+    
+    void setX(int);
+    
+    void setY(int);
+    
+    void setDir(int);
+	  
+    void print();
+  private:	
 		
 		LTexture gLaserTexture;
 
 		int laserX, laserY, laser_direction;
 		int laserX_vel;		
+    bool moving;
 };
 
 laser::laser( int X_COORD, int Y_COORD, int DIRECTION )
@@ -40,16 +50,26 @@ laserX = X_COORD;
 
 laserY = Y_COORD;
 
+laserX_vel = 10;
+
 laser_direction = DIRECTION;
 
+moving = false;
 }
 
 void laser::fired_laser()
 {
-if(laser_direction == 0)
-	laserX += laserX_vel;
+moving = true;
 if(laser_direction == 1)
-        laserX -= laserX_vel;
+	laserX += laserX_vel;
+if(laser_direction == 0)
+    laserX -= laserX_vel;
+if(laserX > 640 || laserX < 0){
+  moving = false;
+  laserX = -50;
+  laserY = -50;
+  laser_direction=-1;
+}
 }
 
 void laser::render()
@@ -69,4 +89,20 @@ if( !gLaserTexture.loadFromFile("./dot.bmp"))
 return success;
 }
 
+bool laser::allowChange(){
+  //printf("%d, %d, %d\n", laserX, laserY, laser_direction);
+  return (!moving);
+}
+void laser::setX(int x){
+  laserX=x;
+}
+void laser::setY(int y){
+  laserY=y;
+}
+void laser::setDir(int d){
+  laser_direction = d;
+}
+void laser::print(){
+  printf("%d, %d, %d\n", laserX, laserY, laser_direction);
+}
 #endif

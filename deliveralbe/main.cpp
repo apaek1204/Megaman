@@ -11,8 +11,12 @@ int main( int argc, char* args[] )
 
 megaman megaman1;
 
-laser *laser1;
-
+laser laserArray[5];
+for(int i=0; i<5; i++){
+  laserArray[i].setX(-50);
+  laserArray[i].setY(-50);
+  laserArray[i].setDir(-1);
+}
 int x , y, DIRECTION;
 
 	if( !init() )
@@ -49,18 +53,31 @@ int x , y, DIRECTION;
 					x = megaman1.getX();
 					y = megaman1.getY();
 					DIRECTION = megaman1.getdir();
-					
+          for(int i=0; i<5; i++){
+            printf("%d, ", i);
+            laserArray[i].print();
+
+            if(laserArray[i].allowChange()){
+              laserArray[i].setX(x);
+              laserArray[i].setY(y);
+              laserArray[i].setDir(DIRECTION);
+              break;
+            }
+          }         
 				}
-				laser1=new laser(x,y,DIRECTION);
+
 				megaman1.move();
-				laser1->loadLaserSprite();
-				laser1->fired_laser();
+				for(int i=0; i<5; i++){
+          laserArray[i].loadLaserSprite();
+				  laserArray[i].fired_laser();
+        }
 				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 				SDL_RenderClear( gRenderer );
 
 				megaman1.render();
-				laser1->render();
-
+				for(int i=0; i<5; i++){
+          laserArray[i].render();
+        }
 				SDL_RenderPresent( gRenderer );
 			}
 		//}

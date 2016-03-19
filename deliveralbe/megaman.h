@@ -84,9 +84,9 @@ void megaman::handleEvent( SDL_Event& e )
                 {
                         case  SDLK_UP: megamanY_vel -= MEGAMAN_SPEED; break;
                         case  SDLK_DOWN: megamanY_vel += MEGAMAN_SPEED; break;
-                        case  SDLK_LEFT: megamanX_vel -= MEGAMAN_SPEED; DIRECTION = 1; break;
-                        case  SDLK_RIGHT: megamanX_vel += MEGAMAN_SPEED; DIRECTION = 0; break;
-			case  SDLK_SPACE: fire = true; break;
+                        case  SDLK_LEFT: megamanX_vel -= MEGAMAN_SPEED; break;
+                        case  SDLK_RIGHT: megamanX_vel += MEGAMAN_SPEED; break;
+			//case  SDLK_SPACE: fire = true; break;
                 }
         }
         if( e.type == SDL_KEYUP && e.key.repeat == 0 )
@@ -95,9 +95,9 @@ void megaman::handleEvent( SDL_Event& e )
                 {
                         case  SDLK_UP: megamanY_vel += MEGAMAN_SPEED; break;
                         case  SDLK_DOWN: megamanY_vel -= MEGAMAN_SPEED; break;
-                        case  SDLK_LEFT: megamanX_vel += MEGAMAN_SPEED; break;
-                        case  SDLK_RIGHT: megamanX_vel -= MEGAMAN_SPEED; break;
-                	case  SDLK_SPACE: fire = false; break;
+                        case  SDLK_LEFT: megamanX_vel += MEGAMAN_SPEED; DIRECTION = 0; break;
+                        case  SDLK_RIGHT: megamanX_vel -= MEGAMAN_SPEED; DIRECTION=1; break;
+                	case  SDLK_SPACE: fire = true; break;
 		}
         }
 }
@@ -130,6 +130,7 @@ laser1.loadLaserSprite();
 */
 void megaman::move()
 {
+  fire=false;
 	if(megamanX+megamanX_vel >= 0 && megamanX+megamanX_vel < 640)
         	megamanX += megamanX_vel;
 

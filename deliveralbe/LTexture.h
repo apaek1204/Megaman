@@ -34,7 +34,6 @@ class LTexture
                 int mWidth;
                 int mHeight;
 };
-#endif
 
 
 LTexture::LTexture()
@@ -131,4 +130,4 @@ int LTexture::getHeight()
 {
         return mHeight;
 }
-                        
+#endif                       
