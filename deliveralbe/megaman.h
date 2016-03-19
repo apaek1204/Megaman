@@ -14,7 +14,7 @@ class megaman{
 		
 		static const int MEGAMAN_SPEED = 10;
 
-		megaman();
+		megaman(int=0, int=0);
 
 		void handleEvent( SDL_Event& e );
 		
@@ -32,6 +32,7 @@ class megaman{
 
 		int getdir();
 		
+    const SDL_Rect getHitBox();
 //		void fire();
 
 	private:
@@ -43,16 +44,18 @@ class megaman{
 		int megamanX, megamanY, DIRECTION;
 
 		int megamanX_vel, megamanY_vel;
+
+    SDL_Rect circleBox;
 };
 
 
 LTexture gMegamanTexture;
 
-megaman::megaman(){
+megaman::megaman(int xCoord, int yCoord){
 
-megamanX = 0;
+megamanX = xCoord;
 
-megamanY = 0;
+megamanY = yCoord;
 
 DIRECTION=0;
 
@@ -62,6 +65,13 @@ megamanX_vel = 0;
 
 megamanY_vel = 0;
 
+circleBox.x = megamanX;
+
+circleBox.y = megamanY;
+
+circleBox.w = MEGAMAN_WIDTH;
+
+circleBox.h = MEGAMAN_HEIGHT;
 }
 
 bool megaman::loadSprite()
@@ -131,16 +141,22 @@ laser1.loadLaserSprite();
 void megaman::move()
 {
   fire=false;
-	if(megamanX+megamanX_vel >= 0 && megamanX+megamanX_vel < 640)
-        	megamanX += megamanX_vel;
-
-        if(megamanY+megamanY_vel >= 0 && megamanY+megamanY_vel < 480)
-	        megamanY += megamanY_vel;
+	if(megamanX+megamanX_vel >= 0 && megamanX+megamanX_vel < 640){
+    megamanX += megamanX_vel;
+    circleBox.x += megamanX_vel;
+  }
+  if(megamanY+megamanY_vel >= 0 && megamanY+megamanY_vel < 480)
+	  megamanY += megamanY_vel;
+    circleBox.y += megamanY_vel;
 }
 
 void megaman::render()
 {
         gMegamanTexture.render( megamanX, megamanY );
+}
+
+const SDL_Rect megaman::getHitBox(){
+  return circleBox;
 }
 
 #endif
