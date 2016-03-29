@@ -17,6 +17,7 @@ for(int i=0; i<5; i++){
   laserArray[i].setY(-50);
   laserArray[i].setDir(-1);
 }
+megaman enemy1(500,300);
 int x , y, DIRECTION;
 
 	if( !init() )
@@ -26,7 +27,8 @@ int x , y, DIRECTION;
 	else
 	{
 	megaman1.loadSprite();
-		//if( !megaman1.gMegamanTexture)
+	enemy1.loadSprite();
+    //if( !megaman1.gMegamanTexture)
 		//{
 		//	printf( "Failed to load media!\n" );
 		//}
@@ -54,8 +56,8 @@ int x , y, DIRECTION;
 					y = megaman1.getY();
 					DIRECTION = megaman1.getdir();
           for(int i=0; i<5; i++){
-            printf("%d, ", i);
-            laserArray[i].print();
+            //printf("%d, ", i);
+            //laserArray[i].print();
 
             if(laserArray[i].allowChange()){
               laserArray[i].setX(x);
@@ -65,16 +67,29 @@ int x , y, DIRECTION;
             }
           }         
 				}
-
+        
 				megaman1.move();
 				for(int i=0; i<5; i++){
           laserArray[i].loadLaserSprite();
 				  laserArray[i].fired_laser();
+          SDL_Rect enemyHitBox = enemy1.getHitBox();
+          SDL_Rect bulletHitBox = laserArray[i].getHitBox();
+          //printf("%d, %d, %d, %d\n", enemyHitBox.x, enemyHitBox.y, bulletHitBox.x, bulletHitBox.y);
+          if(SDL_HasIntersection(&enemyHitBox, &bulletHitBox)== SDL_TRUE){
+            //printf("hit");
+            laserArray[i].setX(-50);
+            laserArray[i].setY(-50);
+            laserArray[i].setDir(-1);
+          }
         }
-				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+				
+        
+        
+        SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 				SDL_RenderClear( gRenderer );
 
 				megaman1.render();
+        enemy1.render();
 				for(int i=0; i<5; i++){
           laserArray[i].render();
         }

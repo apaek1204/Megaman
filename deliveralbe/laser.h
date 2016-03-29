@@ -32,6 +32,8 @@ class laser {
     void setDir(int);
 	  
     void print();
+    
+    const SDL_Rect getHitBox();
   private:	
 		
 		LTexture gLaserTexture;
@@ -39,6 +41,7 @@ class laser {
 		int laserX, laserY, laser_direction;
 		int laserX_vel;		
     bool moving;
+    SDL_Rect circleBox;
 };
 
 laser::laser( int X_COORD, int Y_COORD, int DIRECTION )
@@ -50,20 +53,29 @@ laserX = X_COORD;
 
 laserY = Y_COORD;
 
-laserX_vel = 10;
+laserX_vel = 5;
 
 laser_direction = DIRECTION;
 
 moving = false;
+
+circleBox.x = laserX; 
+circleBox.y = laserY;
+circleBox.w = LASER_WIDTH;
+circleBox.h = LASER_HEIGHT;
 }
 
 void laser::fired_laser()
 {
 moving = true;
-if(laser_direction == 1)
+if(laser_direction == 1){
+  circleBox.x += laserX_vel;
 	laserX += laserX_vel;
-if(laser_direction == 0)
-    laserX -= laserX_vel;
+}
+if(laser_direction == 0){
+  circleBox.x -= laserX_vel;
+  laserX -= laserX_vel;
+}
 if(laserX > 640 || laserX < 0){
   moving = false;
   laserX = -50;
@@ -95,14 +107,19 @@ bool laser::allowChange(){
 }
 void laser::setX(int x){
   laserX=x;
+  circleBox.x=x;
 }
 void laser::setY(int y){
   laserY=y;
+  circleBox.y=y;
 }
 void laser::setDir(int d){
   laser_direction = d;
 }
 void laser::print(){
   printf("%d, %d, %d\n", laserX, laserY, laser_direction);
+}
+const SDL_Rect laser::getHitBox(){
+  return(circleBox);
 }
 #endif
