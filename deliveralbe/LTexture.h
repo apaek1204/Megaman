@@ -69,7 +69,7 @@ bool LTexture::loadFromFile( std::string path )
                         printf( "Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
                 }
                 else
-                {
+               {
                         mWidth = loadedSurface->w;
                         mHeight = loadedSurface->h;
                 }
@@ -114,8 +114,8 @@ void LTexture::render( int x, int y, SDL_Rect* clip, double angle, SDL_Point* ce
 
         if( clip != NULL )
         {
-                renderQuad.w = clip->w;
-                renderQuad.h = clip->h;
+                renderQuad.w = 50; //clip->w;
+                renderQuad.h = 50; //clip->h;
         }
 
         SDL_RenderCopyEx( gRenderer, mTexture, clip, &renderQuad, angle, center, flip );

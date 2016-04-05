@@ -9,10 +9,10 @@ class megaman{
 
 	public:
 
-		static const int MEGAMAN_WIDTH = 20;
-		static const int MEGAMAN_HEIGHT = 20;
+		static const int MEGAMAN_WIDTH = 60;
+		static const int MEGAMAN_HEIGHT = 60;
 		
-		static const int MEGAMAN_SPEED = 10;
+		static const int MEGAMAN_SPEED = 3;
 
 		megaman(int=0, int=0);
 
@@ -39,7 +39,8 @@ class megaman{
 
 		bool fire;
 
-		LTexture gMegamanTexture;
+		LTexture* gMegamanTexture;
+		//LTexture gMegamanTexture;
 
 		int megamanX, megamanY, DIRECTION;
 
@@ -49,9 +50,11 @@ class megaman{
 };
 
 
-LTexture gMegamanTexture;
 
 megaman::megaman(int xCoord, int yCoord){
+
+
+gMegamanTexture = new LTexture;
 
 megamanX = xCoord;
 
@@ -78,7 +81,7 @@ bool megaman::loadSprite()
 {
 bool success = true;
 
-if( !gMegamanTexture.loadFromFile("./dot.bmp"))
+if( !gMegamanTexture->loadFromFile("./../assets/sprites/megaman/movement/0.png"))
 {
 	printf( "Unable to load megaman texture! \n");
 	success = false;
@@ -92,10 +95,13 @@ void megaman::handleEvent( SDL_Event& e )
         {
                 switch( e.key.keysym.sym )
                 {
-                        case  SDLK_UP: megamanY_vel -= MEGAMAN_SPEED; break;
+                        case  SDLK_UP: if (megamanY + MEGAMAN_HEIGHT > 440)
+						megamanY_vel = -MEGAMAN_SPEED-10; 
+						
+						break;
                         case  SDLK_DOWN: megamanY_vel += MEGAMAN_SPEED; break;
-                        case  SDLK_LEFT: megamanX_vel -= MEGAMAN_SPEED; break;
-                        case  SDLK_RIGHT: megamanX_vel += MEGAMAN_SPEED; break;
+                        case  SDLK_LEFT: megamanX_vel -= MEGAMAN_SPEED; DIRECTION = 0; break;
+                        case  SDLK_RIGHT: megamanX_vel += MEGAMAN_SPEED; DIRECTION = 1;break;
 			//case  SDLK_SPACE: fire = true; break;
                 }
         }
@@ -103,10 +109,10 @@ void megaman::handleEvent( SDL_Event& e )
         {
                 switch( e.key.keysym.sym )
                 {
-                        case  SDLK_UP: megamanY_vel += MEGAMAN_SPEED; break;
+                        case  SDLK_UP: megamanY_vel = 0; break;
                         case  SDLK_DOWN: megamanY_vel -= MEGAMAN_SPEED; break;
-                        case  SDLK_LEFT: megamanX_vel += MEGAMAN_SPEED; DIRECTION = 0; break;
-                        case  SDLK_RIGHT: megamanX_vel -= MEGAMAN_SPEED; DIRECTION=1; break;
+                        case  SDLK_LEFT: megamanX_vel += MEGAMAN_SPEED;  break;
+                        case  SDLK_RIGHT: megamanX_vel -= MEGAMAN_SPEED;  break;
                 	case  SDLK_SPACE: fire = true; break;
 		}
         }
@@ -145,14 +151,17 @@ void megaman::move()
     megamanX += megamanX_vel;
     circleBox.x += megamanX_vel;
   }
-  if(megamanY+megamanY_vel >= 0 && megamanY+megamanY_vel < 480)
+  if(megamanY+megamanY_vel >= 0 && megamanY+megamanY_vel < 480 - MEGAMAN_HEIGHT)
 	  megamanY += megamanY_vel;
-    circleBox.y += megamanY_vel;
+	  if (megamanY < 480 - MEGAMAN_HEIGHT){
+		megamanY_vel += 1;
+    		circleBox.y += megamanY_vel;
+		}
 }
 
 void megaman::render()
 {
-        gMegamanTexture.render( megamanX, megamanY );
+        gMegamanTexture->render( megamanX, megamanY );
 }
 
 const SDL_Rect megaman::getHitBox(){

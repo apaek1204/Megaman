@@ -36,7 +36,7 @@ class laser {
     const SDL_Rect getHitBox();
   private:	
 		
-		LTexture gLaserTexture;
+		LTexture* gLaserTexture;
 
 		int laserX, laserY, laser_direction;
 		int laserX_vel;		
@@ -47,7 +47,7 @@ class laser {
 laser::laser( int X_COORD, int Y_COORD, int DIRECTION )
 {
 
-LTexture gLaserTexture;
+gLaserTexture = new LTexture;
 
 laserX = X_COORD;
 
@@ -86,14 +86,14 @@ if(laserX > 640 || laserX < 0){
 
 void laser::render()
 {
-gLaserTexture.render( laserX, laserY );
+gLaserTexture->render( laserX, laserY );
 }
 
 bool laser::loadLaserSprite()
 {
 bool success = true;
 
-if( !gLaserTexture.loadFromFile("./dot.bmp"))
+if( !gLaserTexture->loadFromFile("./../assets/sprites/megaman/lasers/3.png"))
 {
         printf( "Unable to load laser texture! \n");
         success = false;
@@ -108,6 +108,7 @@ bool laser::allowChange(){
 void laser::setX(int x){
   laserX=x;
   circleBox.x=x;
+print();
 }
 void laser::setY(int y){
   laserY=y;
