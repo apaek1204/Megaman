@@ -114,8 +114,8 @@ void LTexture::render( int x, int y, SDL_Rect* clip, double angle, SDL_Point* ce
 
         if( clip != NULL )
         {
-                renderQuad.w = 50; //clip->w;
-                renderQuad.h = 50; //clip->h;
+                renderQuad.w = clip->w;
+                renderQuad.h = clip->h;
         }
 
         SDL_RenderCopyEx( gRenderer, mTexture, clip, &renderQuad, angle, center, flip );
