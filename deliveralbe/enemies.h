@@ -9,26 +9,26 @@ class megaman{
 
 	public:
 
-		static const int MEGAMAN_WIDTH = 70;
-		static const int MEGAMAN_HEIGHT = 70;
+		static const int MEGAMAN_WIDTH = 60;
+		static const int MEGAMAN_HEIGHT = 60;
 		
-		static const float MEGAMAN_SPEED = .25;
+		static const int MEGAMAN_SPEED = 3;
 
-		megaman(float=0, float=0);
+		megaman(int=0, int=0);
 
 		void handleEvent( SDL_Event& e );
 		
 		void move();
 
-		void render(float , float);
+		void render();
 
 		bool loadSprite();		
 
 		bool getfire();
 	
-		float getX();
+		int getX();
 
-		float getY();
+		int getY();
 
 		int getdir();
 		
@@ -42,20 +42,19 @@ class megaman{
 		LTexture* gMegamanTexture;
 		//LTexture gMegamanTexture;
 
-		float megamanX, megamanY;
-		int  DIRECTION;
+		int megamanX, megamanY, DIRECTION;
 
-		float megamanX_vel, megamanY_vel;
+		int megamanX_vel, megamanY_vel;
 
     SDL_Rect circleBox;
 };
 
 
 
-megaman::megaman(float xCoord, float yCoord){
+megaman::megaman(int xCoord, int yCoord){
 
 
-gMegamanTexture = new LTexture(70,70);
+gMegamanTexture = new LTexture;
 
 megamanX = xCoord;
 
@@ -96,8 +95,8 @@ void megaman::handleEvent( SDL_Event& e )
         {
                 switch( e.key.keysym.sym )
                 {
-                        case  SDLK_UP: if (megamanY + MEGAMAN_HEIGHT > 400.0 && megamanY+ MEGAMAN_HEIGHT >= 460)
-						megamanY_vel = -MEGAMAN_SPEED-2.0; 
+                        case  SDLK_UP: if (megamanY + MEGAMAN_HEIGHT > 440)
+						megamanY_vel = -MEGAMAN_SPEED-10; 
 						
 						break;
                         case  SDLK_DOWN: megamanY_vel += MEGAMAN_SPEED; break;
@@ -119,12 +118,12 @@ void megaman::handleEvent( SDL_Event& e )
         }
 }
 
-float megaman::getX()
+int megaman::getX()
 {
 	return(megamanX);
 }
 
-float megaman::getY()
+int megaman::getY()
 {
         return(megamanY);
 }
@@ -155,17 +154,14 @@ void megaman::move()
   if(megamanY+megamanY_vel >= 0 && megamanY+megamanY_vel < 480 - MEGAMAN_HEIGHT)
 	  megamanY += megamanY_vel;
 	  if (megamanY < 480 - MEGAMAN_HEIGHT){
-		megamanY_vel +=.02; 
+		megamanY_vel += 1;
     		circleBox.y += megamanY_vel;
 		}
 }
 
-void megaman::render( float camx, float camy)
+void megaman::render()
 {
-float newmegamanX, newmegamanY;
-newmegamanX = megamanX - camx;
-newmegamanY = megamanY - camy;
-        gMegamanTexture->render( newmegamanX, newmegamanY );
+        gMegamanTexture->render( megamanX, megamanY );
 }
 
 const SDL_Rect megaman::getHitBox(){

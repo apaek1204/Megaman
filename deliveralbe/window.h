@@ -22,6 +22,8 @@ SDL_Window* gWindow = NULL;
 //The window renderer
 SDL_Renderer* gRenderer = NULL;
 
+SDL_Rect camera = { 0,0, SCREEN_WIDTH, SCREEN_HEIGHT};
+
 bool init()
 {
 	//Initialization flag
@@ -51,7 +53,7 @@ bool init()
 		else
 		{
 			//Create vsynced renderer for window
-			gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
+			gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED);
 			if( gRenderer == NULL )
 			{
 				printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );

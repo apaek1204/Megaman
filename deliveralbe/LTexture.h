@@ -8,7 +8,7 @@ class LTexture
 {
         public:
 
-                LTexture();
+                LTexture(int=0, int=0);
 
                 ~LTexture();
 
@@ -36,11 +36,11 @@ class LTexture
 };
 
 
-LTexture::LTexture()
+LTexture::LTexture(int w, int h)
 {
         mTexture = NULL;
-        mWidth = 0;
-        mHeight = 0;
+        mWidth = w;
+        mHeight = h;
 }
 
 LTexture::~LTexture()
@@ -68,7 +68,7 @@ bool LTexture::loadFromFile( std::string path )
                 {
                         printf( "Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
                 }
-                else
+               if(mWidth == 0 && mHeight == 0)  
                {
                         mWidth = loadedSurface->w;
                         mHeight = loadedSurface->h;
@@ -77,7 +77,6 @@ bool LTexture::loadFromFile( std::string path )
                 SDL_FreeSurface( loadedSurface );
         }
 
-        //Return success
                 mTexture = newTexture;
                         return mTexture != NULL;
                         }
