@@ -67,7 +67,7 @@ int x , y, DIRECTION;
         
 				megaman1.move();
 				camera.x = megaman1.getX() + 35 - 320;
-				camera.y = megaman1.getY() + 35 - 240; 
+				camera.y = 100;//megaman1.getY() + 35 - 300; 
 				for(int i=0; i<5; i++){
 				  laserArray[i].fired_laser();
 //          SDL_Rect bulletHitBox = laserArray[i].getHitBox();
@@ -89,6 +89,7 @@ int x , y, DIRECTION;
           laserArray[i].render(camera.x, camera.y);
         }
 				SDL_RenderPresent( gRenderer );
+				SDL_Delay(1000/30);
 			}
 		//}
 	}

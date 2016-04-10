@@ -12,7 +12,7 @@ class megaman{
 		static const int MEGAMAN_WIDTH = 70;
 		static const int MEGAMAN_HEIGHT = 70;
 		
-		static const float MEGAMAN_SPEED = .25;
+		static const float MEGAMAN_SPEED = 5;
 
 		megaman(float=0, float=0);
 
@@ -97,7 +97,7 @@ void megaman::handleEvent( SDL_Event& e )
                 switch( e.key.keysym.sym )
                 {
                         case  SDLK_UP: if (megamanY + MEGAMAN_HEIGHT > 400.0 && megamanY+ MEGAMAN_HEIGHT >= 460)
-						megamanY_vel = -MEGAMAN_SPEED-2.0; 
+						megamanY_vel = -MEGAMAN_SPEED-7.0; 
 						
 						break;
                         case  SDLK_DOWN: megamanY_vel += MEGAMAN_SPEED; break;
@@ -155,7 +155,7 @@ void megaman::move()
   if(megamanY+megamanY_vel >= 0 && megamanY+megamanY_vel < 480 - MEGAMAN_HEIGHT)
 	  megamanY += megamanY_vel;
 	  if (megamanY < 480 - MEGAMAN_HEIGHT){
-		megamanY_vel +=.02; 
+		megamanY_vel +=.75; 
     		circleBox.y += megamanY_vel;
 		}
 }

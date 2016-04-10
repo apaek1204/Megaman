@@ -57,7 +57,7 @@ laserX = X_COORD;
 
 laserY = Y_COORD;
 
-laserX_vel = 1;
+laserX_vel = 20;
 
 laser_direction = DIRECTION;
 
@@ -72,7 +72,7 @@ circleBox.h = LASER_HEIGHT;
 void laser::fired_laser()
 {
 moving = true;
-float range = 320.0;
+float range = 420.0;
 if(laser_direction == 1){
   circleBox.x += laserX_vel;
 	laserX += laserX_vel;
