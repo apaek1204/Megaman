@@ -70,7 +70,7 @@ int x , y, DIRECTION;
         
 				megaman1.move();
 				camera.x = megaman1.getX() + 35 - 320;
-				camera.y = 100;//megaman1.getY() + 35 - 300; 
+				camera.y = 200;//megaman1.getY() + 35 - 300; 
 				for(int i=0; i<5; i++){
 				  laserArray[i].fired_laser();
 //          SDL_Rect bulletHitBox = laserArray[i].getHitBox();

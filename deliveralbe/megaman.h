@@ -14,7 +14,7 @@ class megaman{
 		
 		static const float MEGAMAN_SPEED = 5;
 
-		megaman(float=0, float=0);
+		megaman(float=500, float=0);
 
 		void handleEvent( SDL_Event& e );
 		
@@ -46,7 +46,8 @@ class megaman{
 		int  DIRECTION;
 
 		float megamanX_vel, megamanY_vel;
-
+		unsigned int start_time , end_time ;
+		unsigned int charge_time;
     SDL_Rect circleBox;
 };
 
@@ -76,6 +77,12 @@ circleBox.y = megamanY;
 circleBox.w = MEGAMAN_WIDTH;
 
 circleBox.h = MEGAMAN_HEIGHT;
+
+start_time = 0;
+
+end_time = 0;
+
+charge_time = 0;
 }
 
 bool megaman::loadSprite()
@@ -103,7 +110,9 @@ void megaman::handleEvent( SDL_Event& e )
                         case  SDLK_DOWN: megamanY_vel += MEGAMAN_SPEED; break;
                         case  SDLK_LEFT: megamanX_vel -= MEGAMAN_SPEED; DIRECTION = 0; break;
                         case  SDLK_RIGHT: megamanX_vel += MEGAMAN_SPEED; DIRECTION = 1;break;
-			//case  SDLK_SPACE: fire = true; break;
+			case  SDLK_SPACE: fire = true; 
+					start_time = SDL_GetTicks(); 
+						break;
                 }
         }
         if( e.type == SDL_KEYUP && e.key.repeat == 0 )
@@ -114,7 +123,12 @@ void megaman::handleEvent( SDL_Event& e )
                         case  SDLK_DOWN: megamanY_vel -= MEGAMAN_SPEED; break;
                         case  SDLK_LEFT: megamanX_vel += MEGAMAN_SPEED;  break;
                         case  SDLK_RIGHT: megamanX_vel -= MEGAMAN_SPEED;  break;
-                	case  SDLK_SPACE: fire = true; break;
+                	case  SDLK_SPACE: end_time = SDL_GetTicks();
+				charge_time = end_time - start_time;
+			      if( charge_time >= 1000){
+					fire = true;
+					}
+				 break;
 		}
         }
 }

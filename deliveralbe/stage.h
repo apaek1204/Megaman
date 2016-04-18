@@ -19,27 +19,18 @@ class Stage {
 
 	private:
 
-	LTexture* gStageTexture;
-	
 	LTexture* gBackTexture;
 };
 
 Stage::Stage(){
 
-	gStageTexture = new LTexture(15378,1696);
-	gBackTexture = new LTexture(7128,744);
+	gBackTexture = new LTexture(15378,1696);
 
 }
 
 bool Stage::loadSprite()
 {
 bool success = true;
-
-if( !gStageTexture->loadFromFile("./../assets/IntroStage/megaman_x1_intro_stage_by_darksamus993.png"))
-{
-        printf( "Unable to load stage texture! \n");
-        success = false;
-}
 
 if( !gBackTexture->loadFromFile("./../assets/IntroStage/background.png"))
 {
@@ -55,9 +46,8 @@ void Stage::Render(float camx, float camy){
 float newstagex, newstagey;
 
 newstagex = 0 - camx;
-newstagey = 0 - camy;
-gBackTexture->render(0,0);
-gStageTexture->render(newstagex,newstagey);
+newstagey = 200 - camy;
+gBackTexture->render(newstagex,newstagey);
 
 }
 #endif
