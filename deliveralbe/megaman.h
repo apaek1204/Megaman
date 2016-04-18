@@ -148,7 +148,7 @@ laser1.loadLaserSprite();
 void megaman::move()
 {
   fire=false;
-	if(megamanX+megamanX_vel >= 0 && megamanX+megamanX_vel < 640){
+	if(megamanX+megamanX_vel >= 0 && megamanX+megamanX_vel < 5000){
     megamanX += megamanX_vel;
     circleBox.x += megamanX_vel;
   }

@@ -5,11 +5,13 @@
 #include "window.h"
 #include "megaman.h"
 #include "laser.h"
+#include "stage.h"
 
 int main( int argc, char* args[] )
 {
 
 megaman megaman1;
+Stage stage1;
 
 int x , y, DIRECTION;
 
@@ -19,6 +21,7 @@ int x , y, DIRECTION;
 	}
 	else
 	{
+	stage1.loadSprite();
 	megaman1.loadSprite();
 	laser laserArray[5];
 		for(int i=0; i<5; i++){
@@ -84,6 +87,7 @@ int x , y, DIRECTION;
         
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 				SDL_RenderClear( gRenderer );
+				stage1.Render(camera.x, camera.y);
 				megaman1.render(camera.x, camera.y);
 				for(int i=0; i<5; i++){
           laserArray[i].render(camera.x, camera.y);
