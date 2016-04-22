@@ -4,7 +4,7 @@
 #include <SDL2/SDL_image.h>
 #include "LTexture.h"
 #include "laser.h"
-
+#include <vector>
 class megaman{
 
 	public:
@@ -20,7 +20,7 @@ class megaman{
 		
 		void move();
 
-		void render(float , float);
+		void render(float , float, int);
 
 		bool loadSprite();		
 
@@ -39,7 +39,7 @@ class megaman{
 
 		bool fire;
 
-		LTexture* gMegamanTexture;
+		vector< LTexture* > gMegamanTexture;
 		//LTexture gMegamanTexture;
 
 		float megamanX, megamanY;
@@ -55,9 +55,12 @@ class megaman{
 
 megaman::megaman(float xCoord, float yCoord){
 
+LTexture* tmp = NULL;
 
-gMegamanTexture = new LTexture(70,70);
-
+for( int i = 0; i < 10; i++){
+	tmp = new LTexture(70,70);
+	gMegamanTexture.push_back(tmp);
+}
 megamanX = xCoord;
 
 megamanY = yCoord;
@@ -89,11 +92,57 @@ bool megaman::loadSprite()
 {
 bool success = true;
 
-if( !gMegamanTexture->loadFromFile("./../assets/sprites/megaman/movement/0.png"))
+if( !gMegamanTexture[0]->loadFromFile("./../assets/sprites/megaman/movement/11.png"))
 {
 	printf( "Unable to load megaman texture! \n");
 	success = false;
 }
+if( !gMegamanTexture[1]->loadFromFile("./../assets/sprites/megaman/movement/12.png"))
+{
+        printf( "Unable to load megaman texture! \n");
+        success = false;
+}
+if( !gMegamanTexture[2]->loadFromFile("./../assets/sprites/megaman/movement/13.png"))
+{
+        printf( "Unable to load megaman texture! \n");
+        success = false;
+}
+if( !gMegamanTexture[3]->loadFromFile("./../assets/sprites/megaman/movement/14.png"))
+{
+        printf( "Unable to load megaman texture! \n");
+        success = false;
+}
+if( !gMegamanTexture[4]->loadFromFile("./../assets/sprites/megaman/movement/15.png"))
+{
+        printf( "Unable to load megaman texture! \n");
+        success = false;
+}
+if( !gMegamanTexture[5]->loadFromFile("./../assets/sprites/megaman/movement/16.png"))
+{
+        printf( "Unable to load megaman texture! \n");
+        success = false;
+}
+if( !gMegamanTexture[6]->loadFromFile("./../assets/sprites/megaman/movement/17.png"))
+{
+        printf( "Unable to load megaman texture! \n");
+        success = false;
+}
+if( !gMegamanTexture[7]->loadFromFile("./../assets/sprites/megaman/movement/18.png"))
+{
+        printf( "Unable to load megaman texture! \n");
+        success = false;
+}
+if( !gMegamanTexture[8]->loadFromFile("./../assets/sprites/megaman/movement/19.png"))
+{
+        printf( "Unable to load megaman texture! \n");
+        success = false;
+}
+if( !gMegamanTexture[9]->loadFromFile("./../assets/sprites/megaman/movement/20.png"))
+{
+        printf( "Unable to load megaman texture! \n");
+        success = false;
+}
+
 return success;
 }
 
@@ -174,12 +223,12 @@ void megaman::move()
 		}
 }
 
-void megaman::render( float camx, float camy)
+void megaman::render( float camx, float camy, int frame)
 {
 float newmegamanX, newmegamanY;
 newmegamanX = megamanX - camx;
 newmegamanY = megamanY - camy;
-        gMegamanTexture->render( newmegamanX, newmegamanY );
+        gMegamanTexture[frame]->render( newmegamanX, newmegamanY );
 }
 
 const SDL_Rect megaman::getHitBox(){

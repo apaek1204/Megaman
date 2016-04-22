@@ -14,7 +14,7 @@ megaman megaman1;
 Stage stage1;
 
 int x , y, DIRECTION;
-
+int frame = 0;
 	if( !init() )
 	{
 		printf( "Failed to initialize!\n" );
@@ -88,12 +88,16 @@ int x , y, DIRECTION;
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 				SDL_RenderClear( gRenderer );
 				stage1.Render(camera.x, camera.y);
-				megaman1.render(camera.x, camera.y);
+				megaman1.render(camera.x, camera.y, frame/4);
 				for(int i=0; i<5; i++){
           laserArray[i].render(camera.x, camera.y);
         }
 				SDL_RenderPresent( gRenderer );
 				SDL_Delay(1000/30);
+				if( frame == 36 )
+					frame = 0;
+				else
+					frame++;
 			}
 		//}
 	}
