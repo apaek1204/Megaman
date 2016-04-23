@@ -55,6 +55,7 @@ void music::close_music(void){
 	Mix_FreeMusic(mMusic);
 	mMusic=NULL;
 	Mix_FreeMusic(mmMusic);
+	mmMusic=NULL;
 	
 	// Free sound effects
 	Mix_FreeChunk(lMusic);
