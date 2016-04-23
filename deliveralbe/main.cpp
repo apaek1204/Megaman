@@ -1,14 +1,13 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <SDL2/SDL_mixer.h>
 #include <stdio.h>
 #include <string>
 #include "window.h"
 #include "megaman.h"
 #include "laser.h"
 #include "stage.h"
+#include <SDL2/SDL_mixer.h>
 #include "music.h"
-
 int main( int argc, char* args[] )
 {
 music music1;
@@ -26,13 +25,22 @@ int frame = 0;
 	stage1.loadSprite();
 	megaman1.loadSprite();
 	music1.Load_music();
-	laser laserArray[5];
+	laser* laserArray[5];
+	laser* ChargedlaserArray[5];
 		for(int i=0; i<5; i++){
-			  laserArray[i].setX(-50);
-			  laserArray[i].setY(-50);
-			  laserArray[i].setDir(-1);
-			  laserArray[i].loadLaserSprite();
+			  laserArray[i] = new laser(-50,-50,-1,20,20);
+			  laserArray[i]->setX(-50);
+			  laserArray[i]->setY(-50);
+			  laserArray[i]->setDir(-1);
+			  laserArray[i]->loadLaserSprite();
 			}
+                for(int i=0; i<5; i++){
+			  ChargedlaserArray[i] = new laser(-50,-50,-1, 40, 40);
+                          ChargedlaserArray[i]->setX(-50);
+                          ChargedlaserArray[i]->setY(-50);
+                          ChargedlaserArray[i]->setDir(-1);
+                          ChargedlaserArray[i]->loadLaserSprite(1);
+                        }
 
     //if( !megaman1.gMegamanTexture)
 		//{
@@ -46,17 +54,16 @@ int frame = 0;
 			
 			while( !quit )
 			{
-				// Play music
-				if( Mix_PlayingMusic() == 0 ){
-					Mix_PlayMusic( music1.mMusic, -1 );
-				}
-				
+                                if( Mix_PlayingMusic() == 0 ){
+                                        Mix_PlayMusic( music1.mMusic, -1 );
+                                }
+
 				while( SDL_PollEvent( &e ) != 0 )
 				{
-					if( e.type == SDL_QUIT )
-					{
-						quit = true;
-					}
+				if( e.type == SDL_QUIT )
+				{
+					quit = true;
+				}
 
 					megaman1.handleEvent( e );
 				}
@@ -67,20 +74,38 @@ int frame = 0;
 					y = megaman1.getY() + 20.0;
 					DIRECTION = megaman1.getdir();
           				for(int i=0; i<5; i++){
-           					 if(laserArray[i].allowChange()){
-              						laserArray[i].setX(x);
-              						laserArray[i].setY(y);
-              						laserArray[i].setDir(DIRECTION);
+           					 if(laserArray[i]->allowChange()){
+              						laserArray[i]->setX(x);
+              						laserArray[i]->setY(y);
+              						laserArray[i]->setDir(DIRECTION);
+							cout << "NORMAL SHOT" << endl;      
               						break;
-            									}	
+	      									}	
           						}         
 				}
+                                if (megaman1.getchargedfire())
+                                {
+                                        x = megaman1.getX() + 35.0;
+                                        y = megaman1.getY() + 20.0;
+                                        DIRECTION = megaman1.getdir();
+                                        for(int i=0; i<5; i++){
+                                                 if(ChargedlaserArray[i]->allowChange()){
+                                                        ChargedlaserArray[i]->setX(x);
+                                                        ChargedlaserArray[i]->setY(y);
+                                                        ChargedlaserArray[i]->setDir(DIRECTION);
+							cout << "CHARGED SHOT" << endl;
+							megaman1.setchargedfire(false);	
+                                                        break;
+                                                                                }
+                                                        }
+                                }
         
 				megaman1.move();
 				camera.x = megaman1.getX() + 35 - 320;
 				camera.y = 200;//megaman1.getY() + 35 - 300; 
 				for(int i=0; i<5; i++){
-				  laserArray[i].fired_laser();
+				  laserArray[i]->fired_laser();
+				  ChargedlaserArray[i]->fired_laser();
 //          SDL_Rect bulletHitBox = laserArray[i].getHitBox();
           //printf("%d, %d, %d, %d\n", enemyHitBox.x, enemyHitBox.y, bulletHitBox.x, bulletHitBox.y);
 //          if(SDL_HasIntersection(&enemyHitBox, &bulletHitBox)== SDL_TRUE){
@@ -98,7 +123,8 @@ int frame = 0;
 				stage1.Render(camera.x, camera.y);
 				megaman1.render(camera.x, camera.y, (frame));
 				for(int i=0; i<5; i++){
-          laserArray[i].render(camera.x, camera.y);
+          laserArray[i]->render(camera.x, camera.y,false);
+	  ChargedlaserArray[i]->render(camera.x, camera.y,true);
         }
 				SDL_RenderPresent( gRenderer );
 				SDL_Delay(1000/30);

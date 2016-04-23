@@ -31,6 +31,11 @@ class megaman{
 		float getY();
 
 		int getdir();
+
+		bool getchargedfire();
+
+		void setchargedfire(bool);
+
 		
     const SDL_Rect getHitBox();
 //		void fire();
@@ -49,6 +54,7 @@ class megaman{
 		float megamanX_vel, megamanY_vel;
 		unsigned int start_time , end_time ;
 		unsigned int charge_time;
+		bool chargefire;
     SDL_Rect circleBox;
 };
 
@@ -91,6 +97,8 @@ start_time = 0;
 end_time = 0;
 
 charge_time = 0;
+
+chargefire = false;
 }
 
 bool megaman::loadSprite()
@@ -147,7 +155,7 @@ if( !gMegamanTexture[9]->loadFromFile("./../assets/sprites/megaman/movement/20.p
         printf( "Unable to load megaman texture! \n");
         success = false;
 }
-if( !gMegamanTexture[10]->loadFromFile("./../assets/sprites/megaman/movement/0.png"))
+if( !gMegamanTexture[10]->loadFromFile("./../assets/sprites/megaman/movement/34.png"))
 {
         printf( "Unable to load megaman texture! \n");
         success = false;
@@ -220,14 +228,18 @@ void megaman::handleEvent( SDL_Event& e )
                         case  SDLK_RIGHT: MOVING = false; megamanX_vel -= MEGAMAN_SPEED;  break;
                 	case  SDLK_SPACE: end_time = SDL_GetTicks();
 				charge_time = end_time - start_time;
-			      if( charge_time >= 1000){
-					fire = true;
+			      if( charge_time >= 650){
+					chargefire = true;
 					}
 				 break;
 		}
         }
 }
 
+void megaman::setchargedfire(bool charged)
+{
+	chargefire = charged;
+}	
 float megaman::getX()
 {
 	return(megamanX);
@@ -246,6 +258,11 @@ int megaman::getdir()
 bool megaman::getfire()
 {
         return fire;
+}
+
+bool megaman::getchargedfire()
+{
+	return chargefire;
 }
 /*
 void megaman::fire()
@@ -272,17 +289,28 @@ void megaman::move()
 void megaman::render( float camx, float camy, int frame)
 {
 float newmegamanX, newmegamanY;
+bool STOP;
+SDL_RendererFlip flip = SDL_FLIP_NONE;
+if(DIRECTION == 0)
+	flip = SDL_FLIP_HORIZONTAL;
 newmegamanX = megamanX - camx;
 newmegamanY = megamanY - camy;
 if(JUMPING){
-	frame = 5*frame;
-	if( (frame % 28)/4 < 6)
-		gMegamanTexture[(frame % 28)/4 + 10]->render( newmegamanX, newmegamanY);
+	if( (frame % 21)/3 <  4 && !STOP)
+		gMegamanTexture[(frame % 21)/3 + 10]->render( newmegamanX, newmegamanY, NULL, 0.0, NULL,  flip);
+	else if (megamanY + MEGAMAN_HEIGHT < 400){
+		STOP = true;
+		gMegamanTexture[16]->render( newmegamanX, newmegamanY, NULL, 0.0, NULL, flip);
+		}
+	else
+		gMegamanTexture[16]->render( newmegamanX, newmegamanY, NULL, 0.0, NULL, flip);
 }
+else if(megamanY < 400)
+	gMegamanTexture[16]->render( newmegamanX, newmegamanY, NULL, 0.0, NULL, flip);
 else if( MOVING )
-	gMegamanTexture[((frame % 30))/3]->render( newmegamanX, newmegamanY );
+	gMegamanTexture[((frame % 30))/3]->render( newmegamanX, newmegamanY , NULL, 0.0, NULL, flip);
 else
-	gMegamanTexture[10]->render( newmegamanX, newmegamanY);
+	gMegamanTexture[10]->render( newmegamanX, newmegamanY, NULL, 0.0, NULL,flip);
 }
 
 const SDL_Rect megaman::getHitBox(){
