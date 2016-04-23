@@ -44,7 +44,8 @@ class megaman{
 
 		float megamanX, megamanY;
 		int  DIRECTION;
-
+		bool JUMPING;
+		bool MOVING;
 		float megamanX_vel, megamanY_vel;
 		unsigned int start_time , end_time ;
 		unsigned int charge_time;
@@ -57,13 +58,17 @@ megaman::megaman(float xCoord, float yCoord){
 
 LTexture* tmp = NULL;
 
-for( int i = 0; i < 10; i++){
+for( int i = 0; i < 18; i++){
 	tmp = new LTexture(70,70);
 	gMegamanTexture.push_back(tmp);
 }
 megamanX = xCoord;
 
 megamanY = yCoord;
+
+MOVING = false;
+
+JUMPING = false;
 
 DIRECTION=0;
 
@@ -142,6 +147,46 @@ if( !gMegamanTexture[9]->loadFromFile("./../assets/sprites/megaman/movement/20.p
         printf( "Unable to load megaman texture! \n");
         success = false;
 }
+if( !gMegamanTexture[10]->loadFromFile("./../assets/sprites/megaman/movement/0.png"))
+{
+        printf( "Unable to load megaman texture! \n");
+        success = false;
+}
+if( !gMegamanTexture[11]->loadFromFile("./../assets/sprites/megaman/movement/28.png"))
+{
+        printf( "Unable to load megaman texture! \n");
+        success = false;
+}
+if( !gMegamanTexture[12]->loadFromFile("./../assets/sprites/megaman/movement/29.png"))
+{
+        printf( "Unable to load megaman texture! \n");
+        success = false;
+}
+if( !gMegamanTexture[13]->loadFromFile("./../assets/sprites/megaman/movement/30.png"))
+{
+        printf( "Unable to load megaman texture! \n");
+        success = false;
+}
+if( !gMegamanTexture[14]->loadFromFile("./../assets/sprites/megaman/movement/31.png"))
+{
+        printf( "Unable to load megaman texture! \n");
+        success = false;
+}
+if( !gMegamanTexture[15]->loadFromFile("./../assets/sprites/megaman/movement/32.png"))
+{
+        printf( "Unable to load megaman texture! \n");
+        success = false;
+}
+if( !gMegamanTexture[16]->loadFromFile("./../assets/sprites/megaman/movement/33.png"))
+{
+        printf( "Unable to load megaman texture! \n");
+        success = false;
+}
+if( !gMegamanTexture[17]->loadFromFile("./../assets/sprites/megaman/movement/34.png"))
+{
+        printf( "Unable to load megaman texture! \n");
+        success = false;
+}
 
 return success;
 }
@@ -152,13 +197,13 @@ void megaman::handleEvent( SDL_Event& e )
         {
                 switch( e.key.keysym.sym )
                 {
-                        case  SDLK_UP: if (megamanY + MEGAMAN_HEIGHT > 400.0 && megamanY+ MEGAMAN_HEIGHT >= 460)
+                        case  SDLK_UP: if (megamanY + MEGAMAN_HEIGHT > 200.0)
 						megamanY_vel = -MEGAMAN_SPEED-7.0; 
-						
+					JUMPING = true;
 						break;
                         case  SDLK_DOWN: megamanY_vel += MEGAMAN_SPEED; break;
-                        case  SDLK_LEFT: megamanX_vel -= MEGAMAN_SPEED; DIRECTION = 0; break;
-                        case  SDLK_RIGHT: megamanX_vel += MEGAMAN_SPEED; DIRECTION = 1;break;
+                        case  SDLK_LEFT: megamanX_vel -= MEGAMAN_SPEED; MOVING = true; DIRECTION = 0; break;
+                        case  SDLK_RIGHT: megamanX_vel += MEGAMAN_SPEED; DIRECTION = 1; MOVING = true;break;
 			case  SDLK_SPACE: fire = true; 
 					start_time = SDL_GetTicks(); 
 						break;
@@ -168,10 +213,11 @@ void megaman::handleEvent( SDL_Event& e )
         {
                 switch( e.key.keysym.sym )
                 {
-                        case  SDLK_UP: megamanY_vel = 0; break;
+                        case  SDLK_UP: megamanY_vel = 0; JUMPING = false;
+			       break;
                         case  SDLK_DOWN: megamanY_vel -= MEGAMAN_SPEED; break;
-                        case  SDLK_LEFT: megamanX_vel += MEGAMAN_SPEED;  break;
-                        case  SDLK_RIGHT: megamanX_vel -= MEGAMAN_SPEED;  break;
+                        case  SDLK_LEFT: MOVING = false; megamanX_vel += MEGAMAN_SPEED;  break;
+                        case  SDLK_RIGHT: MOVING = false; megamanX_vel -= MEGAMAN_SPEED;  break;
                 	case  SDLK_SPACE: end_time = SDL_GetTicks();
 				charge_time = end_time - start_time;
 			      if( charge_time >= 1000){
@@ -228,7 +274,15 @@ void megaman::render( float camx, float camy, int frame)
 float newmegamanX, newmegamanY;
 newmegamanX = megamanX - camx;
 newmegamanY = megamanY - camy;
-        gMegamanTexture[frame]->render( newmegamanX, newmegamanY );
+if(JUMPING){
+	frame = 5*frame;
+	if( (frame % 28)/4 < 6)
+		gMegamanTexture[(frame % 28)/4 + 10]->render( newmegamanX, newmegamanY);
+}
+else if( MOVING )
+	gMegamanTexture[((frame % 30))/3]->render( newmegamanX, newmegamanY );
+else
+	gMegamanTexture[10]->render( newmegamanX, newmegamanY);
 }
 
 const SDL_Rect megaman::getHitBox(){

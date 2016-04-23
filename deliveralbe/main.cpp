@@ -88,16 +88,17 @@ int frame = 0;
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 				SDL_RenderClear( gRenderer );
 				stage1.Render(camera.x, camera.y);
-				megaman1.render(camera.x, camera.y, frame/4);
+				megaman1.render(camera.x, camera.y, (frame));
 				for(int i=0; i<5; i++){
           laserArray[i].render(camera.x, camera.y);
         }
 				SDL_RenderPresent( gRenderer );
 				SDL_Delay(1000/30);
-				if( frame == 36 )
+/*				if( frame == 27 )
 					frame = 0;
 				else
-					frame++;
+					frame++;*/
+				frame++;
 			}
 		//}
 	}
