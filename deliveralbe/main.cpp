@@ -1,15 +1,17 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
 #include <stdio.h>
 #include <string>
 #include "window.h"
 #include "megaman.h"
 #include "laser.h"
 #include "stage.h"
+#include "music.h"
 
 int main( int argc, char* args[] )
 {
-
+music music1;
 megaman megaman1;
 Stage stage1;
 
@@ -23,6 +25,7 @@ int frame = 0;
 	{
 	stage1.loadSprite();
 	megaman1.loadSprite();
+	music1.Load_music();
 	laser laserArray[5];
 		for(int i=0; i<5; i++){
 			  laserArray[i].setX(-50);
@@ -43,12 +46,17 @@ int frame = 0;
 			
 			while( !quit )
 			{
+				// Play music
+				if( Mix_PlayingMusic() == 0 ){
+					Mix_PlayMusic( music1.mMusic, -1 );
+				}
+				
 				while( SDL_PollEvent( &e ) != 0 )
 				{
-				if( e.type == SDL_QUIT )
-				{
-					quit = true;
-				}
+					if( e.type == SDL_QUIT )
+					{
+						quit = true;
+					}
 
 					megaman1.handleEvent( e );
 				}
@@ -104,6 +112,7 @@ int frame = 0;
 	}
 
 	close();
+	music1.close_music();
 }
 	return 0;
 }
