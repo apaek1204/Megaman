@@ -22,7 +22,7 @@ class music{
 bool music::Load_music(void){
 	bool success= true;
 	//Load main music
-	mMusic = Mix_LoadMUS( "./../assets/music/bombman.wav" );
+	mMusic = Mix_LoadMUS( "./../assets/music/centralhighway.wav" );
 	if( mMusic == NULL )
 	{
 		printf( "Failed to load main music! SDL_mixer Error: %s\n", Mix_GetError() );
@@ -30,7 +30,7 @@ bool music::Load_music(void){
 	}
 	
 	// load main menu music
-	mmMusic=Mix_LoadMUS("./../assets/music/mainmenu10.wav");
+	mmMusic=Mix_LoadMUS("./../assets/music/mainmenuX.wav");
 	if( mmMusic == NULL )
 	{
 		printf( "Failed to load main menu music! SDL_mixer Error: %s\n", Mix_GetError() );
