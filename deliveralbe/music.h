@@ -30,7 +30,7 @@ bool music::Load_music(void){
 	}
 	
 	// load main menu music
-	mmMusic=Mix_LoadMUS("./../assets/music/mainmenu.wav");
+	mmMusic=Mix_LoadMUS("./../assets/music/mainmenu10.wav");
 	if( mmMusic == NULL )
 	{
 		printf( "Failed to load main menu music! SDL_mixer Error: %s\n", Mix_GetError() );
@@ -54,6 +54,7 @@ void music::close_music(void){
 	// Free music
 	Mix_FreeMusic(mMusic);
 	mMusic=NULL;
+	Mix_FreeMusic(mmMusic);
 	
 	// Free sound effects
 	Mix_FreeChunk(lMusic);
