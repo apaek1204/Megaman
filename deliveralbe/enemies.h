@@ -1,170 +1,94 @@
-#ifndef MEGAMAN_H
-#define MEGAMAN_H
+#ifndef ENEMIES_H
+#define ENEMIES_H
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "LTexture.h"
 #include "laser.h"
-
-class megaman{
+#include <vector>
+class enemies{
 
 	public:
 
-		static const int MEGAMAN_WIDTH = 60;
-		static const int MEGAMAN_HEIGHT = 60;
-		
-		static const int MEGAMAN_SPEED = 3;
+		enemies(float=500, float=400);
 
-		megaman(int=0, int=0);
-
-		void handleEvent( SDL_Event& e );
-		
-		void move();
-
-		void render();
+		void render(float , float, int);
 
 		bool loadSprite();		
 
-		bool getfire();
-	
-		int getX();
-
-		int getY();
-
-		int getdir();
-		
-    const SDL_Rect getHitBox();
-//		void fire();
+		const SDL_Rect getHitBox();
 
 	private:
 
 		bool fire;
 
-		LTexture* gMegamanTexture;
-		//LTexture gMegamanTexture;
+		vector< LTexture* > gEnemyTexture;
 
-		int megamanX, megamanY, DIRECTION;
-
-		int megamanX_vel, megamanY_vel;
-
-    SDL_Rect circleBox;
+		float enemyX, enemyY;
+		float enemyX_vel, enemyY_vel;
+		SDL_Rect circleBox;
 };
 
 
 
-megaman::megaman(int xCoord, int yCoord){
+enemies::enemies(float xCoord, float yCoord){
 
+LTexture* tmp = NULL;
 
-gMegamanTexture = new LTexture;
+for( int i = 0; i < 2; i++){
+	if(i == 0)
+		tmp = new LTexture(136,72);
+	if(i == 1)
+		tmp = new LTexture(156,72);
+	gEnemyTexture.push_back(tmp);
+}
+enemyX = xCoord;
 
-megamanX = xCoord;
-
-megamanY = yCoord;
-
-DIRECTION=0;
+enemyY = yCoord;
 
 fire = false;
 
-megamanX_vel = 0;
+enemyX_vel = 0;
 
-megamanY_vel = 0;
+enemyY_vel = 0;
 
-circleBox.x = megamanX;
+circleBox.x = enemyX;
 
-circleBox.y = megamanY;
+circleBox.y = enemyY;
 
-circleBox.w = MEGAMAN_WIDTH;
+circleBox.w = 136;
 
-circleBox.h = MEGAMAN_HEIGHT;
+circleBox.h = 72;
+
 }
 
-bool megaman::loadSprite()
+bool enemies::loadSprite()
 {
 bool success = true;
 
-if( !gMegamanTexture->loadFromFile("./../assets/sprites/megaman/movement/0.png"))
+if( !gEnemyTexture[0]->loadFromFile("./../assets/sprites/enemies/17.png"))
 {
-	printf( "Unable to load megaman texture! \n");
+	printf( "Unable to load enemy texture! \n");
 	success = false;
 }
+if( !gEnemyTexture[1]->loadFromFile("./../assets/sprites/enemies/18.png"))
+{
+        printf( "Unable to load enemy texture! \n");
+        success = false;
+}
+
 return success;
 }
 
-void megaman::handleEvent( SDL_Event& e )
+void enemies::render( float camx, float camy, int frame)
 {
-        if( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
-        {
-                switch( e.key.keysym.sym )
-                {
-                        case  SDLK_UP: if (megamanY + MEGAMAN_HEIGHT > 440)
-						megamanY_vel = -MEGAMAN_SPEED-10; 
-						
-						break;
-                        case  SDLK_DOWN: megamanY_vel += MEGAMAN_SPEED; break;
-                        case  SDLK_LEFT: megamanX_vel -= MEGAMAN_SPEED; DIRECTION = 0; break;
-                        case  SDLK_RIGHT: megamanX_vel += MEGAMAN_SPEED; DIRECTION = 1;break;
-			//case  SDLK_SPACE: fire = true; break;
-                }
-        }
-        if( e.type == SDL_KEYUP && e.key.repeat == 0 )
-        {
-                switch( e.key.keysym.sym )
-                {
-                        case  SDLK_UP: megamanY_vel = 0; break;
-                        case  SDLK_DOWN: megamanY_vel -= MEGAMAN_SPEED; break;
-                        case  SDLK_LEFT: megamanX_vel += MEGAMAN_SPEED;  break;
-                        case  SDLK_RIGHT: megamanX_vel -= MEGAMAN_SPEED;  break;
-                	case  SDLK_SPACE: fire = true; break;
-		}
-        }
+float newenemyX, newenemyY;
+SDL_RendererFlip flip = SDL_FLIP_NONE;
+newenemyX = enemyX - camx;
+newenemyY = enemyY - camy;
+gEnemyTexture[(frame % 8)/4]->render( newenemyX, newenemyY, NULL, 0.0, NULL,flip);
 }
 
-int megaman::getX()
-{
-	return(megamanX);
-}
-
-int megaman::getY()
-{
-        return(megamanY);
-}
-
-int megaman::getdir()
-{
-        return(DIRECTION);
-}
-
-bool megaman::getfire()
-{
-        return fire;
-}
-/*
-void megaman::fire()
-{
-laser laser1(megamanX, megamanY, DIRECTION);
-laser1.loadLaserSprite();
-}
-*/
-void megaman::move()
-{
-  fire=false;
-	if(megamanX+megamanX_vel >= 0 && megamanX+megamanX_vel < 640){
-    megamanX += megamanX_vel;
-    circleBox.x += megamanX_vel;
-  }
-  if(megamanY+megamanY_vel >= 0 && megamanY+megamanY_vel < 480 - MEGAMAN_HEIGHT)
-	  megamanY += megamanY_vel;
-	  if (megamanY < 480 - MEGAMAN_HEIGHT){
-		megamanY_vel += 1;
-    		circleBox.y += megamanY_vel;
-		}
-}
-
-void megaman::render()
-{
-        gMegamanTexture->render( megamanX, megamanY );
-}
-
-const SDL_Rect megaman::getHitBox(){
+const SDL_Rect enemies::getHitBox(){
   return circleBox;
 }
 
