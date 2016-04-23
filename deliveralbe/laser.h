@@ -4,6 +4,7 @@
 #include <SDL2/SDL_image.h>
 #include "LTexture.h"
 #include <iostream>
+#include <vector>
 using namespace std;
 class laser {
 
@@ -12,7 +13,7 @@ class laser {
 		static const int LASER_WIDTH = 5;
                 static const int LASER_HEIGHT = 5;
 		static const float LASER_SPEED = .25;	
-		laser( float = 0 , float = 0 , int = 0 );
+		laser( float = 0 , float = 0 , int = 0, int = 40, int = 40, bool = false);
 
 //		~laser();
 
@@ -20,23 +21,23 @@ class laser {
 		
 		void fired_laser();
 
-		void render(float, float);
+		void render(float, float, bool);
 
-		bool loadLaserSprite();
+		bool loadLaserSprite(int = 0);
+		
+		bool allowChange();
+    
+		void setX(float);
+    
+		void setY(float);
+    
+		void setDir(int);
 	  
-    bool allowChange();
+		void print();
     
-    void setX(float);
-    
-    void setY(float);
-    
-    void setDir(int);
-	  
-    void print();
-    
-    const SDL_Rect getHitBox();
+		const SDL_Rect getHitBox();
 	
-    bool check_range();
+		bool check_range();
   private:	
 		
 		LTexture* gLaserTexture;
@@ -45,14 +46,16 @@ class laser {
 		int laser_direction;
 		float laserX_vel;		
    		bool moving;
-    SDL_Rect circleBox;
+		SDL_Rect circleBox;
+		int frame;
 };
 
-laser::laser( float X_COORD, float Y_COORD, int DIRECTION )
+laser::laser( float X_COORD, float Y_COORD, int DIRECTION, int laserw, int laserh, bool CHARGE )
 {
 
-gLaserTexture = new LTexture;
-
+LTexture* tmp = NULL;
+frame = 0;
+gLaserTexture = new LTexture(laserw, laserh);
 laserX = X_COORD;
 
 laserY = Y_COORD;
@@ -86,6 +89,7 @@ if(laserX - start_pos >= range || laserX < 0 ){
   laserX = -50;
   laserY = -50;
   laser_direction=-1;
+  frame = 0;
 }
 }
 
@@ -96,22 +100,36 @@ cout << laserX << " , " << start_pos << endl;
  else
 	return false;
 }
-void laser::render(float camerax, float cameray)
+void laser::render(float camerax, float cameray, bool CHARGE)
 {
 float newlaserX, newlaserY;
+SDL_RendererFlip flip= SDL_FLIP_NONE;
+if(laser_direction == 0)
+	flip = SDL_FLIP_HORIZONTAL;
 newlaserX = laserX - camerax;
 newlaserY = laserY - cameray;
-gLaserTexture->render( newlaserX, newlaserY );
+gLaserTexture->render( newlaserX, newlaserY, NULL, 0.0,NULL,flip );
+	
 }
 
-bool laser::loadLaserSprite()
+bool laser::loadLaserSprite(int level)
 {
 bool success = true;
+if( level == 0 ){
+	if( !gLaserTexture->loadFromFile("./../assets/sprites/megaman/lasers/0.png"))
+	{
+	        printf( "Unable to load laser texture! \n");
+	        success = false;
+	}
+}
+if( level == 1 ){
+        if( !gLaserTexture->loadFromFile("./../assets/sprites/megaman/lasers/4.png"))
+        {
+                printf( "Unable to load laser texture! \n");
+                success = false;
+        }
 
-if( !gLaserTexture->loadFromFile("./../assets/sprites/megaman/lasers/3.png"))
-{
-        printf( "Unable to load laser texture! \n");
-        success = false;
+
 }
 return success;
 }
