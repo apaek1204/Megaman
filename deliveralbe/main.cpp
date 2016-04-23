@@ -21,6 +21,27 @@ enemies enemy1;
 MainMenu mainmenu1;
 bool start = false;
 int x , y, DIRECTION;
+
+SDL_Rect platforms[4];
+platforms[0].x = 0;
+platforms[0].y = 470;
+platforms[0].w = 1580;
+platforms[0].h = 90;
+platforms[1].x = 1700;
+platforms[1].y = 410;
+platforms[1].w = 910;
+platforms[1].h = 90;
+platforms[2].x = 2720;
+platforms[2].y = 440;
+platforms[2].w = 1930;
+platforms[2].h = 90;
+platforms[3].x = 4800;
+platforms[3].y = 430;
+platforms[3].w = 1200;
+platforms[3].h = 90;
+
+
+
 int frame = 0;
 	if( !init() )
 	{
@@ -138,8 +159,16 @@ int frame = 0;
                                                                                 }
                                                         }
                                 }
-        
+        int tempX=megaman1.getX();
+        int tempY=megaman1.getY();
 				megaman1.move();
+        SDL_Rect megamanHitBox = megaman1.getHitBox();
+        for(int i=0; i<4; i++){
+          if(SDL_HasIntersection(&megamanHitBox, &platforms[i])){
+            megaman1.setX(tempX);
+            megaman1.setY(tempY);
+          }
+        }
 				camera.x = megaman1.getX() + 35 - 320;
 				camera.y = 200;//megaman1.getY() + 35 - 300; 
 				for(int i=0; i<5; i++){

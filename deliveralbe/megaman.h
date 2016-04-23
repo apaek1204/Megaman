@@ -35,7 +35,10 @@ class megaman{
 		bool getchargedfire();
 
 		void setchargedfire(bool);
-
+    
+    void setX(int);
+    
+    void setY(int);
 		
     const SDL_Rect getHitBox();
 //		void fire();
@@ -274,13 +277,13 @@ laser1.loadLaserSprite();
 void megaman::move()
 {
   fire=false;
-	if(megamanX+megamanX_vel >= 0 && megamanX+megamanX_vel < 5000){
+	if(megamanX+megamanX_vel >= 0 && megamanX+megamanX_vel < 5760){
     megamanX += megamanX_vel;
     circleBox.x += megamanX_vel;
   }
-  if(megamanY+megamanY_vel >= 0 && megamanY+megamanY_vel < 480 - MEGAMAN_HEIGHT)
+  if(megamanY+megamanY_vel >= 0 && megamanY+megamanY_vel < 1000)
 	  megamanY += megamanY_vel;
-	  if (megamanY < 480 - MEGAMAN_HEIGHT){
+	  if (megamanY < 1000){
 		megamanY_vel +=.75; 
     		circleBox.y += megamanY_vel;
 		}
@@ -298,15 +301,16 @@ newmegamanY = megamanY - camy;
 if(JUMPING){
 	if( (frame % 21)/3 <  4 && !STOP)
 		gMegamanTexture[(frame % 21)/3 + 10]->render( newmegamanX, newmegamanY, NULL, 0.0, NULL,  flip);
-	else if (megamanY + MEGAMAN_HEIGHT < 400){
+	/*else if (megamanY + MEGAMAN_HEIGHT < 400){
 		STOP = true;
 		gMegamanTexture[16]->render( newmegamanX, newmegamanY, NULL, 0.0, NULL, flip);
-		}
+		}*/
 	else
 		gMegamanTexture[16]->render( newmegamanX, newmegamanY, NULL, 0.0, NULL, flip);
 }
-else if(megamanY < 400)
+/*else if(megamanY < 400)
 	gMegamanTexture[16]->render( newmegamanX, newmegamanY, NULL, 0.0, NULL, flip);
+*/
 else if( MOVING )
 	gMegamanTexture[((frame % 30))/3]->render( newmegamanX, newmegamanY , NULL, 0.0, NULL, flip);
 else
@@ -316,5 +320,14 @@ else
 const SDL_Rect megaman::getHitBox(){
   return circleBox;
 }
-
+void megaman::setX(int x){
+  megamanX = x;
+  circleBox.x = x;
+  //megamanX_vel = 0;
+}
+void megaman::setY(int y){
+  megamanY=y;
+  megamanY_vel = 0;
+  circleBox.y = megamanY;
+}
 #endif
