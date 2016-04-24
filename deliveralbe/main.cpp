@@ -21,20 +21,20 @@ vector< enemies* > AllEnemies;
 enemies* tmp = NULL;
 for(int i = 0; i < 6; i++){
 	if( i == 0){
-		tmp = new enemies(900,470);
+		tmp = new enemies(900,390);
 		AllEnemies.push_back(tmp);
 		   }
         if( i == 1){
-                tmp = new enemies(200,410);
+                tmp = new enemies(200,390);
                 AllEnemies.push_back(tmp);
                    }
 
         if( i == 2){
-                tmp = new enemies(2450,440);
+                tmp = new enemies(1300,390);
                 AllEnemies.push_back(tmp);
                    }
         if( i == 3){
-                tmp = new enemies(1550,440);
+                tmp = new enemies(1550,400);
                 AllEnemies.push_back(tmp);
                    }
         if( i == 4){
@@ -191,11 +191,23 @@ int frame = 0;
         int tempX=megaman1.getX();
         int tempY=megaman1.getY();
 				megaman1.move();
-        SDL_Rect megamanHitBox = megaman1.getHitBox();
-        for(int i=0; i<4; i++){
+        //cout << tempX << ":" << tempY << endl;
+          SDL_Rect megamanHitBox = megaman1.getHitBox();
+          for(int i=0; i<4; i++){
           if(SDL_HasIntersection(&megamanHitBox, &platforms[i])){
-            megaman1.setX(tempX);
-            megaman1.setY(tempY);
+            if(tempY+70 <= platforms[i].y){
+              megaman1.setY(platforms[i].y - 70);
+            }
+            else if(tempX < platforms[i].x){
+              megaman1.setX(tempX);
+              megaman1.setY(tempY);
+              cout << "from left" << endl;
+            }
+            else{
+              megaman1.setX(tempX);
+              megaman1.setY(tempY);
+              cout << "from right" << endl;
+            }
           }
         }
 				camera.x = megaman1.getX() + 35 - 320;
