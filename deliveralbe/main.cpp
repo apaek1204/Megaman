@@ -17,7 +17,35 @@ music music0;
 music music1;
 megaman megaman1;
 Stage stage1;
-enemies enemy1;
+vector< enemies* > AllEnemies;
+enemies* tmp = NULL;
+for(int i = 0; i < 6; i++){
+	if( i == 0){
+		tmp = new enemies(900,470);
+		AllEnemies.push_back(tmp);
+		   }
+        if( i == 1){
+                tmp = new enemies(200,410);
+                AllEnemies.push_back(tmp);
+                   }
+
+        if( i == 2){
+                tmp = new enemies(2450,440);
+                AllEnemies.push_back(tmp);
+                   }
+        if( i == 3){
+                tmp = new enemies(1550,440);
+                AllEnemies.push_back(tmp);
+                   }
+        if( i == 4){
+                tmp = new enemies(5050,430);
+                AllEnemies.push_back(tmp);
+                   }
+        if( i == 5){
+                tmp = new enemies(5400,430);
+                AllEnemies.push_back(tmp);
+                   }
+}
 MainMenu mainmenu1;
 bool start = false;
 int x , y, DIRECTION;
@@ -84,7 +112,8 @@ int frame = 0;
 			stage1.loadSprite();
 			megaman1.loadSprite();
 			music1.Load_music();
-			enemy1.loadSprite();
+			for(int i=0; i < 6; i++)
+				AllEnemies[i]->loadSprite();
 			laser* laserArray[5];
 			laser* ChargedlaserArray[5];
 		for(int i=0; i<5; i++){
@@ -189,8 +218,9 @@ int frame = 0;
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 				SDL_RenderClear( gRenderer );
 				stage1.Render(camera.x, camera.y);
+				for(int i = 0; i < 6; i++)
+					AllEnemies[i]->render(camera.x, camera.y, frame);
 				megaman1.render(camera.x, camera.y, (frame));
-				enemy1.render(camera.x, camera.y, frame);
 				for(int i=0; i<5; i++){
           laserArray[i]->render(camera.x, camera.y,false);
 	  ChargedlaserArray[i]->render(camera.x, camera.y,true);
