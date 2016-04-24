@@ -25,6 +25,8 @@ class megaman{
 		bool loadSprite();		
 
 		bool getfire();
+
+		void setonwall(int);
 	
 		float getX();
 
@@ -49,7 +51,8 @@ class megaman{
 
 		vector< LTexture* > gMegamanTexture;
 		//LTexture gMegamanTexture;
-
+		bool ONWALL_RIGHT;
+		bool ONWALL_LEFT;
 		float megamanX, megamanY;
 		int  DIRECTION;
 		bool JUMPING;
@@ -67,7 +70,7 @@ megaman::megaman(float xCoord, float yCoord){
 
 LTexture* tmp = NULL;
 
-for( int i = 0; i < 18; i++){
+for( int i = 0; i < 19; i++){
 	tmp = new LTexture(70,70);
 	gMegamanTexture.push_back(tmp);
 }
@@ -82,6 +85,10 @@ JUMPING = false;
 DIRECTION=0;
 
 fire = false;
+
+ONWALL_RIGHT = false;
+
+ONWALL_LEFT = false;
 
 megamanX_vel = 0;
 
@@ -198,6 +205,11 @@ if( !gMegamanTexture[17]->loadFromFile("./../assets/sprites/megaman/movement/34.
         printf( "Unable to load megaman texture! \n");
         success = false;
 }
+if( !gMegamanTexture[18]->loadFromFile("./../assets/sprites/megaman/movement/42.png"))
+{
+        printf( "Unable to load megaman texture! \n");
+        success = false;
+}
 
 return success;
 }
@@ -211,6 +223,8 @@ void megaman::handleEvent( SDL_Event& e )
                         case  SDLK_UP: if (megamanY + MEGAMAN_HEIGHT > 200.0)
 						megamanY_vel = -MEGAMAN_SPEED-7.0; 
 					JUMPING = true;
+					ONWALL_RIGHT = false;
+					ONWALL_LEFT = false;
 						break;
                         case  SDLK_DOWN: megamanY_vel += MEGAMAN_SPEED; break;
                         case  SDLK_LEFT: megamanX_vel -= MEGAMAN_SPEED; MOVING = true; DIRECTION = 0; break;
@@ -239,6 +253,13 @@ void megaman::handleEvent( SDL_Event& e )
         }
 }
 
+void megaman::setonwall(int whichwall)
+{
+	if(whichwall == 1)
+		ONWALL_RIGHT = true;
+	if(whichwall == 0)
+		ONWALL_LEFT = true;
+}
 void megaman::setchargedfire(bool charged)
 {
 	chargefire = charged;
@@ -298,7 +319,16 @@ if(DIRECTION == 0)
 	flip = SDL_FLIP_HORIZONTAL;
 newmegamanX = megamanX - camx;
 newmegamanY = megamanY - camy;
-if(JUMPING){
+if(ONWALL_RIGHT){
+	flip = SDL_FLIP_NONE;
+	gMegamanTexture[18]->render( newmegamanX, newmegamanY, NULL, 0.0, NULL,  flip);
+	}
+else if(ONWALL_LEFT){
+        flip = SDL_FLIP_HORIZONTAL;
+        gMegamanTexture[18]->render( newmegamanX, newmegamanY, NULL, 0.0, NULL,  flip);
+        }
+
+else if(JUMPING){
 	if( (frame % 21)/3 <  4 && !STOP)
 		gMegamanTexture[(frame % 21)/3 + 10]->render( newmegamanX, newmegamanY, NULL, 0.0, NULL,  flip);
 	/*else if (megamanY + MEGAMAN_HEIGHT < 400){
