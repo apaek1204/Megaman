@@ -27,6 +27,7 @@ for(int i = 0; i < 12; i++){
 		   }
         if( i == 1){
                 tmp = new Turret(200,390);
+                cout << tmp->getX() << ", " << tmp->getY()<< endl;
                 AllEnemies.push_back(tmp);
                    }
 
@@ -190,11 +191,14 @@ int frame = 0;
 					y = megaman1.getY() + 20.0;
 					DIRECTION = megaman1.getdir();
           				for(int i=0; i<5; i++){
-           					 if(laserArray[i]->allowChange()){
+           					 
+                     if(laserArray[i]->allowChange()){
               						laserArray[i]->setX(x);
               						laserArray[i]->setY(y);
               						laserArray[i]->setDir(DIRECTION);
-							cout << "NORMAL SHOT" << endl;      
+							            cout << "NORMAL SHOT" << endl;      
+                          SDL_Rect laserHitBox = laserArray[i]->getHitBox();
+                          cout << laserHitBox.x << ", " << laserHitBox.y<< endl;
               						break;
 	      									}	
           						}         
@@ -215,6 +219,24 @@ int frame = 0;
                                                                                 }
                                                         }
                                 }
+        //check for collision between enemies and laser
+        for(int i=0; i<5; i++){
+          for(int j=0; j<AllEnemies.size(); j++){
+            SDL_Rect enemyHitBox = AllEnemies[j]->getHitBox();
+            SDL_Rect laserHitBox = laserArray[i]->getHitBox();
+            SDL_Rect chargedHitBox = ChargedlaserArray[i]->getHitBox();
+            if(SDL_HasIntersection(&enemyHitBox, &laserHitBox)){
+              //normal laser hit
+              laserArray[i]->setX(-50);
+              laserArray[i]->setY(-50);
+            }
+            if(SDL_HasIntersection(&enemyHitBox, &chargedHitBox)){
+              //charged hit
+              cout << "charged hit"<< endl;
+            }
+          }
+        }
+        
         int tempX=megaman1.getX();
         int tempY=megaman1.getY();
 				megaman1.move();

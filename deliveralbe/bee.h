@@ -138,7 +138,9 @@ if( !gEnemyTexture[8]->loadFromFile("./../assets/sprites/enemies/16.png"))
 
 return success;
 }
-
+const SDL_Rect Bee::getHitBox(){
+  return circleBox;
+}
 void Bee::render( float camx, float camy, int frame)
 {
 float newenemyX, newenemyY;

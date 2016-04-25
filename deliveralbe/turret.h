@@ -70,7 +70,9 @@ if( !gEnemyTexture[1]->loadFromFile("./../assets/sprites/enemies/18.png"))
 
 return success;
 }
-
+const SDL_Rect Turret::getHitBox(){
+  return circleBox;
+}
 void Turret::render( float camx, float camy, int frame)
 {
 float newenemyX, newenemyY;
