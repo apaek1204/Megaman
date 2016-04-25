@@ -16,14 +16,19 @@ class Bee : public enemies{
 		virtual void render(float, float, int);
 
                 const SDL_Rect getHitBox();
+		
+		virtual void move();
+
+		void shoot(float);
 
         private:
 
                 vector< LTexture* > gEnemyTexture;
 
-                float enemyX, enemyY;
-                float enemyX_vel;
+//                float enemyX, enemyY;
+                float enemyX_vel, enemyY_vel;
                 SDL_Rect circleBox;
+		float startX;
 };
 
 Bee::Bee(float xCoord, float yCoord) : enemies( xCoord, yCoord )
@@ -73,7 +78,11 @@ enemyX = xCoord;
 
 enemyY = yCoord;
 
-enemyX_vel = 0;
+enemyX_vel = 2;
+
+enemyY_vel = 1;
+
+startX = enemyX;
 
 circleBox.x = enemyX;
 
@@ -84,8 +93,32 @@ circleBox.w = 72;
 circleBox.h = 72;
 }
 
+void Bee::shoot(float megamanX)
+{
+if( enemyX - megamanX == 200)
+	fire = true;
+}	
+void Bee::move()
+{
+if( enemyX == startX + 100)
+	enemyX_vel=-enemyX_vel;
+if( enemyX == startX - 100)
+	enemyX_vel=-enemyX_vel;
+
+	enemyX += enemyX_vel;
+	circleBox.x+= enemyX_vel;
+if ( enemyY == 300 )
+	enemyY_vel=-enemyY_vel;
+if (enemyY == 150 )
+	enemyY_vel=-enemyY_vel;
+
+	enemyY+= enemyY_vel;
+	circleBox.y+= enemyY_vel;
+
+}	
 bool Bee::loadSprite()
 {
+
 bool success = true;
 
 if( !gEnemyTexture[0]->loadFromFile("./../assets/sprites/enemies/8.png"))

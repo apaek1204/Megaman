@@ -17,18 +17,19 @@ class enemies{
 
 		virtual const SDL_Rect getHitBox()=0;
     
-    int getX();
+		virtual void move()=0;
+		
+		int getX();
 
-    int getY();
-	  int getW();
-    int getH();
-  private:
+		int getY();
 
+		int getW();
+
+		int getH();
+  protected:
 		bool fire;
-
 		float enemyX, enemyY;
 		float enemyX_vel;
-		//SDL_Rect circleBox;
 };
 
 
@@ -43,19 +44,8 @@ fire = false;
 
 enemyX_vel = 0;
 
-//circleBox.x = enemyX;
-
-//circleBox.y = enemyY;
-
-//circleBox.w = 136;
-
-//circleBox.h = 72;
 
 }
-
-/*const SDL_Rect enemies::getHitBox(){
-  return circleBox;
-}*/
 
 int enemies::getX(){
   return enemyX;

@@ -16,6 +16,8 @@ class Boss : public enemies{
                 virtual void render(float, float, int);
 
 		virtual const SDL_Rect getHitBox();
+
+		virtual void move();
         private:
 
                 vector< LTexture* > gBossTexture;
@@ -138,4 +140,11 @@ const SDL_Rect Boss::getHitBox(){
   return circleBox;
 }
 
+void Boss::move()
+{
+if( bossY <= 300 )
+	bossY+=bossY_vel;
+else
+	bossY-=bossY_vel;
+}
 #endif

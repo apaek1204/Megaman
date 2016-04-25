@@ -17,6 +17,8 @@ class Turret : public enemies{
 
                 const SDL_Rect getHitBox();
 
+		virtual void move();
+
         private:
 
                 vector< LTexture* > gEnemyTexture;
@@ -42,7 +44,7 @@ if( i == 1 ){
 }
 enemyX = xCoord;
 enemyY = yCoord;
-enemyX_vel = 0;
+enemyX_vel = 2;
 
 circleBox.x = enemyX;
 
@@ -80,5 +82,10 @@ SDL_RendererFlip flip = SDL_FLIP_NONE;
 newenemyX = enemyX - camx;
 newenemyY = enemyY - camy;
 gEnemyTexture[(frame % 8)/4]->render( newenemyX, newenemyY, NULL, 0.0, NULL,flip);
+}
+void Turret::move()
+{
+	enemyX+= enemyX_vel;
+	circleBox.x+= enemyX_vel;
 }
 #endif

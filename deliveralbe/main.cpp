@@ -309,8 +309,10 @@ int frame = 0;
         SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 				SDL_RenderClear( gRenderer );
 				stage1.Render(camera.x, camera.y);
-				for(int i = 0; i < 12; i++)
+				for(int i = 0; i < 12; i++){
+					AllEnemies[i]->move();
 					AllEnemies[i]->render(camera.x, camera.y, frame);
+							   }
 				Boss1->render(camera.x, camera.y, frame);
 				megaman1.render(camera.x, camera.y, (frame));
 				for(int i=0; i<5; i++){
