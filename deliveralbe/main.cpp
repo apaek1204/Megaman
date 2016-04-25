@@ -254,7 +254,7 @@ int frame = 0;
         int tempY=megaman1.getY();
 				megaman1.move();
         //cout << tempX << ":" << tempY << endl;
-          SDL_Rect megamanHitBox = megaman1.getHitBox();
+        SDL_Rect megamanHitBox = megaman1.getHitBox();
           for(int i=0; i<4; i++){
           if(SDL_HasIntersection(&megamanHitBox, &platforms[i])){
             if(tempY+70 <= platforms[i].y){
@@ -264,13 +264,28 @@ int frame = 0;
               megaman1.setX(tempX);
               megaman1.setY(tempY);
               cout << "from left" << endl;
-	      megaman1.setonwall(1);
+	            megaman1.setonwall(1);
             }
             else{
               megaman1.setonwall(0);
               megaman1.setX(tempX);
               megaman1.setY(tempY);
               cout << "from right" << endl;
+            }
+          }
+        }
+        //check collision between enemies and megaman
+        for(int i=0; i<AllEnemies.size(); i++){
+          SDL_Rect enemyHitBox = AllEnemies[i]->getHitBox();
+          if(SDL_HasIntersection(&megamanHitBox, &enemyHitBox)){
+            if(megaman1.getHealth() >0){
+              megaman1.subtractHealth(1);
+              if(SDL_GetTicks() > megaman1.getInvul() + 1000){
+                megaman1.setInvul(int(SDL_GetTicks()));
+              }
+            }
+            else{
+              cout << "dead" << endl;
             }
           }
         }
