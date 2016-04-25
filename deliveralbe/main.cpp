@@ -257,19 +257,19 @@ int frame = 0;
 				{
 					AllEnemies[j]->shoot(frame);
 
-                                if (AllEnemies[j]->getfire())
-                                {
-                                	cout << j << endl;
-				        x = AllEnemies[j]->getX() + 35.0;
-                                        y = AllEnemies[j]->getY() + 20.0;
-                                        DIRECTION = 0;
-                                                 if(EnemylaserArray[j]->allowChange()){
-                                                        EnemylaserArray[j]->setX(x);
-                                                        EnemylaserArray[j]->setY(y);
-                                                        EnemylaserArray[j]->setDir(DIRECTION);
-							AllEnemies[j]->setfire(false);
-                                                                                }
-                                }
+          if (AllEnemies[j]->getfire())
+          {
+            x = AllEnemies[j]->getX() + 35.0;
+            y = AllEnemies[j]->getY() + 20.0;
+            DIRECTION = 0;
+            if(EnemylaserArray[j]->allowChange()){
+              EnemylaserArray[j]->setX(x);
+              EnemylaserArray[j]->setY(y);
+              EnemylaserArray[j]->setDir(DIRECTION);
+              AllEnemies[j]->setfire(false);
+    
+            }
+          }
 				}
         //check for collision between enemies and laser
         for(int i=0; i<5; i++){
@@ -319,6 +319,22 @@ int frame = 0;
               megaman1.setX(tempX);
               megaman1.setY(tempY);
               cout << "from right" << endl;
+            }
+          }
+        }
+        //check collision between enemy lasers and megaman/platforms
+        for(int i=0; i<16; i++){
+          SDL_Rect enemyBullet = EnemylaserArray[i]->getHitBox();
+          if(SDL_HasIntersection(&enemyBullet, &megamanHitBox)){
+            megaman1.subtractHealth(1);
+            if(SDL_GetTicks() > megaman1.getInvul() + 1000){
+              megaman1.setInvul(int(SDL_GetTicks()));
+            }
+          }
+          for(int j=0; j<4; j++){
+            if(SDL_HasIntersection(&enemyBullet, &platforms[j])){
+              EnemylaserArray[i]->setX(-50);
+              EnemylaserArray[i]->setY(-50);
             }
           }
         }
