@@ -84,13 +84,16 @@ if(laser_direction == 0){
   circleBox.x -= laserX_vel;
   laserX -= laserX_vel;
 }
-if(laserX - start_pos >= range || laserX < 0 ){
-  moving = false;
+
+if((laserX - start_pos >= range && laser_direction ==1) || (laserX-start_pos <= -range && laser_direction ==0)|| laser_direction==-1){
+  //cout << "reset" << endl;
   laserX = -50;
   laserY = -50;
   laser_direction=-1;
   frame = 0;
+  moving = false;
 }
+
 }
 
 bool laser::check_range(){
