@@ -16,7 +16,7 @@ class megaman{
 
 		megaman(float=500, float=0);
 
-		void handleEvent( SDL_Event& e );
+		bool handleEvent( SDL_Event& e );
 		
 		void move();
 
@@ -214,7 +214,7 @@ if( !gMegamanTexture[18]->loadFromFile("./../assets/sprites/megaman/movement/42.
 return success;
 }
 
-void megaman::handleEvent( SDL_Event& e )
+bool megaman::handleEvent( SDL_Event& e )
 {
         if( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
         {
@@ -251,6 +251,7 @@ void megaman::handleEvent( SDL_Event& e )
 				 break;
 		}
         }
+        return JUMPING;
 }
 
 void megaman::setonwall(int whichwall)
