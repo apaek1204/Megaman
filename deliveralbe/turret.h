@@ -14,6 +14,8 @@ class Turret : public enemies{
                 virtual bool loadSprite();
 
                 virtual void render(float, float, int);
+		
+		virtual void shoot(int);
 
                 const SDL_Rect getHitBox();
 
@@ -56,6 +58,10 @@ circleBox.y = enemyY;
 circleBox.w = 72;
 
 circleBox.h = 72;
+}
+
+void Turret::shoot(int derp)
+{
 }
 
 bool Turret::loadSprite()

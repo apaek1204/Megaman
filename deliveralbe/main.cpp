@@ -150,6 +150,8 @@ int frame = 0;
 				AllEnemies[i]->loadSprite();
 			laser* laserArray[5];
 			laser* ChargedlaserArray[5];
+			laser* EnemylaserArray[16];
+
 		for(int i=0; i<5; i++){
 			  laserArray[i] = new laser(-50,-50,-1,20,20);
 			  laserArray[i]->setX(-50);
@@ -163,6 +165,13 @@ int frame = 0;
                           ChargedlaserArray[i]->setY(-50);
                           ChargedlaserArray[i]->setDir(-1);
                           ChargedlaserArray[i]->loadLaserSprite(1);
+                        }
+                for(int i=0; i<16; i++){
+                          EnemylaserArray[i] = new laser(-50,-50,-1, 20, 20);
+                          EnemylaserArray[i]->setX(-50);
+                          EnemylaserArray[i]->setY(-50);
+                          EnemylaserArray[i]->setDir(-1);
+                          EnemylaserArray[i]->loadLaserSprite();
                         }
 
     //if( !megaman1.gMegamanTexture)
@@ -236,17 +245,32 @@ int frame = 0;
                                                         ChargedlaserArray[i]->setY(y);
                                                         ChargedlaserArray[i]->setDir(DIRECTION);
 							cout << "CHARGED SHOT" << endl;
-							// halt charging sound effect
 							Mix_HaltChannel(-1);
-							// play charged laser sound effect
 							Mix_PlayChannel( -1, music1.clMusic, 0 );
-							// reset total time
 							megaman1.total_time=0;
 							megaman1.setchargedfire(false);	
                                                         break;
                                                                                 }
                                                         }
                                 }
+				for(int j=6; j < 12; j++)
+				{
+					AllEnemies[j]->shoot(frame);
+
+                                if (AllEnemies[j]->getfire())
+                                {
+                                	cout << j << endl;
+				        x = AllEnemies[j]->getX() + 35.0;
+                                        y = AllEnemies[j]->getY() + 20.0;
+                                        DIRECTION = 0;
+                                                 if(EnemylaserArray[j]->allowChange()){
+                                                        EnemylaserArray[j]->setX(x);
+                                                        EnemylaserArray[j]->setY(y);
+                                                        EnemylaserArray[j]->setDir(DIRECTION);
+							AllEnemies[j]->setfire(false);
+                                                                                }
+                                }
+				}
         //check for collision between enemies and laser
         for(int i=0; i<5; i++){
           for(int j=0; j<AllEnemies.size(); j++){
@@ -327,6 +351,8 @@ int frame = 0;
 //            laserArray[i].setDir(-1);
           }
 //        }
+				for(int i = 0; i < 16; i++)
+					EnemylaserArray[i]->fired_laser();
 				
         
         
@@ -343,6 +369,8 @@ int frame = 0;
           laserArray[i]->render(camera.x, camera.y,false);
 	  ChargedlaserArray[i]->render(camera.x, camera.y,true);
         }
+				for( int i = 0; i < 16; i++)
+					EnemylaserArray[i]->render(camera.x, camera.y, false);
 				SDL_RenderPresent( gRenderer );
 				SDL_Delay(1000/30);
 /*				if( frame == 27 )

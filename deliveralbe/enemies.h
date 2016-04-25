@@ -18,13 +18,18 @@ class enemies{
 		virtual const SDL_Rect getHitBox()=0;
     
 		virtual void move()=0;
-		
+
+		virtual void shoot( int )=0;
+
+		bool getfire();		
+
 		int getX();
 
 		int getY();
 
 		int getHealth();
 
+		void setfire( bool);
     void subHealth(int);
     
     virtual void setX(int);
@@ -82,5 +87,12 @@ void enemies::setXVel(int a){
 void enemies::setYVel(int a){
   enemyY_vel = a;
 }
-
+void enemies::setfire(bool newfire)
+{
+	fire = newfire;
+}
+bool enemies::getfire()
+{
+	return fire;
+}
 #endif

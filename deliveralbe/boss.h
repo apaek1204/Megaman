@@ -17,6 +17,8 @@ class Boss : public enemies{
 
 		virtual const SDL_Rect getHitBox();
 
+		virtual void shoot(int);
+
 		virtual void move();
         private:
 
@@ -79,6 +81,10 @@ circleBox.y = bossY;
 circleBox.w = 72;
 
 circleBox.h = 72;
+}
+
+void Boss::shoot(int frame)
+{
 }
 
 bool Boss::loadSprite()

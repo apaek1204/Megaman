@@ -13,23 +13,24 @@ class Bee : public enemies{
 
                 virtual bool loadSprite();
 	
-		            virtual void render(float, float, int);
+		virtual void render(float, float, int);
 
                 const SDL_Rect getHitBox();
 		
-		            virtual void move();
+		virtual void move();
 
-		            void shoot(float);
-                virtual void setX(int);
-                virtual void setY(int);
+	        virtual void shoot(int);
+		
+		virtual void setX(int);
+                
+		virtual void setY(int);
 
                 virtual void setXVel(int);
                 virtual void setYVel(int);
+
           private:
 
                 vector< LTexture* > gEnemyTexture;
-
-//                float enemyX, enemyY;
                 float enemyX_vel, enemyY_vel;
                 SDL_Rect circleBox;
 		float startX;
@@ -97,9 +98,9 @@ circleBox.w = 72;
 circleBox.h = 72;
 }
 
-void Bee::shoot(float megamanX)
+void Bee::shoot( int frame )
 {
-if( enemyX - megamanX == 200)
+if( frame % 60 == 2 )
 	fire = true;
 }	
 void Bee::move()
