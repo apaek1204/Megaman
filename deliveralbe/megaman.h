@@ -43,6 +43,14 @@ class megaman{
     void setY(int);
 		
     const SDL_Rect getHitBox();
+
+    void subtractHealth(int);
+
+    int getHealth();
+    
+    void setInvul(int);
+    
+    int getInvul();
 //		void fire();
 
 	private:
@@ -62,6 +70,8 @@ class megaman{
 		unsigned int charge_time;
 		bool chargefire;
     SDL_Rect circleBox;
+    int health;
+    int invulnerable;
 };
 
 
@@ -109,6 +119,10 @@ end_time = 0;
 charge_time = 0;
 
 chargefire = false;
+
+health=10;
+
+invulnerable = 0;
 }
 
 bool megaman::loadSprite()
@@ -359,5 +373,19 @@ void megaman::setY(int y){
   megamanY=y;
   megamanY_vel = 0;
   circleBox.y = megamanY;
+}
+void megaman::subtractHealth(int a){
+  if(int(SDL_GetTicks()) > invulnerable+1000)
+    health = health-a;
+    cout << "health: "<< health << endl;
+}
+int megaman::getHealth(){
+  return health;
+}
+void megaman::setInvul(int a){
+  invulnerable = a;
+}
+int megaman::getInvul(){
+  return invulnerable;
 }
 #endif
