@@ -26,7 +26,7 @@ class Bee : public enemies{
                 SDL_Rect circleBox;
 };
 
-Bee::Bee(float xCoord, float yCoord)
+Bee::Bee(float xCoord, float yCoord) : enemies( xCoord, yCoord )
 {
 LTexture* tmp = NULL;
 for( int i = 0; i <9; i++){
@@ -147,10 +147,5 @@ newenemyX = enemyX - camx;
 newenemyY = enemyY - camy;
 gEnemyTexture[(frame % 32)/4]->render( newenemyX, newenemyY, NULL, 0.0, NULL,flip);
 }
-
-const SDL_Rect Bee::getHitBox(){
-  return circleBox;
-}
-
 
 #endif

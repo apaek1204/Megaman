@@ -26,7 +26,7 @@ class Turret : public enemies{
                 SDL_Rect circleBox;
 };
 
-Turret::Turret(float xCoord, float yCoord)
+Turret::Turret(float xCoord, float yCoord) : enemies(xCoord, yCoord)
 {
 LTexture* tmp = NULL;
 for( int i = 0; i <9; i++){
