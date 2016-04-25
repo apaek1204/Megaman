@@ -17,8 +17,11 @@ class Turret : public enemies{
 
                 const SDL_Rect getHitBox();
 
-		virtual void move();
-
+		            virtual void move();
+                virtual void setX(int);
+                virtual void setY(int);
+                virtual void setXVel(int);
+                virtual void setYVel(int);
         private:
 
                 vector< LTexture* > gEnemyTexture;
@@ -87,5 +90,20 @@ void Turret::move()
 {
 	enemyX+= enemyX_vel;
 	circleBox.x+= enemyX_vel;
+}
+
+void Turret::setX(int a){
+  circleBox.x = a;
+  enemyX = a;
+}
+void Turret::setY(int a){
+  enemyY = a;
+  circleBox.y = a;
+}
+void Turret::setXVel(int a){
+  enemyX_vel = a;
+}
+void Turret:: setYVel(int a){
+  enemyY_vel = a;
 }
 #endif

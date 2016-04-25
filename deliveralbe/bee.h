@@ -13,15 +13,19 @@ class Bee : public enemies{
 
                 virtual bool loadSprite();
 	
-		virtual void render(float, float, int);
+		            virtual void render(float, float, int);
 
                 const SDL_Rect getHitBox();
 		
-		virtual void move();
+		            virtual void move();
 
-		void shoot(float);
+		            void shoot(float);
+                virtual void setX(int);
+                virtual void setY(int);
 
-        private:
+                virtual void setXVel(int);
+                virtual void setYVel(int);
+          private:
 
                 vector< LTexture* > gEnemyTexture;
 
@@ -183,4 +187,19 @@ newenemyY = enemyY - camy;
 gEnemyTexture[(frame % 32)/4]->render( newenemyX, newenemyY, NULL, 0.0, NULL,flip);
 }
 
+void Bee::setX(int a){
+  enemyX = a;
+  circleBox.x = a;
+  
+}
+void Bee::setY(int a){
+  enemyY = a;
+  circleBox.y = a;
+}
+void Bee::setXVel(int a){
+  enemyX_vel = a;
+}
+void Bee::setYVel(int a){
+  enemyY_vel = a;
+}
 #endif

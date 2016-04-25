@@ -23,13 +23,20 @@ class enemies{
 
 		int getY();
 
-		int getW();
+		int getHealth();
 
-		int getH();
-  protected:
+    void subHealth(int);
+    
+    virtual void setX(int);
+
+    virtual void setY(int);
+    virtual void setXVel(int);
+    virtual void setYVel(int);
+ protected:
 		bool fire;
 		float enemyX, enemyY;
-		float enemyX_vel;
+		float enemyX_vel, enemyY_vel;
+    int health;
 };
 
 
@@ -44,7 +51,9 @@ fire = false;
 
 enemyX_vel = 0;
 
+enemyY_vel = 0;
 
+health = 10;
 }
 
 int enemies::getX(){
@@ -52,6 +61,26 @@ int enemies::getX(){
 }
 int enemies::getY(){
   return enemyY;
+}
+
+int enemies::getHealth(){
+  return health;
+}
+
+void enemies::subHealth(int a){
+  health = health - a;
+}
+void enemies::setX(int a){
+  enemyX = a;
+}
+void enemies::setY(int a){
+  enemyY = a;
+}
+void enemies::setXVel(int a){
+  enemyX_vel = a;
+}
+void enemies::setYVel(int a){
+  enemyY_vel = a;
 }
 
 #endif

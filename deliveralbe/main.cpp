@@ -13,7 +13,8 @@
 #include "bee.h"
 #include "turret.h"
 #include "boss.h"
-
+#include <vector>
+#include <iterator>
 int main( int argc, char* args[] )
 {
 music music0;
@@ -233,10 +234,19 @@ int frame = 0;
               //normal laser hit
               laserArray[i]->setX(-50);
               laserArray[i]->setY(-50);
+              AllEnemies[j]->subHealth(1);
             }
             if(SDL_HasIntersection(&enemyHitBox, &chargedHitBox)){
               //charged hit
               cout << "charged hit"<< endl;
+              cout << i << ", " << j << endl;
+              AllEnemies[j]->subHealth(1);
+            }
+            if(AllEnemies[j]->getHealth() == 0){
+              AllEnemies[j]->setX(-1000);
+              AllEnemies[j]->setY(-1000);
+              AllEnemies[j]->setXVel(0);
+              AllEnemies[j]->setYVel(0);
             }
           }
         }
