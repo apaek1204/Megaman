@@ -190,8 +190,17 @@ int frame = 0;
 
 					bool jumping=megaman1.handleEvent( e );
 					
+					// jumping sound effect
 					if (jumping){
 						Mix_PlayChannel( -1, music1.jumpingMusic, 0 );
+					}
+					
+					
+					// charging sound effect
+					if (  (megaman1.charging==true) ){
+						bool jumping=megaman1.handleEvent( e );
+						if ( megaman1.total_time == 0 )
+							Mix_PlayChannel( -1, music1.chargingMusic, 0);
 					}
 				}
 				
@@ -208,7 +217,8 @@ int frame = 0;
               						laserArray[i]->setY(y);
               						laserArray[i]->setDir(DIRECTION);
 							            cout << "NORMAL SHOT" << endl;  
-							            Mix_PlayChannel( -1, music1.lMusic, 0 );    
+							            Mix_PlayChannel( -1, music1.lMusic, 0 );  
+							            megaman1.total_time=0;
                           SDL_Rect laserHitBox = laserArray[i]->getHitBox();
                           cout << laserHitBox.x << ", " << laserHitBox.y<< endl;
               						break;
@@ -226,7 +236,12 @@ int frame = 0;
                                                         ChargedlaserArray[i]->setY(y);
                                                         ChargedlaserArray[i]->setDir(DIRECTION);
 							cout << "CHARGED SHOT" << endl;
+							// halt charging sound effect
+							Mix_HaltChannel(-1);
+							// play charged laser sound effect
 							Mix_PlayChannel( -1, music1.clMusic, 0 );
+							// reset total time
+							megaman1.total_time=0;
 							megaman1.setchargedfire(false);	
                                                         break;
                                                                                 }

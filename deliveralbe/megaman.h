@@ -37,6 +37,10 @@ class megaman{
 		bool getchargedfire();
 
 		void setchargedfire(bool);
+		
+		int getcharge_time(void);
+		
+		int total_time;
     
     void setX(int);
     
@@ -52,6 +56,10 @@ class megaman{
     
     int getInvul();
 //		void fire();
+
+	bool charging;		// set to know if the shot is still charging
+	
+	void setcharge_time(int);
 
 	private:
 
@@ -123,6 +131,10 @@ chargefire = false;
 health=10;
 
 invulnerable = 0;
+
+	charging=false;
+	
+	total_time=0;
 }
 
 bool megaman::loadSprite()
@@ -243,8 +255,8 @@ bool megaman::handleEvent( SDL_Event& e )
                         case  SDLK_DOWN: megamanY_vel += MEGAMAN_SPEED; break;
                         case  SDLK_LEFT: megamanX_vel -= MEGAMAN_SPEED; MOVING = true; DIRECTION = 0; break;
                         case  SDLK_RIGHT: megamanX_vel += MEGAMAN_SPEED; DIRECTION = 1; MOVING = true;break;
-			case  SDLK_SPACE: fire = true; 
-					start_time = SDL_GetTicks(); 
+			case  SDLK_SPACE: fire = true; charging=true; 
+					start_time = SDL_GetTicks();   total_time=total_time+SDL_GetTicks();
 						break;
                 }
         }
@@ -257,9 +269,10 @@ bool megaman::handleEvent( SDL_Event& e )
                         case  SDLK_DOWN: megamanY_vel -= MEGAMAN_SPEED; break;
                         case  SDLK_LEFT: MOVING = false; megamanX_vel += MEGAMAN_SPEED;  break;
                         case  SDLK_RIGHT: MOVING = false; megamanX_vel -= MEGAMAN_SPEED;  break;
-                	case  SDLK_SPACE: end_time = SDL_GetTicks();
-				charge_time = end_time - start_time;
+                	case  SDLK_SPACE: end_time = SDL_GetTicks(); total_time=total_time+SDL_GetTicks();
+				charge_time = end_time - start_time; charging=false;
 			      if( charge_time >= 650){
+
 					chargefire = true;
 					}
 				 break;
@@ -388,5 +401,13 @@ void megaman::setInvul(int a){
 }
 int megaman::getInvul(){
   return invulnerable;
+}
+
+int megaman::getcharge_time(){
+	return charge_time;
+}
+
+void megaman::setcharge_time(int i){
+	charge_time=i;
 }
 #endif
