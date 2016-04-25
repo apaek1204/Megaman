@@ -5,6 +5,7 @@
 #include "LTexture.h"
 #include <iostream>
 #include <vector>
+#include <cmath>
 using namespace std;
 class laser {
 
@@ -37,7 +38,6 @@ class laser {
     
 		const SDL_Rect getHitBox();
 	
-		bool check_range();
   private:	
 		
 		LTexture* gLaserTexture;
@@ -78,7 +78,7 @@ moving = true;
 float range = 420.0;
 if(laser_direction == 1){
   circleBox.x += laserX_vel;
-	laserX += laserX_vel;
+        laserX += laserX_vel;
 }
 if(laser_direction == 0){
   circleBox.x -= laserX_vel;
@@ -93,13 +93,6 @@ if(laserX - start_pos >= range || laserX < 0 ){
 }
 }
 
-bool laser::check_range(){
-cout << laserX << " , " << start_pos << endl;
- if( laserX-start_pos >= 320 || laserX-start_pos <= -320)
-	return true;
- else
-	return false;
-}
 void laser::render(float camerax, float cameray, bool CHARGE)
 {
 float newlaserX, newlaserY;
@@ -139,12 +132,12 @@ bool laser::allowChange(){
   return (!moving);
 }
 void laser::setX(float x){
+  if(x>0)
+	start_pos = x;
+  else
+	start_pos = -500;
   laserX=x;
   circleBox.x=x;
- if(x > 0) 
-	 start_pos=laserX;
- else
-	 start_pos = 0;
 }
 void laser::setY(float y){
   laserY=y;
