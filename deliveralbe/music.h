@@ -24,7 +24,6 @@ class music{
 		
 		Mix_Chunk *jumpingMusic=NULL;		// sound effect when mega man jumps
 		
-		Mix_Chunk
 		
 };
 
