@@ -26,8 +26,7 @@ class enemies{
 		int getW();
 
 		int getH();
-  private:
-
+  protected:
 		bool fire;
 		float enemyX, enemyY;
 		float enemyX_vel;

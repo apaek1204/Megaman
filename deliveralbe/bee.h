@@ -19,11 +19,13 @@ class Bee : public enemies{
 		
 		virtual void move();
 
+		void shoot(float);
+
         private:
 
                 vector< LTexture* > gEnemyTexture;
 
-                float enemyX, enemyY;
+//                float enemyX, enemyY;
                 float enemyX_vel, enemyY_vel;
                 SDL_Rect circleBox;
 		float startX;
@@ -91,6 +93,11 @@ circleBox.w = 72;
 circleBox.h = 72;
 }
 
+void Bee::shoot(float megamanX)
+{
+if( enemyX - megamanX == 200)
+	fire = true;
+}	
 void Bee::move()
 {
 if( enemyX == startX + 100)
@@ -111,6 +118,7 @@ if (enemyY == 150 )
 }	
 bool Bee::loadSprite()
 {
+
 bool success = true;
 
 if( !gEnemyTexture[0]->loadFromFile("./../assets/sprites/enemies/8.png"))
