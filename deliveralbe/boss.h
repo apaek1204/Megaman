@@ -15,8 +15,7 @@ class Boss : public enemies{
 
                 virtual void render(float, float, int);
 
-                const SDL_Rect getHitBox();
-
+		virtual const SDL_Rect getHitBox();
         private:
 
                 vector< LTexture* > gBossTexture;
@@ -134,4 +133,9 @@ newbossX = bossX - camx;
 newbossY = bossY - camy;
 gBossTexture[(frame % 24)/4]->render( newbossX, newbossY, NULL, 0.0, NULL,flip);
 }
+
+const SDL_Rect Boss::getHitBox(){
+  return circleBox;
+}
+
 #endif

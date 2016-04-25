@@ -12,6 +12,8 @@
 #include "mainMenu.h"
 #include "bee.h"
 #include "turret.h"
+#include "boss.h"
+
 int main( int argc, char* args[] )
 {
 music music0;
@@ -19,6 +21,7 @@ music music1;
 megaman megaman1;
 Stage stage1;
 vector< enemies* > AllEnemies;
+Boss* Boss1 = new Boss(450, 200);
 enemies* tmp = NULL;
 for(int i = 0; i < 12; i++){
 	if( i == 0){
@@ -139,6 +142,7 @@ int frame = 0;
 		if (start == true){
 			stage1.loadSprite();
 			megaman1.loadSprite();
+			Boss1->loadSprite();
 			music1.Load_music();
 			for(int i=0; i < 12; i++)
 				AllEnemies[i]->loadSprite();
@@ -283,6 +287,7 @@ int frame = 0;
 				stage1.Render(camera.x, camera.y);
 				for(int i = 0; i < 12; i++)
 					AllEnemies[i]->render(camera.x, camera.y, frame);
+				Boss1->render(camera.x, camera.y, frame);
 				megaman1.render(camera.x, camera.y, (frame));
 				for(int i=0; i<5; i++){
           laserArray[i]->render(camera.x, camera.y,false);
