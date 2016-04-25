@@ -19,6 +19,7 @@ class music{
 		
 		Mix_Chunk *lMusic = NULL;		// laser sound effect
 		Mix_Chunk *clMusic=NULL;		// charged shot sound effect
+		Mix_Chunk *chargingMusic=NULL;		// charging sound effect
 		
 		Mix_Chunk *newlifeMusic=NULL;		// sound effect when new game starts
 		
@@ -62,6 +63,15 @@ bool music::Load_music(void){
 		success = false;
 	}
 	
+	// load sound effect for charging charged shot
+	//chargingMusic=Mix_LoadWAV("./../assets/music/soundEffects/ST0_1_1_00002.wav");
+	chargingMusic=Mix_LoadWAV("./../assets/music/soundEffects/ONPARE3_00008.wav");
+	if ( chargingMusic == NULL)
+	{
+		printf( "Failed to load charging charged shot sound effect music! SDL_mixer Error: %s\n", Mix_GetError() );
+		success = false;
+	}
+	
 	// load sound effect for new game
 	newlifeMusic=Mix_LoadWAV("./../assets/music/soundEffects/ONPARE3_00008.wav");
 	if ( newlifeMusic == NULL)
@@ -93,6 +103,8 @@ void music::close_music(void){
 	lMusic=NULL;
 	Mix_FreeChunk(clMusic);
 	clMusic=NULL;
+	Mix_FreeChunk(chargingMusic);
+	chargingMusic=NULL;
 	Mix_FreeChunk(newlifeMusic);
 	newlifeMusic=NULL;
 	Mix_FreeChunk(jumpingMusic);
