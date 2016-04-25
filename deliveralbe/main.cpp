@@ -145,6 +145,7 @@ int frame = 0;
 			megaman1.loadSprite();
 			Boss1->loadSprite();
 			music1.Load_music();
+			Mix_PlayChannel( -1, music1.newlifeMusic, 0 );
 			for(int i=0; i < 12; i++)
 				AllEnemies[i]->loadSprite();
 			laser* laserArray[5];
@@ -176,19 +177,25 @@ int frame = 0;
 			
 			while( !quit )
 			{
+				
                                 if( Mix_PlayingMusic() == 0 ){
                                         Mix_PlayMusic( music1.mMusic, -1 );
                                 }
 
 				while( SDL_PollEvent( &e ) != 0 )
 				{
-				if( e.type == SDL_QUIT )
-				{
+					if( e.type == SDL_QUIT )
+					{
 					quit = true;
-				}
+					}
 
-					megaman1.handleEvent( e );
+					bool jumping=megaman1.handleEvent( e );
+					
+					if (jumping){
+						Mix_PlayChannel( -1, music1.jumpingMusic, 0 );
+					}
 				}
+				
 				
 				if (megaman1.getfire())
 				{
@@ -201,7 +208,8 @@ int frame = 0;
               						laserArray[i]->setX(x);
               						laserArray[i]->setY(y);
               						laserArray[i]->setDir(DIRECTION);
-							            cout << "NORMAL SHOT" << endl;      
+							            cout << "NORMAL SHOT" << endl;  
+							            Mix_PlayChannel( -1, music1.lMusic, 0 );    
                           SDL_Rect laserHitBox = laserArray[i]->getHitBox();
                           cout << laserHitBox.x << ", " << laserHitBox.y<< endl;
               						break;
@@ -219,6 +227,7 @@ int frame = 0;
                                                         ChargedlaserArray[i]->setY(y);
                                                         ChargedlaserArray[i]->setDir(DIRECTION);
 							cout << "CHARGED SHOT" << endl;
+							Mix_PlayChannel( -1, music1.clMusic, 0 );
 							megaman1.setchargedfire(false);	
                                                         break;
                                                                                 }
