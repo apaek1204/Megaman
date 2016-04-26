@@ -329,6 +329,9 @@ int frame = 0;
             megaman1.subtractHealth(1);
             if(SDL_GetTicks() > megaman1.getInvul() + 1000){
               megaman1.setInvul(int(SDL_GetTicks()));
+              EnemylaserArray[i]->setX(-50);
+              EnemylaserArray[i]->setY(-50);
+
             }
           }
           for(int j=0; j<4; j++){
