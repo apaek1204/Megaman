@@ -266,6 +266,7 @@ int frame = 0;
               EnemylaserArray[j]->setX(x);
               EnemylaserArray[j]->setY(y);
               EnemylaserArray[j]->setDir(DIRECTION);
+	      EnemylaserArray[j]->setY_vel(10);
               AllEnemies[j]->setfire(false);
     
             }

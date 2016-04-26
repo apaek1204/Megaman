@@ -9,7 +9,7 @@ class Turret : public enemies{
 
         public:
 
-                Turret(float=500, float=400);
+                Turret(float=500, float=400, int = 1);
 
                 virtual bool loadSprite();
 
@@ -27,13 +27,15 @@ class Turret : public enemies{
         private:
 
                 vector< LTexture* > gEnemyTexture;
-
+		int platform;
                 float enemyX, enemyY;
                 float enemyX_vel, enemyY_vel;
                 SDL_Rect circleBox;
+		float startX;
+		SDL_RendererFlip flip;
 };
 
-Turret::Turret(float xCoord, float yCoord) : enemies(xCoord, yCoord)
+Turret::Turret(float xCoord, float yCoord, int plat) : enemies(xCoord, yCoord)
 {
 LTexture* tmp = NULL;
 for( int i = 0; i <9; i++){
@@ -48,8 +50,13 @@ if( i == 1 ){
 	    }
 }
 enemyX = xCoord;
+startX = xCoord;
 enemyY = yCoord;
-enemyX_vel = 2;
+enemyX_vel = 3;
+
+flip = SDL_FLIP_HORIZONTAL;
+
+platform = plat;
 
 circleBox.x = enemyX;
 
@@ -87,21 +94,28 @@ const SDL_Rect Turret::getHitBox(){
 void Turret::render( float camx, float camy, int frame)
 {
 float newenemyX, newenemyY;
-SDL_RendererFlip flip = SDL_FLIP_NONE;
 newenemyX = enemyX - camx;
 newenemyY = enemyY - camy;
 gEnemyTexture[(frame % 8)/4]->render( newenemyX, newenemyY, NULL, 0.0, NULL,flip);
 }
+
 void Turret::move()
 {
+	if(enemyX >= startX +400 || enemyX <= startX - 400){
+		enemyX_vel = -enemyX_vel;
+		if(startX < enemyX)
+			flip = SDL_FLIP_NONE;
+		else
+			flip = SDL_FLIP_HORIZONTAL;
+}		
 	enemyX+= enemyX_vel;
 	circleBox.x+= enemyX_vel;
 }
-
 void Turret::setX(int a){
   circleBox.x = a;
   enemyX = a;
 }
+
 void Turret::setY(int a){
   enemyY = a;
   circleBox.y = a;

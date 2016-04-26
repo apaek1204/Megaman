@@ -31,7 +31,8 @@ class laser {
 		void setX(float);
     
 		void setY(float);
-    
+
+		void setY_vel( float );    
 		void setDir(int);
 	  
 		void print();
@@ -45,6 +46,7 @@ class laser {
 		float laserX, laserY; 
 		int laser_direction;
 		float laserX_vel;		
+		float laserY_vel;
    		bool moving;
 		SDL_Rect circleBox;
 		int frame;
@@ -61,7 +63,7 @@ laserX = X_COORD;
 laserY = Y_COORD;
 
 laserX_vel = 20;
-
+laserY_vel = 0;
 laser_direction = DIRECTION;
 
 moving = false;
@@ -84,6 +86,8 @@ if(laser_direction == 0){
   circleBox.x -= laserX_vel;
   laserX -= laserX_vel;
 }
+circleBox.y += laserY_vel;
+laserY += laserY_vel;
 
 if((laserX - start_pos >= range && laser_direction ==1) || (laserX-start_pos <= -range && laser_direction ==0)|| laser_direction==-1){
   //cout << "reset" << endl;
@@ -96,6 +100,11 @@ if((laserX - start_pos >= range && laser_direction ==1) || (laserX-start_pos <= 
 
 }
 
+void laser::setY_vel( float newy_vel )
+{
+	laserY_vel = newy_vel;
+
+}
 void laser::render(float camerax, float cameray, bool CHARGE)
 {
 float newlaserX, newlaserY;
