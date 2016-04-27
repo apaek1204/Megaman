@@ -94,6 +94,6 @@ void close()
 
 	//Quit SDL subsystems
 	IMG_Quit();
-	SDL_Quit();
-	Mix_Quit();
+	//SDL_Quit();
+	//Mix_Quit();
 }

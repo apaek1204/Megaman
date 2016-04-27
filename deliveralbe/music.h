@@ -12,8 +12,11 @@
 
 class music{
 	public:
+		
+		
 		bool Load_music();			// load music
 		void close_music();			// close the music file
+		
 		Mix_Music *mMusic = NULL;		// constant music that will be played during game
 		Mix_Music *mmMusic=NULL;		// constant main menu music
 		
@@ -25,8 +28,12 @@ class music{
 		
 		Mix_Chunk *jumpingMusic=NULL;		// sound effect when mega man jumps
 		
+		Mix_Chunk *beeshotMusic=NULL;		// sound for effect 
+		
 		
 };
+
+
 
 // Load the music
 bool music::Load_music(void){
@@ -87,6 +94,16 @@ bool music::Load_music(void){
 		printf( "Failed to load jumping sound effect music! SDL_mixer Error: %s\n", Mix_GetError() );
 		success = false;
 	}
+
+	// load sound effect for bee enemies shooting
+	beeshotMusic=Mix_LoadWAV("./../assets/music/soundEffects/PL00_U_00021.wav");
+	if ( beeshotMusic == NULL)
+	{
+	
+		printf( "Failed to load bee shooting sound effect music! SDL_mixer Error: %s\n", Mix_GetError() );
+		success = false;
+	
+	} 
 	return success;
 }
 
@@ -109,6 +126,8 @@ void music::close_music(void){
 	newlifeMusic=NULL;
 	Mix_FreeChunk(jumpingMusic);
 	jumpingMusic=NULL;
+	Mix_FreeChunk(beeshotMusic);
+	beeshotMusic=NULL;
 }
 
 # endif 
