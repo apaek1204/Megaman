@@ -52,7 +52,7 @@ if( i == 1 ){
 enemyX = xCoord;
 startX = xCoord;
 enemyY = yCoord;
-enemyX_vel = 3;
+enemyX_vel = 6;
 
 flip = SDL_FLIP_HORIZONTAL;
 
@@ -60,11 +60,11 @@ platform = plat;
 
 circleBox.x = enemyX;
 
-circleBox.y = enemyY;
+circleBox.y = enemyY + 30;
 
-circleBox.w = 72;
+circleBox.w = 135;
 
-circleBox.h = 72;
+circleBox.h = 74;
 }
 
 void Turret::shoot(int derp)
