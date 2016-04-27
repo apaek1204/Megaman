@@ -52,6 +52,7 @@ class megaman{
 
 		float getX_vel();
 
+		void setishit(bool);
     void setX(int);
     
     void setY(int);
@@ -74,7 +75,7 @@ class megaman{
 	private:
 
 		bool fire;
-
+		bool ishit;
 		vector< LTexture* > gMegamanTexture;
 		//LTexture gMegamanTexture;
 		bool ONWALL_RIGHT;
@@ -98,7 +99,7 @@ megaman::megaman(float xCoord, float yCoord){
 
 LTexture* tmp = NULL;
 
-for( int i = 0; i < 19; i++){
+for( int i = 0; i < 24; i++){
 	tmp = new LTexture(70,70);
 	gMegamanTexture.push_back(tmp);
 }
@@ -145,6 +146,9 @@ invulnerable = 0;
 	charging=false;
 	
 	total_time=0;
+
+ishit = false;
+
 }
 
 megaman::~megaman()
@@ -252,6 +256,33 @@ if( !gMegamanTexture[18]->loadFromFile("./../assets/sprites/megaman/movement/42.
         printf( "Unable to load megaman texture! \n");
         success = false;
 }
+if( !gMegamanTexture[19]->loadFromFile("./../assets/sprites/megaman/take_dmg/2.png"))
+{
+        printf( "Unable to load megaman texture! \n");
+        success = false;
+}
+if( !gMegamanTexture[20]->loadFromFile("./../assets/sprites/megaman/take_dmg/3.png"))
+{
+        printf( "Unable to load megaman texture! \n");
+        success = false;
+}
+if( !gMegamanTexture[21]->loadFromFile("./../assets/sprites/megaman/take_dmg/4.png"))
+{
+        printf( "Unable to load megaman texture! \n");
+        success = false;
+}
+if( !gMegamanTexture[22]->loadFromFile("./../assets/sprites/megaman/take_dmg/5.png"))
+{
+        printf( "Unable to load megaman texture! \n");
+        success = false;
+}
+if( !gMegamanTexture[23]->loadFromFile("./../assets/sprites/megaman/take_dmg/6.png"))
+{
+        printf( "Unable to load megaman texture! \n");
+        success = false;
+}
+
+
 return success;
 }
 
@@ -386,7 +417,9 @@ else if(ONWALL_LEFT){
         flip = SDL_FLIP_HORIZONTAL;
         gMegamanTexture[18]->render( newmegamanX, newmegamanY, NULL, 0.0, NULL,  flip);
         }
-
+else if (ishit){
+	gMegamanTexture[((frame % 12)/3) + 19]->render( newmegamanX, newmegamanY, NULL, 0.0, NULL,  flip);
+}
 else if(JUMPING){
 	if( (frame % 21)/3 <  4 && !STOP)
 		gMegamanTexture[(frame % 21)/3 + 10]->render( newmegamanX, newmegamanY, NULL, 0.0, NULL,  flip);
@@ -457,5 +490,9 @@ void megaman::setY_vel( float newvel )
 float megaman::getX_vel()
 {
 	return megamanX_vel;
+}
+void megaman::setishit( bool newishit )
+{
+	ishit = newishit;
 }
 #endif

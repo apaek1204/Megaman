@@ -369,6 +369,7 @@ int frame = 0;
 		megaman1.setX_vel(-5);
 		megaman1.setY_vel(-5);
 		hittime = SDL_GetTicks();
+		megaman1.setishit(true);
 //		}
               if(SDL_GetTicks() > megaman1.getInvul() + 1000){
                 megaman1.setInvul(int(SDL_GetTicks()));
@@ -490,6 +491,7 @@ int frame = 0;
 					megahit = false;
 					megaman1.setX_vel(0);
 					megaman1.setY_vel(0);
+					megaman1.setishit(false);
 					}
 
 /*				if( frame == 27 )
