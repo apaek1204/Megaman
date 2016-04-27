@@ -305,8 +305,8 @@ bool megaman::handleEvent( SDL_Event& e )
 					ONWALL_LEFT = false;
 						break;
         //                case  SDLK_DOWN: megamanY_vel += MEGAMAN_SPEED; break;
-                        case  SDLK_LEFT: megamanX_vel -= MEGAMAN_SPEED; MOVING = true; DIRECTION = 0; break;
-                        case  SDLK_RIGHT: megamanX_vel += MEGAMAN_SPEED; DIRECTION = 1; MOVING = true;break;
+                        case  SDLK_LEFT: megamanX_vel = -MEGAMAN_SPEED; MOVING = true; DIRECTION = 0; break;
+                        case  SDLK_RIGHT: megamanX_vel = MEGAMAN_SPEED; DIRECTION = 1; MOVING = true;break;
 			case  SDLK_SPACE: fire = true; charging=true; 
 					start_time = SDL_GetTicks();   total_time=total_time+SDL_GetTicks();
 						break;
@@ -319,13 +319,19 @@ bool megaman::handleEvent( SDL_Event& e )
                         case  SDLK_UP: megamanY_vel = 0; JUMPING = false;
 			       break;
          //               case  SDLK_DOWN: megamanY_vel = 0; megamanX_vel -= MEGAMAN_SPEED; break;
-                        case  SDLK_LEFT: MOVING = false;
-					megamanX_vel = 0;
+                        case  SDLK_LEFT: 
+					if(megamanX_vel < 0){
+						megamanX_vel = 0;
+						MOVING = false;
+					}
 //				else
 //					megamanX_vel += MEGAMAN_SPEED;
 				break;
-                        case  SDLK_RIGHT: MOVING = false; 
-					megamanX_vel = 0;
+                        case  SDLK_RIGHT: 
+					if(megamanX_vel > 0){
+						MOVING = false;
+						megamanX_vel = 0;
+						            }
 //				else
 //					megamanX_vel -= MEGAMAN_SPEED;
 				break;
