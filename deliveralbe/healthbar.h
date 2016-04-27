@@ -8,39 +8,84 @@ class healthbar{
 
         public:
 
-                healthbar();
+                healthbar(float=500, float=400);
 
-                void render( int);
+		~healthbar();
 
                 bool loadSprite();
+	
+		void render(float, float, int);
 
-	private:
+                const SDL_Rect getHitBox();
+		
+	        void shoot(int);
+		
+		void setX(int);
+                
+		void setY(int);
 
-		LTexture* gHealthTexture;
+
+
+
+          private:
+
+                vector < LTexture* > gEnemyTexture;
+                float enemyX_vel, enemyY_vel;
+		float enemyX, enemyY;
 		int health;
 };
 
-healthbar::healthbar()
+healthbar::healthbar(float xCoord, float yCoord)
 {
-
-LTexture* gHealthTexture = new LTexture(50,100);
+	LTexture* tmp = NULL;
+	for( int i = 0; i < 10; i++ ){
+		if(i==0)
+			tmp = new LTexture(20,30);
+		else
+			tmp = new LTexture(i*20,30); 
+       		gEnemyTexture.push_back(tmp);
+				     }
+	
+enemyX = xCoord;
 health = 10;
+enemyY = yCoord;
 
 }
 
+healthbar::~healthbar()
+{
+	for( int i = 0; i<10; i++)
+		delete gEnemyTexture[i];
+}
 bool healthbar::loadSprite()
 {
 bool success = true;
 
-if( !gHealthTexture->loadFromFile("./../assets/sprites/megaman/healthbar.png"))
+for( int i = 0; i<10; i++){
+if( !gEnemyTexture[i]->loadFromFile("./../assets/sprites/megaman/healthbar.png"))
 {
-        printf( "Unable to load megaman texture! \n");
+        printf( "Unable to load enemy texture! \n");
         success = false;
 }
 }
 
-void healthbar::render(int health)
+return success;
+}
+void healthbar::render( float camx, float camy,int health)
 {
-       gHealthTexture->render( 50, 50,NULL,0.0,NULL);
+float newenemyX, newenemyY;
+SDL_RendererFlip flip = SDL_FLIP_NONE;
+newenemyX = enemyX - camx;
+newenemyY = enemyY - camy;
+	if( health >=0)
+		gEnemyTexture[health]->render( newenemyX, newenemyY, NULL, 0.0, NULL,flip);
+}
+
+void healthbar::setX(int a){
+  enemyX = a;
+  
+}
+void healthbar::setY(int a){
+  enemyY = a;
 }
 #endif

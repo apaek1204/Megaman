@@ -5,6 +5,7 @@
 #include "window.h"
 #include "megaman.h"
 #include "laser.h"
+#include "healthbar.h"
 #include "stage.h"
 #include <SDL2/SDL_mixer.h>
 #include "music.h"
@@ -15,12 +16,14 @@
 #include "boss.h"
 #include <vector>
 #include <iterator>
+
 int main( int argc, char* args[] )
 {
 music music0;
 music music1;
 megaman megaman1;
 Stage stage1;
+healthbar healthbar1;
 vector< enemies* > AllEnemies;
 Boss* Boss1 = new Boss(450, 200);
 enemies* tmp = NULL;
@@ -28,7 +31,6 @@ unsigned int hittime = 0;
 unsigned int deathtimer = 0;
 bool DEATHINIT = false;
 bool reset = false;
-bool megahit = false;
 float hitstart = 0;
 int death = 0;
 int lives = 3;
@@ -153,6 +155,7 @@ int frame = 0;
 			stage1.loadSprite();
 			megaman1.loadSprite();
 			Boss1->loadSprite();
+			healthbar1.loadSprite();
 			music1.Load_music();
 			Mix_PlayChannel( -1, music1.newlifeMusic, 0 );
 			for(int i=0; i < 12; i++)
@@ -191,7 +194,7 @@ int frame = 0;
                           Death[i]->setDir(-1);
                           Death[i]->loadLaserSprite(2);
                         }
-		
+
     //if( !megaman1.gMegamanTexture)
 		//{
 		//	printf( "Failed to load media!\n" );
@@ -320,6 +323,8 @@ int frame = 0;
         int tempX=megaman1.getX();
         int tempY=megaman1.getY();
 				megaman1.move();
+				healthbar1.setX(megaman1.getX()- camera.x +190);
+				healthbar1.setY(500+camera.y);
 				if(megaman1.getY() > 500)
 					megaman1.subtractHealth(10);
 					
@@ -494,6 +499,7 @@ int frame = 0;
         }
 				for( int i = 0; i < 16; i++)
 					EnemylaserArray[i]->render(camera.x, camera.y, false);
+				healthbar1.render(megaman1.getX() -camera.x - 50, 300, megaman1.getHealth()-1);
 				SDL_RenderPresent( gRenderer );
 				SDL_Delay(1000/30);
 				if( SDL_GetTicks() - hittime >= 350 && megaman1.getishit()){
@@ -501,7 +507,6 @@ int frame = 0;
 					megaman1.setY_vel(0);
 					megaman1.setishit(false);
 					}
-
 /*				if( frame == 27 )
 					frame = 0;
 				else
