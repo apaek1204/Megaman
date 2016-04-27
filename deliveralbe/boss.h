@@ -11,6 +11,8 @@ class Boss : public enemies{
 
                 Boss(float=500, float=400);
 
+		~Boss();
+
                 virtual bool loadSprite();
 
                 virtual void render(float, float, int);
@@ -29,7 +31,6 @@ class Boss : public enemies{
 
                 vector< LTexture* > gBossTexture;
 
-                float bossX, bossY;
                 float bossX_vel;
                 SDL_Rect circleBox;
 		float bossY_vel;
@@ -39,7 +40,7 @@ class Boss : public enemies{
 Boss::Boss(float xCoord, float yCoord) : enemies(xCoord, yCoord)
 {
 LTexture* tmp = NULL;
-for( int i = 0; i <9; i++){
+for( int i = 0; i <6; i++){
 if( i == 0 ){
         tmp = new LTexture(222,174);
         gBossTexture.push_back(tmp);
@@ -62,29 +63,37 @@ if( i == 4 ){
         tmp = new LTexture(222,174);
         gBossTexture.push_back(tmp);
 }
+if(i == 5){
+	tmp = new LTexture(222,96);
+	gBossTexture.push_back(tmp);
+}
 }
 
 fire = false;
 
-bossX = xCoord;
+enemyX = xCoord;
 
-bossY = yCoord;
+enemyY = yCoord;
 
 bossX_vel = 0;
 
-bossY_vel = 0;
+bossY_vel = 2;
 
-circleBox.x = bossX;
+circleBox.x = enemyX;
 
-circleBox.y = bossY;
+circleBox.y = enemyY;
 
-circleBox.w = 110;
+circleBox.w = 222;
 
-circleBox.h = 90;
+circleBox.h = 174;
 
-health = 50;
+health = 500;
 }
-
+Boss::~Boss()
+{
+	for( int i = 0; i < 6; i++ )
+		delete gBossTexture[i];
+}
 void Boss::shoot(int frame)
 {
 	if( frame % 120 == 1)
@@ -93,7 +102,7 @@ void Boss::shoot(int frame)
 
 bool Boss::inrange( float x )
 {
-	if( bossX - x  < 800 )
+	if( enemyX - x  < 800 )
 		return true;
 	else
 		return false;
@@ -131,6 +140,12 @@ if( !gBossTexture[4]->loadFromFile("./../assets/sprites/enemies/6.png"))
         success = false;
 }
 
+if( !gBossTexture[5]->loadFromFile("./../assets/sprites/enemies/dead.png"))
+{
+        printf( "Unable to load boss texture! \n");
+        success = false;
+}
+
 return success;
 }
 
@@ -138,9 +153,13 @@ void Boss::render( float camx, float camy, int frame)
 {
 float newbossX, newbossY;
 SDL_RendererFlip flip = SDL_FLIP_NONE;
-newbossX = bossX - camx;
-newbossY = bossY - camy;
-gBossTexture[(frame % 20)/4]->render( newbossX, newbossY, NULL, 0.0, NULL,flip);
+newbossX = enemyX - camx;
+newbossY = enemyY - camy;
+if(health > 0)
+	gBossTexture[(frame % 20)/4]->render( newbossX, newbossY, NULL, 0.0, NULL,flip);
+else{
+	gBossTexture[5]->render( newbossX, newbossY, NULL, 0.0, NULL,flip);
+}
 }
 
 const SDL_Rect Boss::getHitBox(){
@@ -149,10 +168,17 @@ const SDL_Rect Boss::getHitBox(){
 
 void Boss::move()
 {
-if( bossY <= 300 )
-	bossY+=bossY_vel;
+if(health > 0){
+	if( enemyY == 150 || enemyY == 300)
+	        bossY_vel = -bossY_vel;
+	circleBox.y+=bossY_vel;
+	      }
+else if(enemyY <= 400)
+	bossY_vel=1;
 else
-	bossY-=bossY_vel;
+	bossY_vel=0;
+
+enemyY+=bossY_vel;
 }
 void Boss::subHealth(int a){
   health = health -a;

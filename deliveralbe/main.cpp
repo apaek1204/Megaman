@@ -46,8 +46,9 @@ healthbar healthbar1;
 megaman megaman1;
 Stage stage1;
 vector< enemies* > AllEnemies;
-Boss* Boss1 = new Boss(5790, 200);
+Boss* Boss1 = new Boss(500, 200);
 enemies* tmp = NULL;
+unsigned int completetime = 0;
 unsigned int hittime = 0;
 unsigned int deathtimer = 0;
 bool DEATHINIT = false;
@@ -328,17 +329,18 @@ platforms[3].h = 90;
 				}
 				if(Boss1->inrange( megaman1.getX())){
 					Boss1->shoot(frame);
-                                        if (Boss1->getfire())
+                                        if (Boss1->getfire() && Boss1->getHealth() > 0)
                                         {        
                                                 x = Boss1->getX();
-                                                y = Boss1->getY() + 20.0;
+                                                y = Boss1->getY();// + 90.0;
+						cout << x << " " << y << endl;
                                                 DIRECTION = 0;
 						for(int j = 0; j <10;j++){ 
                                                 if(EnemylaserArray[j]->allowChange()){
-                                                        EnemylaserArray[j]->setX(x);
-                                                        EnemylaserArray[j]->setY(y);
+                                                        EnemylaserArray[j]->setX(Boss1->getX());
+                                                        EnemylaserArray[j]->setY(Boss1->getY()+75);
                                                         EnemylaserArray[j]->setDir(DIRECTION);
-                                                        EnemylaserArray[j]->setY_vel(10*j);
+                                                        EnemylaserArray[j]->setY_vel(5*j);
                                                         Mix_PlayChannel(-1, music1.beeshotMusic, 0);
                                          
                                                 			    	     }
@@ -362,26 +364,18 @@ platforms[3].h = 90;
                     Boss1->subHealth(1);
                   }
                   if(Boss1->getHealth() <= 0){
-                    cout << "win" << endl;
                   }
           				for(int j=0; j<AllEnemies.size(); j++){
             					SDL_Rect enemyHitBox = AllEnemies[j]->getHitBox();
-            					if(j == 3){
-                          cout << enemyHitBox.x << ", " << enemyHitBox.y<< ": " << laserHitBox.x << ", " << laserHitBox.y << endl;
-                      }
             					if(SDL_HasIntersection(&enemyHitBox, &laserHitBox)){
               						//normal laser hit
               						if(j==3){
-                            cout << "enemy 3 hit" << endl;
                           }
                           laserArray[i]->setX(-50);
               						laserArray[i]->setY(-50);
               						AllEnemies[j]->subHealth(1);
             					}
             					if(SDL_HasIntersection(&enemyHitBox, &chargedHitBox)){
-              						//charged hit
-              						//cout << "charged hit"<< endl;
-              						//cout << i << ", " << j << endl;
               						AllEnemies[j]->subHealth(1);
             					}
            					 if(AllEnemies[j]->getHealth() == 0){
@@ -397,11 +391,11 @@ platforms[3].h = 90;
         			int tempX=megaman1.getX();
         			int tempY=megaman1.getY();
 				megaman1.move();
+				Boss1->move();
 				healthbar1.setX(megaman1.getX()-camera.x+190);
 				healthbar1.setY(500+camera.y);
 				if (megaman1.getY() > 500)
 					megaman1.subtractHealth(10);
-        			//cout << tempX << ":" << tempY << endl;
         			SDL_Rect megamanHitBox = megaman1.getHitBox();
           			for(int i=0; i<4; i++){
           				if(SDL_HasIntersection(&megamanHitBox, &platforms[i])){
@@ -411,14 +405,12 @@ platforms[3].h = 90;
             					else if(tempX < platforms[i].x){
               						megaman1.setX(tempX);
               						megaman1.setY(tempY);
-              						cout << "from left" << endl;
 	            					megaman1.setonwall(1);
             					}
             					else{
               						megaman1.setonwall(0);
               						megaman1.setX(tempX);
              						 megaman1.setY(tempY);
-              						cout << "from right" << endl;
             					}
           				}
         			}
@@ -453,8 +445,6 @@ platforms[3].h = 90;
           		if(SDL_HasIntersection(&megamanHitBox, &enemyHitBox)){
             			if(megaman1.getHealth() >0){
               				megaman1.subtractHealth(1);
-                      cout << "enemy: " << i << endl;
-//		if( megaman1.getX() + 35 <= AllEnemies[i]->getX()){
 					megaman1.setX_vel(-5);
 					megaman1.setY_vel(-5);
 					hittime = SDL_GetTicks();
@@ -597,6 +587,14 @@ platforms[3].h = 90;
 					frame = 0;
 				if( megaman1.getHealth() <= 0 )
 					cout << SDL_GetTicks() - deathtimer << endl;
+				if( Boss1->getHealth()<=0 && Boss1->getHealth()>=100){
+					completetime = SDL_GetTicks();
+					Boss1->subHealth(102);
+					}
+				if( SDL_GetTicks() - completetime >= 1000 && Boss1->getHealth() <= 0){
+					quit = true;
+					QUIT = true;
+					}
 				if( SDL_GetTicks() - deathtimer >= 1000 && megaman1.getHealth() <= 0 ){
 					if( lives > 0 ){
 						megaman1.setHealth(10);
