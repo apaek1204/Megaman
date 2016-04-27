@@ -16,7 +16,7 @@ class laser {
 		static const float LASER_SPEED = .25;	
 		laser( float = 0 , float = 0 , int = 0, int = 40, int = 40, bool = false);
 
-//		~laser();
+		~laser();
 
 		bool collide();
 		
@@ -36,6 +36,8 @@ class laser {
 		void setDir(int);
 	  
 		void print();
+
+		float getX();
     
 		const SDL_Rect getHitBox();
 	
@@ -55,7 +57,6 @@ class laser {
 laser::laser( float X_COORD, float Y_COORD, int DIRECTION, int laserw, int laserh, bool CHARGE )
 {
 
-LTexture* tmp = NULL;
 frame = 0;
 gLaserTexture = new LTexture(laserw, laserh);
 laserX = X_COORD;
@@ -74,6 +75,10 @@ circleBox.w = LASER_WIDTH;
 circleBox.h = LASER_HEIGHT;
 }
 
+laser::~laser()
+{
+	delete gLaserTexture;
+}
 void laser::fired_laser()
 {
 moving = true;
@@ -133,9 +138,15 @@ if( level == 1 ){
                 printf( "Unable to load laser texture! \n");
                 success = false;
         }
-
-
 }
+if( level == 2 ){
+        if( !gLaserTexture->loadFromFile("./../assets/sprites/megaman/lasers/l2.png"))
+        {
+                printf( "Unable to load laser texture! \n");
+                success = false;
+        }
+}
+
 return success;
 }
 
@@ -163,5 +174,9 @@ void laser::print(){
 }
 const SDL_Rect laser::getHitBox(){
   return(circleBox);
+}
+float laser::getX()
+{
+	return laserX;
 }
 #endif

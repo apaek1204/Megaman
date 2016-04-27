@@ -24,6 +24,13 @@ Stage stage1;
 vector< enemies* > AllEnemies;
 Boss* Boss1 = new Boss(450, 200);
 enemies* tmp = NULL;
+unsigned int hittime = 0;
+unsigned int deathtimer = 0;
+bool DEATHINIT = false;
+bool reset = false;
+bool megahit = false;
+float hitstart = 0;
+int death = 0;
 for(int i = 0; i < 12; i++){
 	if( i == 0){
 		tmp = new Turret(900,390);
@@ -151,6 +158,7 @@ int frame = 0;
 			laser* laserArray[5];
 			laser* ChargedlaserArray[5];
 			laser* EnemylaserArray[16];
+			laser* Death[6];
 
 		for(int i=0; i<5; i++){
 			  laserArray[i] = new laser(-50,-50,-1,20,20);
@@ -174,6 +182,14 @@ int frame = 0;
                           EnemylaserArray[i]->loadLaserSprite();
                         }
 
+                for(int i=0; i<6; i++){
+                          Death[i] = new laser(-50,-50,-1, 40, 40);
+                          Death[i]->setX(-50);
+                          Death[i]->setY(-50);
+                          Death[i]->setDir(-1);
+                          Death[i]->loadLaserSprite(2);
+                        }
+		
     //if( !megaman1.gMegamanTexture)
 		//{
 		//	printf( "Failed to load media!\n" );
@@ -348,6 +364,12 @@ int frame = 0;
           if(SDL_HasIntersection(&megamanHitBox, &enemyHitBox)){
             if(megaman1.getHealth() >0){
               megaman1.subtractHealth(1);
+//		if( megaman1.getX() + 35 <= AllEnemies[i]->getX()){
+		megahit = true;
+		megaman1.setX_vel(-5);
+		megaman1.setY_vel(-5);
+		hittime = SDL_GetTicks();
+//		}
               if(SDL_GetTicks() > megaman1.getInvul() + 1000){
                 megaman1.setInvul(int(SDL_GetTicks()));
               }
@@ -384,7 +406,78 @@ int frame = 0;
 					AllEnemies[i]->render(camera.x, camera.y, frame);
 							   }
 				Boss1->render(camera.x, camera.y, frame);
-				megaman1.render(camera.x, camera.y, (frame));
+				if( megaman1.getHealth() > 0)
+					megaman1.render(camera.x, camera.y, (frame));
+				else{
+					if(DEATHINIT == false){
+						deathtimer = SDL_GetTicks();
+						DEATHINIT = true;
+						cout << "death timer start: " << deathtimer << endl;
+							     }
+					for ( int i = 0; i < 6; i++){
+						if( i == 0 ){
+							if(Death[i]->getX() < 0){
+								Death[i]->setX(megaman1.getX());
+              							Death[i]->setY(megaman1.getY());
+              							Death[i]->setDir(0);
+              							Death[i]->setY_vel(0);
+								}
+								Death[i]->fired_laser();
+          						Death[i]->render(camera.x, camera.y,false);
+							    }
+						if( i == 1 ){
+							if(Death[i]->getX() < 0){
+                                                        	Death[i]->setX(megaman1.getX());
+                                                       	 	Death[i]->setY(megaman1.getY());
+                                                        	Death[i]->setDir(0);
+                                                        	Death[i]->setY_vel(20);
+										}
+								Death[i]->fired_laser();
+          						Death[i]->render(camera.x, camera.y,false);
+							    }
+                                                if( i == 2 ){
+							if(Death[i]->getX() < 0){
+	                                                        Death[i]->setX(megaman1.getX());
+	                                                        Death[i]->setY(megaman1.getY());
+	                                                        Death[i]->setDir(0);
+	                                                        Death[i]->setY_vel(-20);
+										}
+								Death[i]->fired_laser();
+          						Death[i]->render(camera.x, camera.y,false);
+                                                            }
+                                                if( i == 3 ){
+							if(Death[i]->getX() < 0){
+                                                        Death[i]->setX(megaman1.getX());
+                                                        Death[i]->setY(megaman1.getY());
+                                                        Death[i]->setDir(1);
+                                                        Death[i]->setY_vel(0);
+										}
+							Death[i]->fired_laser();
+          						Death[i]->render(camera.x, camera.y,false);
+                                                            }
+                                                if( i == 4 ){
+							if(Death[i]->getX() < 0){
+	                                                        Death[i]->setX(megaman1.getX());
+	                                                        Death[i]->setY(megaman1.getY());
+	                                                        Death[i]->setDir(1);
+	                                                        Death[i]->setY_vel(20);
+										}
+								Death[i]->fired_laser();
+          						Death[i]->render(camera.x, camera.y,false);
+                                                            }
+                                                if( i == 5 ){
+							if(Death[i]->getX() < 0){
+                                                        	Death[i]->setX(megaman1.getX());
+                                                        	Death[i]->setY(megaman1.getY());
+							        Death[i]->setDir(1);
+                                                        	Death[i]->setY_vel(-20);
+							}
+								Death[i]->fired_laser();
+          						Death[i]->render(camera.x, camera.y,false);
+                                                            }
+						}
+						}	
+				
 				for(int i=0; i<5; i++){
           laserArray[i]->render(camera.x, camera.y,false);
 	  ChargedlaserArray[i]->render(camera.x, camera.y,true);
@@ -393,11 +486,25 @@ int frame = 0;
 					EnemylaserArray[i]->render(camera.x, camera.y, false);
 				SDL_RenderPresent( gRenderer );
 				SDL_Delay(1000/30);
+				if( SDL_GetTicks() - hittime >= 250 && megahit){
+					megahit = false;
+					megaman1.setX_vel(0);
+					megaman1.setY_vel(0);
+					}
+
 /*				if( frame == 27 )
 					frame = 0;
 				else
 					frame++;*/
 				frame++;
+				if( megaman1.getHealth() <= 0 )
+					cout << SDL_GetTicks() - deathtimer << endl;
+				if( SDL_GetTicks() - deathtimer >= 1000 && megaman1.getHealth() <= 0){
+					megaman1.setHealth(10);
+					megaman1.setX( 250 );
+					megaman1.setY( 0 );
+					DEATHINIT = false;
+						}
 			}
 		//}
 	}

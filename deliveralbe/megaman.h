@@ -16,6 +16,8 @@ class megaman{
 
 		megaman(float=500, float=0);
 
+		~megaman();
+
 		bool handleEvent( SDL_Event& e );
 		
 		void move();
@@ -41,7 +43,15 @@ class megaman{
 		int getcharge_time(void);
 		
 		int total_time;
-    
+
+		void setHealth( int );    
+
+		void setX_vel( float );
+	
+		void setY_vel( float );
+
+		float getX_vel();
+
     void setX(int);
     
     void setY(int);
@@ -135,6 +145,12 @@ invulnerable = 0;
 	charging=false;
 	
 	total_time=0;
+}
+
+megaman::~megaman()
+{
+	for( int i = 0; i < 19; i++)
+		delete gMegamanTexture[i];
 }
 
 bool megaman::loadSprite()
@@ -236,13 +252,16 @@ if( !gMegamanTexture[18]->loadFromFile("./../assets/sprites/megaman/movement/42.
         printf( "Unable to load megaman texture! \n");
         success = false;
 }
-
 return success;
 }
 
+void megaman::setHealth( int newhealth )
+{
+	health = newhealth;
+}
 bool megaman::handleEvent( SDL_Event& e )
 {
-        if( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
+        if( e.type == SDL_KEYDOWN && e.key.repeat == 0 && health > 0)
         {
                 switch( e.key.keysym.sym )
                 {
@@ -252,7 +271,7 @@ bool megaman::handleEvent( SDL_Event& e )
 					ONWALL_RIGHT = false;
 					ONWALL_LEFT = false;
 						break;
-                        case  SDLK_DOWN: megamanY_vel += MEGAMAN_SPEED; break;
+        //                case  SDLK_DOWN: megamanY_vel += MEGAMAN_SPEED; break;
                         case  SDLK_LEFT: megamanX_vel -= MEGAMAN_SPEED; MOVING = true; DIRECTION = 0; break;
                         case  SDLK_RIGHT: megamanX_vel += MEGAMAN_SPEED; DIRECTION = 1; MOVING = true;break;
 			case  SDLK_SPACE: fire = true; charging=true; 
@@ -260,15 +279,23 @@ bool megaman::handleEvent( SDL_Event& e )
 						break;
                 }
         }
-        if( e.type == SDL_KEYUP && e.key.repeat == 0 )
+        if( e.type == SDL_KEYUP && e.key.repeat == 0 && health > 0)
         {
                 switch( e.key.keysym.sym )
                 {
                         case  SDLK_UP: megamanY_vel = 0; JUMPING = false;
 			       break;
-                        case  SDLK_DOWN: megamanY_vel -= MEGAMAN_SPEED; break;
-                        case  SDLK_LEFT: MOVING = false; megamanX_vel += MEGAMAN_SPEED;  break;
-                        case  SDLK_RIGHT: MOVING = false; megamanX_vel -= MEGAMAN_SPEED;  break;
+         //               case  SDLK_DOWN: megamanY_vel = 0; megamanX_vel -= MEGAMAN_SPEED; break;
+                        case  SDLK_LEFT: MOVING = false;
+					megamanX_vel = 0;
+//				else
+//					megamanX_vel += MEGAMAN_SPEED;
+				break;
+                        case  SDLK_RIGHT: MOVING = false; 
+					megamanX_vel = 0;
+//				else
+//					megamanX_vel -= MEGAMAN_SPEED;
+				break;
                 	case  SDLK_SPACE: end_time = SDL_GetTicks(); total_time=total_time+SDL_GetTicks();
 				charge_time = end_time - start_time; charging=false;
 			      if( charge_time >= 650){
@@ -325,6 +352,10 @@ laser1.loadLaserSprite();
 */
 void megaman::move()
 {
+if( health <= 0 ){
+	megamanX_vel=0;
+	megamanY_vel=0;
+}
   fire=false;
 	if(megamanX+megamanX_vel >= 0 && megamanX+megamanX_vel < 5760){
     megamanX += megamanX_vel;
@@ -409,5 +440,22 @@ int megaman::getcharge_time(){
 
 void megaman::setcharge_time(int i){
 	charge_time=i;
+}
+
+void megaman::setX_vel( float newvel )
+{
+	megamanX_vel = newvel;
+	
+}
+
+void megaman::setY_vel( float newvel )
+{
+        megamanY_vel = newvel;
+
+}
+
+float megaman::getX_vel()
+{
+	return megamanX_vel;
 }
 #endif

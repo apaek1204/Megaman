@@ -11,6 +11,8 @@ class Bee : public enemies{
 
                 Bee(float=500, float=400);
 
+		~Bee();
+
                 virtual bool loadSprite();
 	
 		virtual void render(float, float, int);
@@ -98,6 +100,11 @@ circleBox.w = 72;
 circleBox.h = 72;
 }
 
+Bee::~Bee()
+{
+	for( int i = 0; i < 9; i++)
+		delete gEnemyTexture[i];
+}
 void Bee::shoot( int frame )
 {
 if( frame % 60 == 2 )
