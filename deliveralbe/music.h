@@ -30,6 +30,10 @@ class music{
 		
 		Mix_Chunk *beeshotMusic=NULL;		// sound for effect 
 		
+		Mix_Chunk *gethitMusic=NULL;		// sound effect for getting hit
+		
+		Mix_Chunk *deathMusic=NULL;		// sound effect for death
+		
 		
 };
 
@@ -71,7 +75,6 @@ bool music::Load_music(void){
 	}
 	
 	// load sound effect for charging charged shot
-	//chargingMusic=Mix_LoadWAV("./../assets/music/soundEffects/ST0_1_1_00002.wav");
 	chargingMusic=Mix_LoadWAV("./../assets/music/soundEffects/ONPARE3_00008.wav");
 	if ( chargingMusic == NULL)
 	{
@@ -80,7 +83,7 @@ bool music::Load_music(void){
 	}
 	
 	// load sound effect for new game
-	newlifeMusic=Mix_LoadWAV("./../assets/music/soundEffects/ONPARE3_00008.wav");
+	newlifeMusic=Mix_LoadWAV("./../assets/music/soundEffects/ONPARE3_00003.wav");
 	if ( newlifeMusic == NULL)
 	{
 		printf( "Failed to load new game sound effect music! SDL_mixer Error: %s\n", Mix_GetError() );
@@ -101,6 +104,26 @@ bool music::Load_music(void){
 	{
 	
 		printf( "Failed to load bee shooting sound effect music! SDL_mixer Error: %s\n", Mix_GetError() );
+		success = false;
+	
+	} 
+	
+	// load sound effect for getting hit
+	gethitMusic=Mix_LoadWAV("./../assets/music/soundEffects/ONPARE5_00002.wav");
+	if ( gethitMusic == NULL)
+	{
+	
+		printf( "Failed to load getting hit sound effect music! SDL_mixer Error: %s\n", Mix_GetError() );
+		success = false;
+	
+	} 
+	
+	// load sound effect for death
+	deathMusic=Mix_LoadWAV("./../assets/music/soundEffects/ONPARE4_00006.wav");
+	if ( deathMusic == NULL)
+	{
+	
+		printf( "Failed to load death sound effect music! SDL_mixer Error: %s\n", Mix_GetError() );
 		success = false;
 	
 	} 
@@ -128,6 +151,12 @@ void music::close_music(void){
 	jumpingMusic=NULL;
 	Mix_FreeChunk(beeshotMusic);
 	beeshotMusic=NULL;
+	
+	Mix_FreeChunk(gethitMusic);
+	gethitMusic=NULL;
+	
+	Mix_FreeChunk(deathMusic);
+	deathMusic=NULL;
 }
 
 # endif 

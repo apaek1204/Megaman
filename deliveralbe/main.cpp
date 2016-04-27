@@ -276,7 +276,7 @@ platforms[3].h = 90;
 			healthbar1.loadSprite();
 			   music1.Load_music();
 			
-			Mix_PlayChannel( -1, music1.newlifeMusic, 0 );
+			
 			for(int i=0; i < 12; i++)
 				AllEnemies[i]->loadSprite();
 			laser* laserArray[5];
@@ -327,12 +327,14 @@ platforms[3].h = 90;
 		//}
 		//else
 		{	
+			Mix_PlayChannel( -1, music1.newlifeMusic, 0 );
 			bool quit = false;
 
 			SDL_Event e;
 			
 			while( !quit )
 			{
+				
 				
                                 if( Mix_PlayingMusic() == 0 ){
                                 	cout << "in music loop!!" << endl;
@@ -483,6 +485,7 @@ platforms[3].h = 90;
           		if(SDL_HasIntersection(&enemyBullet, &megamanHitBox)){
             			megaman1.subtractHealth(1);
             			megaman1.setishit(true); 
+            			
             			megaman1.setX_vel(-5);
             			megaman1.setY_vel(-5);
             			hittime = SDL_GetTicks();
@@ -512,6 +515,7 @@ platforms[3].h = 90;
 					megaman1.setY_vel(-5);
 					hittime = SDL_GetTicks();
 					megaman1.setishit(true);
+					Mix_PlayChannel( -1, music1.gethitMusic, 0);
 //		}
               				if(SDL_GetTicks() > megaman1.getInvul() + 1000){
                 				megaman1.setInvul(int(SDL_GetTicks()));
@@ -558,6 +562,7 @@ platforms[3].h = 90;
 			if(DEATHINIT == false){
 				deathtimer = SDL_GetTicks();
 				DEATHINIT = true;
+				Mix_PlayChannel(-1, music1.deathMusic, 0);
 				cout << "death timer start: " << deathtimer << endl;
 		  	}
 			for ( int i = 0; i < 6; i++){
@@ -655,6 +660,7 @@ platforms[3].h = 90;
 						megaman1.setY( 0 );
 						DEATHINIT = false;
 						lives -=1;
+						Mix_PlayChannel( -1, music1.newlifeMusic, 0 );
 								      }
 					if( lives == 0 ){
 						restart = true;
