@@ -285,7 +285,6 @@ if( !gMegamanTexture[23]->loadFromFile("./../assets/sprites/megaman/take_dmg/6.p
         success = false;
 }
 
-
 return success;
 }
 
@@ -408,6 +407,7 @@ void megaman::render( float camx, float camy, int frame)
 float newmegamanX, newmegamanY;
 bool STOP;
 SDL_RendererFlip flip = SDL_FLIP_NONE;
+
 if(DIRECTION == 0)
 	flip = SDL_FLIP_HORIZONTAL;
 newmegamanX = megamanX - camx;

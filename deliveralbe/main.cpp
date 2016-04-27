@@ -320,6 +320,9 @@ int frame = 0;
         int tempX=megaman1.getX();
         int tempY=megaman1.getY();
 				megaman1.move();
+				if(megaman1.getY() > 500)
+					megaman1.subtractHealth(10);
+					
         //cout << tempX << ":" << tempY << endl;
         SDL_Rect megamanHitBox = megaman1.getHitBox();
           for(int i=0; i<4; i++){
@@ -493,7 +496,7 @@ int frame = 0;
 					EnemylaserArray[i]->render(camera.x, camera.y, false);
 				SDL_RenderPresent( gRenderer );
 				SDL_Delay(1000/30);
-				if( SDL_GetTicks() - hittime >= 250 && megaman1.getishit()){
+				if( SDL_GetTicks() - hittime >= 350 && megaman1.getishit()){
 					megaman1.setX_vel(0);
 					megaman1.setY_vel(0);
 					megaman1.setishit(false);
