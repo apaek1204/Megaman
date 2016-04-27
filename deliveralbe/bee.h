@@ -81,6 +81,7 @@ if( i == 8 ){
         gEnemyTexture.push_back(tmp);
 }
 }
+health = 4;
 enemyX = xCoord;
 
 enemyY = yCoord;

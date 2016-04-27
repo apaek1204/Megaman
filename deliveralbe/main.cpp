@@ -29,104 +29,6 @@ music music0;
 //music music1;
 music music1;
 
-healthbar healthbar1;
-megaman megaman1;
-Stage stage1;
-vector< enemies* > AllEnemies;
-Boss* Boss1 = new Boss(450, 200);
-enemies* tmp = NULL;
-unsigned int hittime = 0;
-unsigned int deathtimer = 0;
-bool DEATHINIT = false;
-bool reset = false;
-
-float hitstart = 0;
-int death = 0;
-int lives = 3;
-
-
-
-for(int i = 0; i < 12; i++){
-	if( i == 0){
-		tmp = new Turret(900,390);
-		AllEnemies.push_back(tmp);
-		   }
-        if( i == 1){
-                tmp = new Turret(200,390);
-                cout << tmp->getX() << ", " << tmp->getY()<< endl;
-                AllEnemies.push_back(tmp);
-                   }
-
-        if( i == 2){
-                tmp = new Turret(1300,390);
-                AllEnemies.push_back(tmp);
-                   }
-        if( i == 3){
-                tmp = new Turret(1550,400);
-                AllEnemies.push_back(tmp);
-                   }
-        if( i == 4){
-                tmp = new Turret(5050,430);
-                AllEnemies.push_back(tmp);
-                   }
-        if( i == 5){
-                tmp = new Turret(5400,430);
-                AllEnemies.push_back(tmp);
-                   }
-       if( i == 6){
-                tmp = new Bee(450,250);
-                AllEnemies.push_back(tmp);SDL_Quit();
-	//Mix_Quit();
-                   }
-        if( i == 7){
-                tmp = new Bee(800,250);
-                AllEnemies.push_back(tmp);
-                   }
-
-        if( i == 8){
-                tmp = new Bee(1100,200);
-                AllEnemies.push_back(tmp);
-                   }
-        if( i == 9){
-                tmp = new Bee(1800,200);
-                AllEnemies.push_back(tmp);
-                   }
-        if( i == 10){
-                tmp = new Bee(3050,250);
-                AllEnemies.push_back(tmp);
-                   }
-        if( i == 11){
-                tmp = new Bee(3500,250);
-                AllEnemies.push_back(tmp);
-                   }
-
-}
-MainMenu mainmenu1;
-
-int x , y, DIRECTION;
-
-SDL_Rect platforms[4];
-platforms[0].x = 0;
-platforms[0].y = 470;
-platforms[0].w = 1580;
-	//Mix_Quit();
-platforms[0].h = 90;
-platforms[1].x = 1700;
-platforms[1].y = 410;
-platforms[1].w = 910;
-platforms[1].h = 90;
-platforms[2].x = 2720;
-platforms[2].y = 440;
-	//Mix_Quit();
-platforms[2].w = 1930;
-platforms[2].h = 90;
-platforms[3].x = 4800;
-platforms[3].y = 430;
-platforms[3].w = 1200;
-platforms[3].h = 90;
-
-
-
 int frame = 0;
 	while (QUIT == false){
 		if( !init() )
@@ -144,7 +46,7 @@ healthbar healthbar1;
 megaman megaman1;
 Stage stage1;
 vector< enemies* > AllEnemies;
-Boss* Boss1 = new Boss(450, 200);
+Boss* Boss1 = new Boss(5790, 200);
 enemies* tmp = NULL;
 unsigned int hittime = 0;
 unsigned int deathtimer = 0;
@@ -424,6 +326,26 @@ platforms[3].h = 90;
             					}
           				}
 				}
+				if(Boss1->inrange( megaman1.getX())){
+					Boss1->shoot(frame);
+                                        if (Boss1->getfire())
+                                        {        
+                                                x = Boss1->getX();
+                                                y = Boss1->getY() + 20.0;
+                                                DIRECTION = 0;
+						for(int j = 0; j <10;j++){ 
+                                                if(EnemylaserArray[j]->allowChange()){
+                                                        EnemylaserArray[j]->setX(x);
+                                                        EnemylaserArray[j]->setY(y);
+                                                        EnemylaserArray[j]->setDir(DIRECTION);
+                                                        EnemylaserArray[j]->setY_vel(10*j);
+                                                        Mix_PlayChannel(-1, music1.beeshotMusic, 0);
+                                         
+                                                			    	     }
+									 }
+                                                          Boss1->setfire(false);
+                                        }
+											  }
        				 //check for collision between enemies and laser
         			for(int i=0; i<5; i++){
           				for(int j=0; j<AllEnemies.size(); j++){

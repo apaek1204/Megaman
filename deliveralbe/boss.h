@@ -20,6 +20,8 @@ class Boss : public enemies{
 		virtual void shoot(int);
 
 		virtual void move();
+	
+		bool inrange( float );
         private:
 
                 vector< LTexture* > gBossTexture;
@@ -58,6 +60,8 @@ if( i == 4 ){
 }
 }
 
+fire = false;
+
 bossX = xCoord;
 
 bossY = yCoord;
@@ -77,6 +81,16 @@ circleBox.h = 72;
 
 void Boss::shoot(int frame)
 {
+	if( frame % 120 == 1)
+		fire = true;
+}
+
+bool Boss::inrange( float x )
+{
+	if( bossX - x  < 800 )
+		return true;
+	else
+		return false;
 }
 
 bool Boss::loadSprite()
