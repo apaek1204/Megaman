@@ -522,7 +522,10 @@ platforms[3].h = 90;
             			}
           		}
         	}
+		if( megaman1.getX()+35 - 320 >= 0 )
 		camera.x = megaman1.getX() + 35 - 320;
+		else
+		camera.x = 0;
 		camera.y = 200;//megaman1.getY() + 35 - 300; 
 		for(int i=0; i<5; i++){
 			  laserArray[i]->fired_laser();
