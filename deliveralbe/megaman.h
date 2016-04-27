@@ -53,6 +53,9 @@ class megaman{
 		float getX_vel();
 
 		void setishit(bool);
+		
+		bool getishit();
+
     void setX(int);
     
     void setY(int);
@@ -494,5 +497,10 @@ float megaman::getX_vel()
 void megaman::setishit( bool newishit )
 {
 	ishit = newishit;
+}
+
+bool megaman::getishit()
+{
+	return ishit;
 }
 #endif

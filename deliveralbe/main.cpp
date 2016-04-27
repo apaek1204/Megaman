@@ -31,6 +31,8 @@ bool reset = false;
 bool megahit = false;
 float hitstart = 0;
 int death = 0;
+int lives = 3;
+
 for(int i = 0; i < 12; i++){
 	if( i == 0){
 		tmp = new Turret(900,390);
@@ -344,6 +346,11 @@ int frame = 0;
           SDL_Rect enemyBullet = EnemylaserArray[i]->getHitBox();
           if(SDL_HasIntersection(&enemyBullet, &megamanHitBox)){
             megaman1.subtractHealth(1);
+            megaman1.setishit(true); 
+            megaman1.setX_vel(-5);
+            megaman1.setY_vel(-5);
+            hittime = SDL_GetTicks();
+
             if(SDL_GetTicks() > megaman1.getInvul() + 1000){
               megaman1.setInvul(int(SDL_GetTicks()));
               EnemylaserArray[i]->setX(-50);
@@ -365,7 +372,6 @@ int frame = 0;
             if(megaman1.getHealth() >0){
               megaman1.subtractHealth(1);
 //		if( megaman1.getX() + 35 <= AllEnemies[i]->getX()){
-		megahit = true;
 		megaman1.setX_vel(-5);
 		megaman1.setY_vel(-5);
 		hittime = SDL_GetTicks();
@@ -487,8 +493,7 @@ int frame = 0;
 					EnemylaserArray[i]->render(camera.x, camera.y, false);
 				SDL_RenderPresent( gRenderer );
 				SDL_Delay(1000/30);
-				if( SDL_GetTicks() - hittime >= 250 && megahit){
-					megahit = false;
+				if( SDL_GetTicks() - hittime >= 250 && megaman1.getishit()){
 					megaman1.setX_vel(0);
 					megaman1.setY_vel(0);
 					megaman1.setishit(false);
@@ -499,14 +504,21 @@ int frame = 0;
 				else
 					frame++;*/
 				frame++;
+				if( frame == 100 )
+					frame = 0;
 				if( megaman1.getHealth() <= 0 )
 					cout << SDL_GetTicks() - deathtimer << endl;
-				if( SDL_GetTicks() - deathtimer >= 1000 && megaman1.getHealth() <= 0){
-					megaman1.setHealth(10);
-					megaman1.setX( 250 );
-					megaman1.setY( 0 );
-					DEATHINIT = false;
-						}
+				if( SDL_GetTicks() - deathtimer >= 1000 && megaman1.getHealth() <= 0 ){
+					if( lives > 0 ){
+						megaman1.setHealth(10);
+						megaman1.setX( 250 );
+						megaman1.setY( 0 );
+						DEATHINIT = false;
+						lives -=1;
+								      }
+					else if( lives == 0 )
+						quit = true;
+												      }
 			}
 		//}
 	}
