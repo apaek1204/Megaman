@@ -348,20 +348,40 @@ platforms[3].h = 90;
 											  }
        				 //check for collision between enemies and laser
         			for(int i=0; i<5; i++){
+
+                  //check for boss and laser collision
+                  SDL_Rect bossHitBox = Boss1->getHitBox();
+                  SDL_Rect laserHitBox = laserArray[i]->getHitBox();
+            			SDL_Rect chargedHitBox = ChargedlaserArray[i]->getHitBox();
+                  if(SDL_HasIntersection(&bossHitBox, &laserHitBox)){
+                    Boss1->subHealth(1);
+                    laserArray[i]->setX(-50);
+                    laserArray[i]->setY(-50);
+                  }
+                  if(SDL_HasIntersection(&bossHitBox, &chargedHitBox)){
+                    Boss1->subHealth(1);
+                  }
+                  if(Boss1->getHealth() <= 0){
+                    cout << "win" << endl;
+                  }
           				for(int j=0; j<AllEnemies.size(); j++){
             					SDL_Rect enemyHitBox = AllEnemies[j]->getHitBox();
-            					SDL_Rect laserHitBox = laserArray[i]->getHitBox();
-            					SDL_Rect chargedHitBox = ChargedlaserArray[i]->getHitBox();
+            					if(j == 3){
+                          cout << enemyHitBox.x << ", " << enemyHitBox.y<< ": " << laserHitBox.x << ", " << laserHitBox.y << endl;
+                      }
             					if(SDL_HasIntersection(&enemyHitBox, &laserHitBox)){
               						//normal laser hit
-              						laserArray[i]->setX(-50);
+              						if(j==3){
+                            cout << "enemy 3 hit" << endl;
+                          }
+                          laserArray[i]->setX(-50);
               						laserArray[i]->setY(-50);
               						AllEnemies[j]->subHealth(1);
             					}
             					if(SDL_HasIntersection(&enemyHitBox, &chargedHitBox)){
               						//charged hit
-              						cout << "charged hit"<< endl;
-              						cout << i << ", " << j << endl;
+              						//cout << "charged hit"<< endl;
+              						//cout << i << ", " << j << endl;
               						AllEnemies[j]->subHealth(1);
             					}
            					 if(AllEnemies[j]->getHealth() == 0){
@@ -372,7 +392,8 @@ platforms[3].h = 90;
             					}
           				}
         			}
-        
+              
+              
         			int tempX=megaman1.getX();
         			int tempY=megaman1.getY();
 				megaman1.move();
@@ -432,6 +453,7 @@ platforms[3].h = 90;
           		if(SDL_HasIntersection(&megamanHitBox, &enemyHitBox)){
             			if(megaman1.getHealth() >0){
               				megaman1.subtractHealth(1);
+                      cout << "enemy: " << i << endl;
 //		if( megaman1.getX() + 35 <= AllEnemies[i]->getX()){
 					megaman1.setX_vel(-5);
 					megaman1.setY_vel(-5);

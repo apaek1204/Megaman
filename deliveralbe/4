@@ -82,7 +82,7 @@ circleBox.w = 110;
 
 circleBox.h = 90;
 
-health = 50;
+health = 5;
 }
 
 void Boss::shoot(int frame)
@@ -154,7 +154,7 @@ if( bossY <= 300 )
 else
 	bossY-=bossY_vel;
 }
-void Boss::subHealth(int a){
+void Boss::subHealt(int a){
   health = health -a;
 }
 int Boss::getHealth(){
