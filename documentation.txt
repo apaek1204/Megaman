@@ -4,7 +4,7 @@
 
 3. User manual: You can control megaman by using the arrow keys and spacebar. The arrow keys move megaman, the up key makes megaman jump, the left key moves megaman left, and the right key moves megaman right. Spacebar shoots a small bullet.
 Holding down spacebar will charge a laser and, if charged enough, its release will shoot a large bullet. This charged bullet can pierce through enemies and will deal more damage than the standard bullet.
-If you touch enemies or their bullets, you will be damaged, losing health and knocked back slightly. You have a smale time frame of being invincible if damaged. 
+If you touch enemies or their bullets, you will be damaged, losing health and knocked back slightly. You have a small time frame of being invincible if damaged. 
 You can hang on the side of platforms by holding down the arrow keys. While hanging, you can shoot and jump, so you can jump back up to the platforms.
 You have 3 lives and 10 health per life. Running out of health means you lose a life. After all lives are lost, you lose.
 You win by killing the boss.
