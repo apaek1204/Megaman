@@ -6,7 +6,7 @@
 Holding down spacebar will charge a laser and, if charged enough, its release will shoot a large bullet. This charged bullet can pierce through enemies and will deal more damage than the standard bullet.
 If you touch enemies or their bullets, you will be damaged, losing health and knocked back slightly. You have a smale time frame of being invincible if damaged. 
 
-4. Known bugs: ?
+4. Known bugs: The background is too big and does not load on student machines. It loads perfectly fine on our individual machines.
 
 5. No special equipment or information.
 
