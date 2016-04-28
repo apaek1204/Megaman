@@ -72,19 +72,19 @@ int main( int argc, char* args[] ){
 					AllEnemies.push_back(tmp);
 				}
 				if( i == 2){
-					tmp = new Turret(1300,390);
+					tmp = new Turret(2100,330);
 					AllEnemies.push_back(tmp);
 				}
 				if( i == 3){
-					tmp = new Turret(1550,400);
+					tmp = new Turret(3100,360);
 					AllEnemies.push_back(tmp);
 				}
 				if( i == 4){
-					tmp = new Turret(5050,430);
+					tmp = new Turret(4200,360);
 					AllEnemies.push_back(tmp);
 				}
 				if( i == 5){
-					tmp = new Turret(5400,430);
+					tmp = new Turret(5200,360);
 					AllEnemies.push_back(tmp);
 				}
 				if( i == 6){
@@ -344,8 +344,9 @@ int main( int argc, char* args[] ){
 								Boss1->subHealth(1);
 							}
 							for(int j=0; j<AllEnemies.size(); j++){
-								SDL_Rect enemyHitBox = AllEnemies[j]->getHitBox();
-								if(SDL_HasIntersection(&enemyHitBox, &laserHitBox)){
+								
+                SDL_Rect enemyHitBox = AllEnemies[j]->getHitBox();	
+                if(SDL_HasIntersection(&enemyHitBox, &laserHitBox)){
 									//normal laser hit
 									laserArray[i]->setX(-50);
 									laserArray[i]->setY(-50);
@@ -385,12 +386,15 @@ int main( int argc, char* args[] ){
 									megaman1.setX(tempX);
 									megaman1.setY(tempY);
 									megaman1.setonwall(1);
+                  megaman1.setDir(0);
 								}
 								else{
 									megaman1.setonwall(0);
 									megaman1.setX(tempX);
 									megaman1.setY(tempY);
+                  megaman1.setDir(1);
 								}
+                megaman1.setJumpFalse();
 							}
 						}
 						//check collision between enemy lasers and megaman/platforms

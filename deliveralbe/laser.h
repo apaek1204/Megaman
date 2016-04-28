@@ -11,8 +11,8 @@ class laser {
 
 	public:
 
-		static const int LASER_WIDTH = 5;
-                static const int LASER_HEIGHT = 5;
+		static const int LASER_WIDTH = 15;
+    static const int LASER_HEIGHT = 15;
 		static const float LASER_SPEED = .25;	
 		laser( float = 0 , float = 0 , int = 0, int = 40, int = 40, bool = false);
 

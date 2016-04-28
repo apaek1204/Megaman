@@ -5,8 +5,15 @@
 3. User manual: You can control megaman by using the arrow keys and spacebar. The arrow keys move megaman, the up key makes megaman jump, the left key moves megaman left, and the right key moves megaman right. Spacebar shoots a small bullet.
 Holding down spacebar will charge a laser and, if charged enough, its release will shoot a large bullet. This charged bullet can pierce through enemies and will deal more damage than the standard bullet.
 If you touch enemies or their bullets, you will be damaged, losing health and knocked back slightly. You have a smale time frame of being invincible if damaged. 
+You can hang on the side of platforms by holding down the arrow keys. While hanging, you can shoot and jump, so you can jump back up to the platforms.
+You have 3 lives and 10 health per life. Running out of health means you lose a life. After all lives are lost, you lose.
+You win by killing the boss.
 
-4. Known bugs: The background is too big and does not load on student machines. It loads perfectly fine on our individual machines.
+4. Known bugs: The background is too big and does not load on student machines. It loads perfectly fine on our individual machines. 
+The first enemy turret is able to go past the left bound of the map.
+Enemy turret going right is bugged (SDL flip problems. Just need to fix the images).
+Sometimes the megaman sprite does not update correctly. For example, if you quickly switch from clinging left to clinging right on walls, it may not load the clinging right sprite.
+When hit by an enemy while continuing to hold down, the megaman running sprite will load after the megaman hit sprite, but megaman will not move.
 
 5. No special equipment or information.
 

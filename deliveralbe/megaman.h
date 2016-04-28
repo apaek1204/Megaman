@@ -69,6 +69,10 @@ class megaman{
     void setInvul(int);
     
     int getInvul();
+    
+    void setJumpFalse();
+
+    void setDir(int);
 //		void fire();
 
 	bool charging;		// set to know if the shot is still charging
@@ -299,10 +303,12 @@ bool megaman::handleEvent( SDL_Event& e )
                 switch( e.key.keysym.sym )
                 {
                         case  SDLK_UP: if (megamanY + MEGAMAN_HEIGHT > 200.0)
-						megamanY_vel = -MEGAMAN_SPEED-7.0; 
+					if(!JUMPING){
+          megamanY_vel = -MEGAMAN_SPEED-7.0; 
 					JUMPING = true;
 					ONWALL_RIGHT = false;
 					ONWALL_LEFT = false;
+          }
 						break;
         //                case  SDLK_DOWN: megamanY_vel += MEGAMAN_SPEED; break;
                         case  SDLK_LEFT: megamanX_vel = -MEGAMAN_SPEED; MOVING = true; DIRECTION = 0; break;
@@ -316,7 +322,7 @@ bool megaman::handleEvent( SDL_Event& e )
         {
                 switch( e.key.keysym.sym )
                 {
-                        case  SDLK_UP: megamanY_vel = 0; JUMPING = false;
+                        case  SDLK_UP: if(!JUMPING) megamanY_vel = 0; //JUMPING = false;
 			       break;
          //               case  SDLK_DOWN: megamanY_vel = 0; megamanX_vel -= MEGAMAN_SPEED; break;
                         case  SDLK_LEFT: 
@@ -464,7 +470,7 @@ void megaman::setY(int y){
 void megaman::subtractHealth(int a){
   if(int(SDL_GetTicks()) > invulnerable+1000)
     health = health-a;
-    cout << "health: "<< health << endl;
+    //cout << "health: "<< health << endl;
 }
 int megaman::getHealth(){
   return health;
@@ -508,5 +514,11 @@ void megaman::setishit( bool newishit )
 bool megaman::getishit()
 {
 	return ishit;
+}
+void megaman::setJumpFalse(){
+  JUMPING=false;
+}
+void megaman::setDir(int a){
+  DIRECTION = a;
 }
 #endif
