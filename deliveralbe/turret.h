@@ -83,7 +83,6 @@ bool Turret::loadSprite(){
 void Turret::shoot(int a){
  //turret does not shoot	
 }
-}
 const SDL_Rect Turret::getHitBox(){
 	return circleBox;
 }

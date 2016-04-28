@@ -297,7 +297,7 @@ bool megaman::handleEvent( SDL_Event& e ){
         if( e.type == SDL_KEYUP && e.key.repeat == 0 && health > 0){
 			//keyups
 			switch( e.key.keysym.sym ){
-				case  SDLK_UP: if(!JUMPING) megamanY_vel = 0; //JUMPING = false;
+				case  SDLK_UP: if(JUMPING) megamanY_vel = 0; //JUMPING = false;
 				break;
 				case  SDLK_LEFT: 
 					if(megamanX_vel < 0){

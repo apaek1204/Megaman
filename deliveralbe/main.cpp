@@ -20,7 +20,7 @@
 #include "bossScreen.h"
 int main( int argc, char* args[] ){
 	int m=0;
-	bool QUIT = false;
+	bool QUIT = false; //parameter to quit game
 	bool start = false;
 	bool restart=false;
 	bool bossScreenMenu=false;
@@ -135,7 +135,7 @@ int main( int argc, char* args[] ){
 			platforms[3].w = 1200;
 			platforms[3].h = 90;
 						 
-			if (( start == false) && (restart==false) && (bossScreenMenu==false)){
+			if (( start == false) && (restart==false) && (bossScreenMenu==false)){ //Show main menu
 				mainmenu1.loadSprite();
 				music0.Load_music();
 				bool quitmm=false;
@@ -171,7 +171,8 @@ int main( int argc, char* args[] ){
 				Boss1->loadSprite();
 				healthbar1.loadSprite();
 				music1.Load_music();
-				
+
+			//our lasers are all stored off screen and called onto screen by shoot functions	
 				
 				for(int i=0; i < 12; i++){
 					AllEnemies[i]->loadSprite();
@@ -181,21 +182,21 @@ int main( int argc, char* args[] ){
 				laser* EnemylaserArray[16];
 				laser* Death[6];
 
-				for(int i=0; i<5; i++){
+				for(int i=0; i<5; i++){ //laser array used by megaman
 					laserArray[i] = new laser(-50,-50,-1,20,20);
 					laserArray[i]->setX(-50);
 					laserArray[i]->setY(-50);
 					laserArray[i]->setDir(-1);
 					laserArray[i]->loadLaserSprite();
 				}
-				for(int i=0; i<5; i++){
+				for(int i=0; i<5; i++){//charged shot array used by megaman
 					ChargedlaserArray[i] = new laser(-50,-50,-1, 40, 40);
 					ChargedlaserArray[i]->setX(-50);
 					ChargedlaserArray[i]->setY(-50);
 					ChargedlaserArray[i]->setDir(-1);
 					ChargedlaserArray[i]->loadLaserSprite(1);
 				}
-				for(int i=0; i<16; i++){
+				for(int i=0; i<16; i++){//enemy lasers array
 					EnemylaserArray[i] = new laser(-50,-50,-1, 20, 20);
 					EnemylaserArray[i]->setX(-50);
 					EnemylaserArray[i]->setY(-50);
@@ -203,7 +204,7 @@ int main( int argc, char* args[] ){
 					EnemylaserArray[i]->loadLaserSprite();
 				}
 
-				for(int i=0; i<6; i++){
+				for(int i=0; i<6; i++){//death animation lasers
 					Death[i] = new laser(-50,-50,-1, 40, 40);
 					Death[i]->setX(-50);
 					Death[i]->setY(-50);
@@ -253,14 +254,14 @@ int main( int argc, char* args[] ){
 									Mix_PlayChannel( -1, music1.chargingMusic, 0);
 							}
 						}
-						
-						
+												
+						//if megaman shoots it calls a laser
 						if (megaman1.getfire()){
 							x = megaman1.getX() + 35.0;
 							y = megaman1.getY() + 20.0;
 							DIRECTION = megaman1.getdir();
 							for(int i=0; i<5; i++){
-								if(laserArray[i]->allowChange()){
+								if(laserArray[i]->allowChange()){ //checks if laser is avaialable to shoot 
 									laserArray[i]->setX(x);
 									laserArray[i]->setY(y);
 									laserArray[i]->setDir(DIRECTION);
@@ -269,11 +270,11 @@ int main( int argc, char* args[] ){
 									megaman1.total_time=0;
 									SDL_Rect laserHitBox = laserArray[i]->getHitBox();
 									//cout << laserHitBox.x << ", " << laserHitBox.y<< endl;
-									break;
+									break; //if available laser is found it stops looking
 								}	
 							}         
 						}
-						if (megaman1.getchargedfire()){
+						if (megaman1.getchargedfire()){ //same as above but with charge shot
 							x = megaman1.getX() + 35.0;
 							y = megaman1.getY() + 20.0;
 							DIRECTION = megaman1.getdir();
@@ -291,7 +292,7 @@ int main( int argc, char* args[] ){
 								}
 							}
 						}
-						for(int j=6; j < 12; j++){
+						for(int j=6; j < 12; j++){ //enemies look for bullets in enemylaser array
 							AllEnemies[j]->shoot(frame);
 
 							if (AllEnemies[j]->getfire()){
@@ -309,20 +310,20 @@ int main( int argc, char* args[] ){
 								}
 							}
 						}
-						if(Boss1->inrange( megaman1.getX())){
+						if(Boss1->inrange( megaman1.getX())){ // if megaman is in range of the boss
 							Boss1->shoot(frame);
-							if (Boss1->getfire() && Boss1->getHealth() > 0){        
+							if (Boss1->getfire() && Boss1->getHealth() > 0){        //while alive try and shoot megaman
 								x = Boss1->getX();
 								y = Boss1->getY();// + 90.0;
 								//cout << x << " " << y << endl;
 								DIRECTION = 0;
 								for(int j = 0; j <10;j++){ 
-									if(EnemylaserArray[j]->allowChange()){
+									if(EnemylaserArray[j]->allowChange()){ //checking for available lasers, but instead of stopping once finding one it shoots all of them for shotgun style attack
 										EnemylaserArray[j]->setX(Boss1->getX());
 										EnemylaserArray[j]->setY(Boss1->getY()+75);
 										EnemylaserArray[j]->setDir(DIRECTION);
-										EnemylaserArray[j]->setY_vel(5*j);
-										Mix_PlayChannel(-1, music1.beeshotMusic, 0);
+										EnemylaserArray[j]->setY_vel(5*j); //scales velocity differently to get shotgun effect
+										Mix_PlayChannel(-1, music1.beeshotMusic, 0); 
 							 
 									}
 								}
@@ -386,34 +387,34 @@ int main( int argc, char* args[] ){
 									megaman1.setX(tempX);
 									megaman1.setY(tempY);
 									megaman1.setonwall(1);
-                  megaman1.setDir(0);
+                  							megaman1.setDir(0);
 								}
 								else{
 									megaman1.setonwall(0);
 									megaman1.setX(tempX);
 									megaman1.setY(tempY);
-                  megaman1.setDir(1);
+                  							megaman1.setDir(1);
 								}
-                megaman1.setJumpFalse();
+                						megaman1.setJumpFalse();
 							}
 						}
 						//check collision between enemy lasers and megaman/platforms
 						for(int i=0; i<16; i++){
 							SDL_Rect enemyBullet = EnemylaserArray[i]->getHitBox();
-							if(SDL_HasIntersection(&enemyBullet, &megamanHitBox)){
+							if(SDL_HasIntersection(&enemyBullet, &megamanHitBox)){ //if hit take away health, sets ishit megaman variable so that hitstun animation plays and set his velocity to bounce him back
 								megaman1.subtractHealth(1);
 								megaman1.setishit(true); 
 								megaman1.setX_vel(-5);
 								megaman1.setY_vel(-5);
-								hittime = SDL_GetTicks();
-								if(SDL_GetTicks() > megaman1.getInvul() + 1000){
+								hittime = SDL_GetTicks(); //keeps track of when megaman gets hit to check how long he is to be stunned/knocked back for
+								if(SDL_GetTicks() > megaman1.getInvul() + 1000){ //sets time to be invulnerable to prevent instant death
 									megaman1.setInvul(int(SDL_GetTicks()));
 									EnemylaserArray[i]->setX(-50);
 									EnemylaserArray[i]->setY(-50);
 								}
 							}
 						for(int j=0; j<4; j++){
-							if(SDL_HasIntersection(&enemyBullet, &platforms[j])){
+							if(SDL_HasIntersection(&enemyBullet, &platforms[j])){ //if enemy laser hits ground it goes away
 								EnemylaserArray[i]->setX(-50);
 								EnemylaserArray[i]->setY(-50);
 							}
@@ -434,19 +435,16 @@ int main( int argc, char* args[] ){
 										megaman1.setInvul(int(SDL_GetTicks()));
 									}
 								}
-								else{
-									//cout << "dead" << endl;
-								}
 							}
 						}
-						if( megaman1.getX()+35 - 320 >= 0 ){
+						if( megaman1.getX()+35 - 320 >= 0 ){ // keeps megaman in middle of screen, subtracts half screen width, and half of megaman width
 							camera.x = megaman1.getX() + 35 - 320;
 						}
 						else{
 							camera.x = 0;
 						}
 						camera.y = 200;//megaman1.getY() + 35 - 300; 
-						for(int i=0; i<5; i++){
+						for(int i=0; i<5; i++){ //if laser is called it sets its direction and moves it
 							laserArray[i]->fired_laser();
 							ChargedlaserArray[i]->fired_laser();
 						}
@@ -456,22 +454,22 @@ int main( int argc, char* args[] ){
 						SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 						SDL_RenderClear( gRenderer );
 						stage1.Render(camera.x, camera.y);
-						for(int i = 0; i < 12; i++){
+						for(int i = 0; i < 12; i++){ //moves all enemies and renders them with respect to megaman
 							AllEnemies[i]->move();
 							AllEnemies[i]->render(camera.x, camera.y, frame);
 						}
 						Boss1->render(camera.x, camera.y, frame);
-						if( megaman1.getHealth() > 0){
+						if( megaman1.getHealth() > 0){ //only renders megaman while alive so that we can render death animation
 							megaman1.render(camera.x, camera.y, (frame));
 						}
 						else{
-							if(DEATHINIT == false){
+							if(DEATHINIT == false){ //sets time of death
 								deathtimer = SDL_GetTicks();
 								DEATHINIT = true;
 								Mix_PlayChannel(-1, music1.deathMusic, 0);
 								//cout << "death timer start: " << deathtimer << endl;
 							}
-							for ( int i = 0; i < 6; i++){
+							for ( int i = 0; i < 6; i++){ //plays death animation, by shooting lasers in different directions
 								if( i == 0 ){
 									if(Death[i]->getX() < 0){
 										Death[i]->setX(megaman1.getX());
@@ -544,29 +542,28 @@ int main( int argc, char* args[] ){
 						}
 						healthbar1.render(megaman1.getX()-camera.x-50, 300, megaman1.getHealth()-1);
 						SDL_RenderPresent( gRenderer );
-						SDL_Delay(1000/30);
-						if( SDL_GetTicks() - hittime >= 350 && megaman1.getishit()){
+						SDL_Delay(1000/30); //keeps game at roughly 30 frames
+						if( SDL_GetTicks() - hittime >= 350 && megaman1.getishit()){ //checks how long megaman has been in hitstun, releases him after .35 secs
 							megaman1.setX_vel(0);
 							megaman1.setY_vel(0);
 							megaman1.setishit(false);
 						}
-						frame++;
+						frame++; //keeps track of what frame it is on for rendering purposes
 						if( frame == 100 ){
 							frame = 0;
 						}
-						if( megaman1.getHealth() <= 0 ){
-							//cout << SDL_GetTicks() - deathtimer << endl;
-						}
-						if( Boss1->getHealth()<=0 && Boss1->getHealth()>=100){
+						if( Boss1->getHealth()<=0 && Boss1->getHealth()>=100){//sets the time tha tyou completed the game
 							completetime = SDL_GetTicks();
 							Boss1->subHealth(102);
 						}
-						if( SDL_GetTicks() - completetime >= 5000 && Boss1->getHealth() <= 0){
+						if( SDL_GetTicks() - completetime >= 5000 && Boss1->getHealth() <= 0){ //win game if boss is dead
 							quit = true;
-							bossScreenMenu=true;
+							QUIT = true;
 							Mix_PlayChannel(-1, music1.bossdeathMusic, 0);
+							//bossScreenMenu=true;
+							
 						}
-						if( SDL_GetTicks() - deathtimer >= 1000 && megaman1.getHealth() <= 0 ){
+						if( SDL_GetTicks() - deathtimer >= 1000 && megaman1.getHealth() <= 0 ){ //resets megaman after death if he has lives else game over
 							if( lives > 0 ){
 								megaman1.setHealth(10);
 								megaman1.setX( 250 );
@@ -579,91 +576,50 @@ int main( int argc, char* args[] ){
 								restart = true;
 								quit=true;				 
 							}
-					}
 
-
-					if ((start == true ) && (restart == true) && (bossScreenMenu==false)){
-						restart1.loadSprite();
-						bool quitrm=false;
-						SDL_Event erm;
-						erm.type=0;
-						int timer=0;
-
-						while ( !quitrm && restart == true){
-							erm.type=0;
-											//if( Mix_PlayingMusic() == 0 ){
-											//        Mix_PlayMusic( music0.mmMusic, -1 );
-											//}
-
-							while( SDL_PollEvent( &erm ) != 0 ){
-								if( erm.type == SDL_QUIT ){
-									quitrm = true;
-									QUIT=true;
-								}
-							}
-							if (timer >10){
-								restart=restart1.handle_event(erm);
-							}
-							SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
-							SDL_RenderClear( gRenderer );
-							restart1.Render();
-							SDL_RenderPresent( gRenderer );
-							SDL_Delay(1000/30);
-											
-							if (restart == false){
-								close();
-							}
-						}
-
-					}
-
-					if ((start == true) && (restart == false) && (bossScreenMenu == true)){
-						bossscreen1.loadSprite();
-							   
-								
-						bool quitbm=false;
-						SDL_Event ebm;
-						ebm.type=0;
-						int timer=0;
-						while ( !quitbm && bossScreenMenu == true){
-							ebm.type=0;
-							//if( Mix_PlayingMusic() == 0 ){
-							//        Mix_PlayMusic( music0.mmMusic, -1 );
-							//}
-							while( SDL_PollEvent( &ebm ) != 0 ){
-											
-												
-								if( ebm.type == SDL_QUIT ){
-									quitbm = true;
-									QUIT=true;
-								}
-							}
-							if (timer > 10){
-								bossScreenMenu=bossscreen1.handle_event(ebm);
-							}
-							SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
-							SDL_RenderClear( gRenderer );
-							bossscreen1.Render();
-							SDL_RenderPresent( gRenderer );
-							SDL_Delay(1000/30);
-											
-							if (bossScreenMenu == false){
-								//Mix_PlayingMusic()=0;
-								//music1.close_music();
-								//delete music1;
-								close(); 
-							}
-							timer++;		
-
-						}
-					}
-				}
 			}
+		
+		if ((start == true ) && (restart == true)){
+			restart1.loadSprite();
+                        
+                        bool quitrm=false;
+                        SDL_Event erm;
+                        erm.type=0;
+
+                        while ( !quitrm && restart == true){
+				erm.type=0;
+
+                                while( SDL_PollEvent( &erm ) != 0 ){
+                                        if( erm.type == SDL_QUIT ){
+                                                quitrm = true;
+                                                QUIT=true;
+                                        }
+                                }
+
+                                restart=restart1.handle_event(erm);
+
+                                SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+                                SDL_RenderClear( gRenderer );
+                                restart1.Render();
+                                SDL_RenderPresent( gRenderer );
+                                SDL_Delay(1000/30);
+                                
+                               if (restart == false){
+
+                               	close();}
+                                
+                             
+
+		
 		}
+		
 	}
-	close();
-	//Mix_Quit();
-	//music1[m]->close_music();
+	}
+	}
+	}
+
+	}close();
+
 	music1.close_music();
 	SDL_Quit();
 	Mix_Quit();
