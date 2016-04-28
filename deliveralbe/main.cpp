@@ -35,13 +35,11 @@ bossScreen bossscreen1;
 
 int frame = 0;
 	while (QUIT == false){
-		if( !init() )
-		{
+		if( !init() ){
 			QUIT=true;
 			printf( "Failed to initialize!\n" );
 		}
-		else
-		{
+		else{
 			RestartMenu restart1;
 			music music0;
 //music music1;
@@ -63,65 +61,64 @@ int death = 0;
 int lives = 3;
 
 
-cout << "m is " << m << endl;
+//initialize enemies
 for(int i = 0; i < 12; i++){
 	if( i == 0){
 		tmp = new Turret(900,390);
 		AllEnemies.push_back(tmp);
-		   }
-        if( i == 1){
-                tmp = new Turret(200,390);
-                cout << tmp->getX() << ", " << tmp->getY()<< endl;
-                AllEnemies.push_back(tmp);
-                   }
+	}
+  if( i == 1){
+    tmp = new Turret(200,390);
+    cout << tmp->getX() << ", " << tmp->getY()<< endl;
+    AllEnemies.push_back(tmp);
+  }
+  if( i == 2){
+    tmp = new Turret(1300,390);
+    AllEnemies.push_back(tmp);
+  }
+  if( i == 3){
+    tmp = new Turret(1550,400);
+    AllEnemies.push_back(tmp);
+  }
+  if( i == 4){
+    tmp = new Turret(5050,430);
+    AllEnemies.push_back(tmp);
+  }
+  if( i == 5){
+    tmp = new Turret(5400,430);
+    AllEnemies.push_back(tmp);
+  }
+  if( i == 6){
+    tmp = new Bee(450,250);
+    AllEnemies.push_back(tmp);
+  }
+  if( i == 7){
+    tmp = new Bee(800,250);
+    AllEnemies.push_back(tmp);
+  }
 
-        if( i == 2){
-                tmp = new Turret(1300,390);
-                AllEnemies.push_back(tmp);
-                   }
-        if( i == 3){
-                tmp = new Turret(1550,400);
-                AllEnemies.push_back(tmp);
-                   }
-        if( i == 4){
-                tmp = new Turret(5050,430);
-                AllEnemies.push_back(tmp);
-                   }
-        if( i == 5){
-                tmp = new Turret(5400,430);
-                AllEnemies.push_back(tmp);
-                   }
-       if( i == 6){
-                tmp = new Bee(450,250);
-                AllEnemies.push_back(tmp);
-                   }
-        if( i == 7){
-                tmp = new Bee(800,250);
-                AllEnemies.push_back(tmp);
-                   }
-
-        if( i == 8){
-                tmp = new Bee(1100,200);
-                AllEnemies.push_back(tmp);
-                   }
-        if( i == 9){
-                tmp = new Bee(1800,200);
-                AllEnemies.push_back(tmp);
-                   }
-        if( i == 10){
-                tmp = new Bee(3050,250);
-                AllEnemies.push_back(tmp);
-                   }
-        if( i == 11){
-                tmp = new Bee(3500,250);
-                AllEnemies.push_back(tmp);
-                   }
+  if( i == 8){
+    tmp = new Bee(1100,200);
+    AllEnemies.push_back(tmp);
+  }
+  if( i == 9){
+    tmp = new Bee(1800,200);
+    AllEnemies.push_back(tmp);
+  }
+  if( i == 10){
+    tmp = new Bee(3050,250);
+    AllEnemies.push_back(tmp);
+  }
+  if( i == 11){
+    tmp = new Bee(3500,250);
+    AllEnemies.push_back(tmp);
+  }
 
 }
 MainMenu mainmenu1;
 
 int x , y, DIRECTION;
-
+//initialize platforms
 SDL_Rect platforms[4];
 platforms[0].x = 0;
 platforms[0].y = 470;
