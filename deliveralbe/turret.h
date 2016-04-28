@@ -9,121 +9,111 @@ class Turret : public enemies{
 
         public:
 
-                Turret(float=500, float=400, int = 1);
+			Turret(float=500, float=400, int = 1);
 
-                virtual bool loadSprite();
+			virtual bool loadSprite();
 
-                virtual void render(float, float, int);
-		
-		virtual void shoot(int);
+			virtual void render(float, float, int);
+	
+			virtual void shoot(int);
 
-                const SDL_Rect getHitBox();
+			const SDL_Rect getHitBox();
 
-		            virtual void move();
-                virtual void setX(int);
-                virtual void setY(int);
-                virtual void setXVel(int);
-                virtual void setYVel(int);
+			virtual void move();
+			virtual void setX(int);
+			virtual void setY(int);
+			virtual void setXVel(int);
+			virtual void setYVel(int);
         private:
 
-                vector< LTexture* > gEnemyTexture;
-		int platform;
-                float enemyX, enemyY;
-                float enemyX_vel, enemyY_vel;
-                SDL_Rect circleBox;
-		float startX;
-		SDL_RendererFlip flip;
+			vector< LTexture* > gEnemyTexture;
+			int platform;
+			float enemyX, enemyY;
+			float enemyX_vel, enemyY_vel;
+			SDL_Rect circleBox;
+			float startX;
+			SDL_RendererFlip flip;
 };
 
-Turret::Turret(float xCoord, float yCoord, int plat) : enemies(xCoord, yCoord)
-{
-LTexture* tmp = NULL;
-for( int i = 0; i <9; i++){
-if( i == 0 ){
-        tmp = new LTexture(136,72);
-        gEnemyTexture.push_back(tmp);
-	    }
-if( i == 1 ){
-        tmp = new LTexture(156,72);
-        gEnemyTexture.push_back(tmp);
+Turret::Turret(float xCoord, float yCoord, int plat) : enemies(xCoord, yCoord){
+	LTexture* tmp = NULL;
+	for( int i = 0; i <9; i++){
+		if( i == 0 ){
+				tmp = new LTexture(136,72);
+				gEnemyTexture.push_back(tmp);
+		}
+		if( i == 1 ){
+				tmp = new LTexture(156,72);
+				gEnemyTexture.push_back(tmp);
 
-	    }
-}
-enemyX = xCoord;
-startX = xCoord;
-enemyY = yCoord;
-enemyX_vel = 6;
+		}
+	}
+	enemyX = xCoord;
+	startX = xCoord;
+	enemyY = yCoord;
+	enemyX_vel = 6;
 
-flip = SDL_FLIP_HORIZONTAL;
+	flip = SDL_FLIP_HORIZONTAL;
 
-platform = plat;
+	platform = plat;
 
-circleBox.x = enemyX;
+	circleBox.x = enemyX;
 
-circleBox.y = enemyY + 30;
+	circleBox.y = enemyY + 30;
 
-circleBox.w = 135;
+	circleBox.w = 135;
 
-circleBox.h = 74;
-}
-
-void Turret::shoot(int derp)
-{
+	circleBox.h = 74;
 }
 
-bool Turret::loadSprite()
-{
-bool success = true;
+bool Turret::loadSprite(){
+	bool success = true;
 
-if( !gEnemyTexture[0]->loadFromFile("./../assets/sprites/enemies/17.png"))
-{
-        printf( "Unable to load enemy texture! \n");
-        success = false;
-}
-if( !gEnemyTexture[1]->loadFromFile("./../assets/sprites/enemies/18.png"))
-{
-        printf( "Unable to load enemy texture! \n");
-        success = false;
-}
+	if( !gEnemyTexture[0]->loadFromFile("./../assets/sprites/enemies/17.png")){
+		printf( "Unable to load enemy texture! \n");
+		success = false;
+	}
+	if( !gEnemyTexture[1]->loadFromFile("./../assets/sprites/enemies/18.png")){
+		printf( "Unable to load enemy texture! \n");
+		success = false;
+	}
 
-return success;
+	return success;
 }
 const SDL_Rect Turret::getHitBox(){
-  return circleBox;
+	return circleBox;
 }
-void Turret::render( float camx, float camy, int frame)
-{
-float newenemyX, newenemyY;
-newenemyX = enemyX - camx;
-newenemyY = enemyY - camy;
-gEnemyTexture[(frame % 8)/4]->render( newenemyX, newenemyY, NULL, 0.0, NULL,flip);
+void Turret::render( float camx, float camy, int frame){
+	float newenemyX, newenemyY;
+	newenemyX = enemyX - camx;
+	newenemyY = enemyY - camy;
+	gEnemyTexture[(frame % 8)/4]->render( newenemyX, newenemyY, NULL, 0.0, NULL,flip);
 }
 
-void Turret::move()
-{
+void Turret::move(){
 	if(enemyX >= startX +400 || enemyX <= startX - 400){
 		enemyX_vel = -enemyX_vel;
 		if(startX < enemyX)
 			flip = SDL_FLIP_NONE;
 		else
 			flip = SDL_FLIP_HORIZONTAL;
-}		
+	}		
 	enemyX+= enemyX_vel;
 	circleBox.x+= enemyX_vel;
 }
 void Turret::setX(int a){
-  circleBox.x = a;
-  enemyX = a;
+	circleBox.x = a;
+	enemyX = a;
 }
 
 void Turret::setY(int a){
-  enemyY = a;
-  circleBox.y = a;
+	enemyY = a;
+	circleBox.y = a;
 }
 void Turret::setXVel(int a){
-  enemyX_vel = a;
+	enemyX_vel = a;
 }
 void Turret:: setYVel(int a){
-  enemyY_vel = a;
+	enemyY_vel = a;
 }
 #endif
