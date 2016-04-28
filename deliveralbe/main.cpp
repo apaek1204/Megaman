@@ -17,17 +17,21 @@
 #include <iterator>
 #include "RestartMenu.h"
 #include "healthbar.h"
+#include "bossScreen.h"
 int main( int argc, char* args[] )
 {
 int m=0;
 bool QUIT = false;
 bool start = false;
 bool restart=false;
+bool bossScreenMenu=false;
 
 RestartMenu restart1;
 music music0;
 //music music1;
 music music1;
+
+bossScreen bossscreen1;
 
 int frame = 0;
 	while (QUIT == false){
@@ -136,7 +140,7 @@ platforms[3].y = 430;
 platforms[3].w = 1200;
 platforms[3].h = 90;
              
-                	if (( start == false) && (restart==false)){
+                	if (( start == false) && (restart==false) && (bossScreenMenu==false)){
                         	mainmenu1.loadSprite();
                         	music0.Load_music();
                         	bool quitmm=false;
@@ -172,7 +176,7 @@ platforms[3].h = 90;
                         }
 			
                         
-		if ((start == true) && (restart == false)){
+		if ((start == true) && (restart == false) && (bossScreenMenu==false)){
 			stage1.loadSprite();
 			megaman1.loadSprite();
 			Boss1->loadSprite();
@@ -593,7 +597,8 @@ platforms[3].h = 90;
 					}
 				if( SDL_GetTicks() - completetime >= 1000 && Boss1->getHealth() <= 0){
 					quit = true;
-					QUIT = true;
+					bossScreenMenu=true;
+					Mix_PlayChannel(-1, music1.bossdeathMusic, 0);
 					}
 				if( SDL_GetTicks() - deathtimer >= 1000 && megaman1.getHealth() <= 0 ){
 					if( lives > 0 ){
@@ -611,12 +616,14 @@ platforms[3].h = 90;
 			}
 		//}
 		
-		if ((start == true ) && (restart == true)){
+		if ((start == true ) && (restart == true) && (bossScreenMenu==false)){
 			restart1.loadSprite();
                         
                         bool quitrm=false;
                         SDL_Event erm;
                         erm.type=0;
+                        
+                        int timer=0;
 
                         while ( !quitrm && restart == true){
 				erm.type=0;
@@ -630,8 +637,8 @@ platforms[3].h = 90;
                                                 QUIT=true;
                                         }
                                 }
-
-                                restart=restart1.handle_event(erm);
+				if (timer >10)
+                               		restart=restart1.handle_event(erm);
 
                                 SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
                                 SDL_RenderClear( gRenderer );
@@ -650,6 +657,50 @@ platforms[3].h = 90;
 		
 		}
 		
+	}
+	
+	if ((start == true) && (restart == false) && (bossScreenMenu == true)){
+			bossscreen1.loadSprite();
+                       
+                        
+                        bool quitbm=false;
+                        SDL_Event ebm;
+                        ebm.type=0;
+			int timer=0;
+                        while ( !quitbm && bossScreenMenu == true){
+				ebm.type=0;
+                                //if( Mix_PlayingMusic() == 0 ){
+                                //        Mix_PlayMusic( music0.mmMusic, -1 );
+                                //}
+                                
+                          
+
+                                while( SDL_PollEvent( &ebm ) != 0 ){
+                                
+                                	
+                                        if( ebm.type == SDL_QUIT ){
+                                                quitbm = true;
+                                                QUIT=true;
+                                        }
+                                }
+				if (timer > 10)
+                               		bossScreenMenu=bossscreen1.handle_event(ebm);
+
+                                SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+                                SDL_RenderClear( gRenderer );
+                                bossscreen1.Render();
+                                SDL_RenderPresent( gRenderer );
+                                SDL_Delay(1000/30);
+                                
+                               if (bossScreenMenu == false){
+                               	//Mix_PlayingMusic()=0;
+                               	//music1.close_music();
+                              	//delete music1;
+                               	close(); 
+                              	}
+                               	timer++;		
+	
+	}
 	}
 	}
 	}

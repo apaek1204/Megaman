@@ -1,15 +1,18 @@
+// Final Project-- MegaMan
+// Nick Smith, Andrew Paek, and Ashley Cummins
+// music.h, class for music and sound effects
+
 #ifndef MUSIC_H
 #define MUSIC_H
 
+// include libraries
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <string>
 #include <SDL2/SDL_mixer.h>
 #include <stdio.h>
 
-// ONPARE3_00003.wav <- him appearing
-// ST07__00_00006.wav <- bee
-
+// define music class
 class music{
 	public:
 		
@@ -33,6 +36,8 @@ class music{
 		Mix_Chunk *gethitMusic=NULL;		// sound effect for getting hit
 		
 		Mix_Chunk *deathMusic=NULL;		// sound effect for death
+		
+		Mix_Chunk *bossdeathMusic=NULL;		// sound effect for boss death
 		
 		
 };
@@ -126,7 +131,18 @@ bool music::Load_music(void){
 		printf( "Failed to load death sound effect music! SDL_mixer Error: %s\n", Mix_GetError() );
 		success = false;
 	
-	} 
+	}
+	
+	// load sound effect for boss death
+	bossdeathMusic=Mix_LoadWAV("./../assets/music/soundEffects/ONPARE2_00000.wav");
+	if ( bossdeathMusic == NULL)
+	{
+	
+		printf( "Failed to load boss death sound effect music! SDL_mixer Error: %s\n", Mix_GetError() );
+		success = false;
+	
+	}  
+	
 	return success;
 }
 
@@ -138,7 +154,7 @@ void music::close_music(void){
 	Mix_FreeMusic(mmMusic);
 	mmMusic=NULL;
 	
-	// Free sound effects
+	// Free all sound effects
 	Mix_FreeChunk(lMusic);
 	lMusic=NULL;
 	Mix_FreeChunk(clMusic);
@@ -151,12 +167,12 @@ void music::close_music(void){
 	jumpingMusic=NULL;
 	Mix_FreeChunk(beeshotMusic);
 	beeshotMusic=NULL;
-	
 	Mix_FreeChunk(gethitMusic);
 	gethitMusic=NULL;
-	
 	Mix_FreeChunk(deathMusic);
 	deathMusic=NULL;
+	Mix_FreeChunk(bossdeathMusic);
+	bossdeathMusic=NULL;
 }
 
 # endif 
