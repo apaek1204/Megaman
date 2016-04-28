@@ -47,7 +47,7 @@ int main( int argc, char* args[] ){
 			megaman megaman1;
 			Stage stage1;
 			vector< enemies* > AllEnemies;
-			Boss* Boss1 = new Boss(500, 200);
+			Boss* Boss1 = new Boss(5790, 200);
 			enemies* tmp = NULL;
 			unsigned int completetime = 0;
 			unsigned int hittime = 0;
@@ -557,7 +557,7 @@ int main( int argc, char* args[] ){
 							completetime = SDL_GetTicks();
 							Boss1->subHealth(102);
 						}
-						if( SDL_GetTicks() - completetime >= 1000 && Boss1->getHealth() <= 0){
+						if( SDL_GetTicks() - completetime >= 5000 && Boss1->getHealth() <= 0){
 							quit = true;
 							bossScreenMenu=true;
 							Mix_PlayChannel(-1, music1.bossdeathMusic, 0);
