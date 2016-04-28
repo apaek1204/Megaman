@@ -18,21 +18,23 @@
 #include "RestartMenu.h"
 #include "healthbar.h"
 #include "bossScreen.h"
+
+//MEGAMAN BY NICK SMITH, ANDREW PAEK, AND ASHLEY CUMMINS
 int main( int argc, char* args[] ){
-	int m=0;
+//	int m=0;
 	bool QUIT = false; //parameter to quit game
 	bool start = false;
 	bool restart=false;
 	bool bossScreenMenu=false;
-
+	bool BOSSFIGHT = false;
 	RestartMenu restart1;
 	music music0;
 	//music music1;
 	music music1;
-
+	bool COMPLETE = false;
 	bossScreen bossscreen1;
 
-	int frame = 0;
+	int frame = 1;
 	while (QUIT == false){
 		if( !init() ){
 			QUIT=true;
@@ -310,7 +312,8 @@ int main( int argc, char* args[] ){
 								}
 							}
 						}
-						if(Boss1->inrange( megaman1.getX())){ // if megaman is in range of the boss
+						if(BOSSFIGHT){ // if megaman is in range of the boss
+							cout << Boss1->getX() - megaman1.getX()<< endl;
 							Boss1->shoot(frame);
 							if (Boss1->getfire() && Boss1->getHealth() > 0){        //while alive try and shoot megaman
 								x = Boss1->getX();
@@ -369,6 +372,8 @@ int main( int argc, char* args[] ){
 						int tempX=megaman1.getX();
 						int tempY=megaman1.getY();
 						megaman1.move();
+						if( megaman1.getX() >= 5000)
+							BOSSFIGHT = true;
 						Boss1->move();
 						healthbar1.setX(megaman1.getX()-camera.x+190);
 						healthbar1.setY(500+camera.y);
@@ -549,19 +554,20 @@ int main( int argc, char* args[] ){
 							megaman1.setishit(false);
 						}
 						frame++; //keeps track of what frame it is on for rendering purposes
-						if( frame == 100 ){
-							frame = 0;
+						if( frame >= 100 ){
+							frame = 1;
 						}
-						if( Boss1->getHealth()<=0 && Boss1->getHealth()>=100){//sets the time tha tyou completed the game
+						if( Boss1->getHealth()<=0 && !COMPLETE){//sets the time tha tyou completed the game
 							completetime = SDL_GetTicks();
 							Boss1->subHealth(102);
+							COMPLETE = true;
 						}
 						if( SDL_GetTicks() - completetime >= 5000 && Boss1->getHealth() <= 0){ //win game if boss is dead
 							quit = true;
 							QUIT = true;
 							Mix_PlayChannel(-1, music1.bossdeathMusic, 0);
 							//bossScreenMenu=true;
-							
+							COMPLETE = false;
 						}
 						if( SDL_GetTicks() - deathtimer >= 1000 && megaman1.getHealth() <= 0 ){ //resets megaman after death if he has lives else game over
 							if( lives > 0 ){
@@ -570,6 +576,8 @@ int main( int argc, char* args[] ){
 								megaman1.setY( 0 );
 								DEATHINIT = false;
 								lives -=1;
+								BOSSFIGHT = false;
+								deathtimer = 0;
 								Mix_PlayChannel( -1, music1.newlifeMusic, 0 );
 							}
 							if( lives == 0 ){
