@@ -578,7 +578,7 @@ int main( int argc, char* args[] ){
 							}
 
 			}
-		
+			}		
 		if ((start == true ) && (restart == true)){
 			restart1.loadSprite();
                         
@@ -613,7 +613,6 @@ int main( int argc, char* args[] ){
 		
 		}
 		
-	}
 	}
 	}
 	}
