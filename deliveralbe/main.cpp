@@ -359,7 +359,7 @@ int main( int argc, char* args[] ){
 								if(SDL_HasIntersection(&enemyHitBox, &chargedHitBox)){
 									AllEnemies[j]->subHealth(1);
 								}
-								if(AllEnemies[j]->getHealth() == 0){
+								if(AllEnemies[j]->getHealth() <= 0){
 									AllEnemies[j]->setX(-1000);
 									AllEnemies[j]->setY(-1000);
 									AllEnemies[j]->setXVel(0);
